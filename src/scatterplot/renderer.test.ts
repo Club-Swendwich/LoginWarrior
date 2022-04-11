@@ -4,8 +4,8 @@ describe('SPRenderer', () => {
   it('should respect xAxisSettings', () => {
     const renderer = new SPRenderer(
       // @ts-expect-error We aren't mocking the entire  object
-      { domainX: [10, 20] },
       {},
+      { domainX: [10, 20] },
     );
     expect(renderer.xAxis.domain()).toEqual([10, 20]);
   });
@@ -13,8 +13,8 @@ describe('SPRenderer', () => {
   it('should respect yAxisSettings', () => {
     const renderer = new SPRenderer(
       // @ts-expect-error We aren't mocking the entire  object
-      { domainY: [10, 20] },
       {},
+      { domainY: [10, 20] },
     );
     expect(renderer.yAxis.domain()).toEqual([10, 20]);
   });
