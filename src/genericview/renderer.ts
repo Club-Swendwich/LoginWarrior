@@ -7,7 +7,7 @@ import { MutableRefObject } from 'react';
  * @template RenderablePoint the structure that rappresents a point that this
  * renderer is capable of render.
  */
-interface Renderer<Settings, RenderablePoint> {
+export interface Renderer<Settings, RenderablePoint> {
 
   /**
    * Updates the graphical preferences of the render, does not trigger a
@@ -21,7 +21,7 @@ interface Renderer<Settings, RenderablePoint> {
    * the graph
    * @param p the new points
    */
-  updatePoints(p: Iterable<RenderablePoint>): void;
+  updatePoints(p: RenderablePoint[]): void;
 
   /**
    * Perform the render of the graph on the specified html reference
