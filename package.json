@@ -28,7 +28,10 @@
             "react-app/jest",
             "airbnb",
             "airbnb-typescript"
-        ]
+        ],
+        "parserOptions": {
+            "project": ["./tsconfig.json"]
+        }
     },
     "browserslist": {
         "production": [
