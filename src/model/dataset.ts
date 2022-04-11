@@ -1,8 +1,9 @@
-class Dataset {
+// TODO: Implement these classes
+
+export class Dataset {
 }
 
-class DatasetEntry {
-
+export class DatasetEntry {
   public get(k: string): any {
 
   }
