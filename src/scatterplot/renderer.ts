@@ -1,6 +1,9 @@
-import { scaleLinear, ScaleLinear, select } from 'd3';
 import {
-  chartCartesian, seriesWebglMulti, seriesWebglPoint, webglFillColor,
+  scaleLinear, ScaleLinear, select, symbolStar, symbolTriangle, symbolCross,
+  symbolSquare, SymbolType,
+} from 'd3';
+import {
+  seriesWebglMulti, seriesWebglPoint, webglFillColor, chartCartesian,
 } from 'd3fc';
 import { MutableRefObject } from 'react';
 import { GraphableType, GraphableTypeToRepr } from '../model/datatypes';
@@ -17,6 +20,18 @@ export interface SPREnderablePoint {
 export interface SPRenderSettings {
   readonly domainX: [number, number];
   readonly domainY: [number, number];
+}
+
+export function renderShape(shape: GraphableTypeToRepr<GraphableType.Shape>): SymbolType {
+  switch (shape) {
+    case 'star': return symbolStar;
+    case 'triangle': return symbolTriangle;
+    case 'cross': return symbolCross;
+    case 'square': return symbolSquare;
+    default: {
+      return symbolStar;
+    }
+  }
 }
 
 export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[]> {
@@ -38,49 +53,62 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
     // different shapes on the same series
     // see https://github.com/d3fc/d3fc/issues/1722
     const grouped = groupByShape(this.points);
-    const chart = this.makeChart(grouped);
-    select(ref.current)
-      .datum(this.points)
-      .call(chart);
-  }
 
-  private makeChart(grouped: Map<SPREnderablePoint['shape'],
-  SPREnderablePoint[]>): WebGLSeries {
     const series = Array.from(grouped.entries())
-      .map(([shape, points]) => this.makeSeries(shape, points));
+      .map(([shape]) => this.makeSeries(shape));
     if (series.length === 0) {
-      series.push(this.makeSeries('star', []));
+      series.push(this.makeSeries('star'));
     }
 
-    return chartCartesian(this.xAxis, this.yAxis)
-      .webglPlotArea(
-        seriesWebglMulti()
-          .xScale(this.xAxis)
-          .yScale(this.yAxis)
-          .series(series),
-      );
+    const multi = seriesWebglMulti()
+      .xScale(this.xAxis)
+      .yScale(this.yAxis)
+      .series(series);
+    const chart = chartCartesian(this.xAxis, this.yAxis)
+      .webglPlotArea(multi);
+    const renderFn = () => {
+      select(ref.current)
+        .datum(this.points)
+        .call(chart);
+    };
+    renderFn();
   }
 
   private makeSeries(
     shape: SPREnderablePoint['shape'],
-    points: SPREnderablePoint[],
   ): WebGLSeries {
+    // TODO: Figure ou how to enable the point dispatch
     return seriesWebglPoint()
-      .data(points)
       .xScale(this.xAxis)
       .yScale(this.yAxis)
       .crossValue((p: SPREnderablePoint) => p.x)
       .mainValue((p: SPREnderablePoint) => p.y)
-      .size((p: SPREnderablePoint) => p.size)
-      .type(shape)
-      .decorate((context: WebGLContext, points: SPREnderablePoint[]) => {
+      .size((p: SPREnderablePoint) => {
+        // FIXME: This is an ugly hack find a better way to discriminate the
+        // shapes
+        if (p.shape !== shape) {
+          return 0;
+        }
+        return p.size;
+      })
+      .type(renderShape(shape))
+      .decorate((context: WebGLContext, p: SPREnderablePoint[]) => {
         const fill = webglFillColor()
           .value((p: SPREnderablePoint) => p.color)
-          .datum(points);
-        // TODO: Should we support transaprency
-        // const wbgl = context.context()
-        // webgl.enable(webgl.BLEND)
+          .data(p);
         fill(context);
+        // TODO: Should we support transaprency
+        // const webgl = context.context();
+        // webgl.clearColor(1.0, 1.0, 1.0, 0.0);
+        // webgl.clear(webgl.COLOR_BUFFER_BIT);
+        // webgl.enable(webgl.BLEND);
+        // webgl.blendColor(0.0, 0.0, 0.0, 1.0);
+        // webgl.blendFuncSeparate(
+        //   webgl.DST_COLOR,
+        //   webgl.ZERO,
+        //   webgl.CONSTANT_ALPHA,
+        //   webgl.ZERO,
+        // );
       });
   }
 
