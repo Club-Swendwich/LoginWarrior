@@ -19,7 +19,7 @@ export interface SPRenderSettings {
   readonly domainY: [number, number];
 }
 
-export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint> {
+export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[]> {
   constructor(
     private points: SPREnderablePoint[],
     private settings: SPRenderSettings,
