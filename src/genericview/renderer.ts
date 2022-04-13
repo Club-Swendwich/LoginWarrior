@@ -21,7 +21,7 @@ export interface Renderer<Settings, RenderablePoint> {
    * the graph
    * @param p the new points
    */
-  updatePoints(p: RenderablePoint[]): void;
+  updatePoints(p: RenderablePoint): void;
 
   /**
    * Perform the render of the graph on the specified html reference
