@@ -112,15 +112,28 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
       });
   }
 
+  /**
+   * gets the currently computed x-axis of the graph
+   * @return the x-axis
+   */
   public get xAxis(): ScaleLinear<number, number, never> {
     return scaleLinear().domain(this.settings.domainX);
   }
 
+  /**
+   * gets the currently computed y-axis of the graph
+   * @return the y-axis
+   */
   public get yAxis(): ScaleLinear<number, number, never> {
     return scaleLinear().domain(this.settings.domainY);
   }
 }
 
+/**
+ * Perform a group by operation on the input based on the shape field
+ * @param elements the elements
+ * @return a map containing (shape, elements) pairs
+ */
 export function groupByShape(elements: SPREnderablePoint[]):
 Map<SPREnderablePoint['shape'], SPREnderablePoint[]> {
   const accumulator = new Map<SPREnderablePoint['shape'], SPREnderablePoint[]>();
