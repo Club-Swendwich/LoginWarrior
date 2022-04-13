@@ -1,10 +1,10 @@
 import { MutableRefObject } from 'react';
 
 /**
- * Interface that rappresents a generic renderer, a components that draw a graph
+ * Interface that represents a generic renderer, a components that draw a graph
  * on a specific html reference.
  * @template Settings the graphical preferences of the graph
- * @template RenderablePoints the structure that rappresents a collection of point that this
+ * @template RenderablePoints the structure that represents a collection of point that this
  * renderer is capable of render.
  */
 export interface Renderer<Settings, RenderablePoints> {
@@ -17,7 +17,7 @@ export interface Renderer<Settings, RenderablePoints> {
   updateSettings(s: Settings): void;
 
   /**
-   * Updates the grap point that need to be render, does not trigger a render of
+   * Updates the graph point that need to be render, does not trigger a render of
    * the graph
    * @param p the new points
    */
