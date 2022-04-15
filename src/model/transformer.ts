@@ -26,6 +26,7 @@ export interface TransformationQuerryable {
    * the provided type.
    * @param g the return type.
    * @returns all the storable types that can reach g
+   */
   compatibleStorableTypes(g: GraphableType): StorableType[];
 
   /**
