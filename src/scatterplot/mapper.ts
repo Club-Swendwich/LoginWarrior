@@ -19,6 +19,7 @@ interface MapFnAccumulator {
   color: (e: DatasetEntry) => any;
 }
 
+// TODO: implement map tests
 export class SPMapper implements Mapper<SPMapperSettings, SPREnderablePoint[]> {
   private mapFn : MapFnAccumulator;
 
