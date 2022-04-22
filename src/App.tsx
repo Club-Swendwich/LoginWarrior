@@ -12,8 +12,8 @@ import {
 function App() {
     const ref = useRef<HTMLDivElement>(null)
     const settings = useMemo(() => ({
-      width:      1000,
-      height:     1000,
+      width:      2000,
+      height:     2000,
       backgroundColor: '#000000',
 
       nodeRelSize:   4,
@@ -27,12 +27,12 @@ function App() {
     
     const data = useMemo(() => ({
       nodes: [
-        { id: "node1", name: "Marco"},
-        { id: "node2", name: "LuBu"},
-        { id: "node3", name: "Gianni"},
-        { id: "node4", name: "Filippo"},
-        { id: "node5", name: "LuBu"},
-        { id: "node6", name: "Frango"}
+        { id: "node1", name: "Marco", description: "prova descrizione"},
+        { id: "node2", name: "LuBu", description: "prova descrizione"},
+        { id: "node3", name: "Gianni", description: "prova descrizione"},
+        { id: "node4", name: "Filippo", description: "prova descrizione"},
+        { id: "node5", name: "LuBu", description: "prova descrizione"},
+        { id: "node6", name: "Frango", description: "prova descrizione"}
       ],
       links: [
         { source: "node1", target: "node2"},

@@ -1,11 +1,10 @@
-/* eslint-disable */
-import { FdG } from '../common/Types';
+/*eslint-disable*/
 import { MutableRefObject } from 'react';
 import { Renderer } from '../genericview/renderer';
 import { select } from 'd3';
 import reactForceGraph2d from 'react-force-graph-2d';
 import ForceGraph, { ForceGraphInstance } from 'force-graph';
-
+import { FdG } from '../common/Types';
 export interface RenderSettings {
     // chart settings
     width:      number,                           
@@ -14,16 +13,12 @@ export interface RenderSettings {
 
     // node settings
     nodeRelSize:   number,                           
-    
-    // link settings
+
+    // link settings    
     arrowSize:  number,                           
     linkColor: string,
 
-    // optional settings
-    zoomNear:   number,                          
-    zoomFar:    number       
-    
-    
+    // optional settings  
 }
 
 export interface GraphData {
@@ -43,14 +38,12 @@ export class FdGRenderer implements Renderer<RenderSettings, GraphData> {
         this.makechart(graph)
     }
 
-    public updatePoints(p: GraphData): void {
-        this.FdGRenderablePoints = p;
-    }
-
-    public updateSettings(s: RenderSettings): void {
-        this.settings = s;
-    }
-
+    /**
+     * Manipulate the graph via his methods taking the values from settings interface
+     * @param graph instance of type ForceGraphInstance used to maninuplate the graph via
+     * his methods
+     * 
+     */
     private makechart(graph: ForceGraphInstance): void {
         graph
         // context settings
@@ -60,11 +53,46 @@ export class FdGRenderer implements Renderer<RenderSettings, GraphData> {
 
         // node settings
         .nodeRelSize(this.settings.nodeRelSize)
-        .nodeAutoColorBy('name')
-
+        .nodeAutoColorBy('id')
+        .nodeLabel('id')
+        
         // link settings
         .linkDirectionalArrowLength(this.settings.arrowSize)
         .linkAutoColorBy('source')
-        // TO DO: find new settings to apply
+        
+        // TODO: find new settings to apply
+    }
+
+    public updatePoints(p: GraphData): void {
+        this.FdGRenderablePoints = p;
+    }
+
+    public updateSettings(s: RenderSettings): void {
+        this.settings = s;
+    }
+
+
+    public get contextWidth(): number {
+        return this.settings.width
+    }
+
+    public get contextHeight(): number {
+        return this.settings.height
+    }
+
+    public get contextBackground(): string {
+        return this.settings.backgroundColor
+    }
+
+    public get nodeRelSize(): number {
+        return this.settings.nodeRelSize
+    }
+
+    public get arrowSize(): number {
+        return this.settings.arrowSize
+    }
+
+    public get linkColor(): string {
+        return this.settings.linkColor
     }
 }
