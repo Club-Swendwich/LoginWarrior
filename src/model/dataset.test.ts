@@ -38,25 +38,25 @@ describe('Dataset', () => {
 });
 
 describe('DatasetEntry', () => {
-    it('should have an empty signature when empty', () => {
-        const e = new DatasetEntry(new Map());
-        expect(e.signature).toEqual(new Set());
-    });
-    it('should respect his signature', () => {
-        // @ts-expect-error mock
-        const e = new DatasetEntry(new Map([
-            ["a", { type: 4 }],
-        ]));
-        expect(e.signature).toEqual(new Set([
-            ["a", 4]
-        ]));
-    });
-    it('should be queryable correctly', () => {
-        // @ts-expect-error mock
-        const e = new DatasetEntry(new Map([
-            ["a", { value: 4 }],
-        ]));
-        expect(e.get("a")).toEqual(4);
-        expect(e.get("7")).toBeUndefined();
-    });
+  it('should have an empty signature when empty', () => {
+    const e = new DatasetEntry(new Map());
+    expect(e.signature).toEqual(new Set());
+  });
+  it('should respect his signature', () => {
+    // @ts-expect-error mock
+    const e = new DatasetEntry(new Map([
+      ['a', { type: 4 }],
+    ]));
+    expect(e.signature).toEqual(new Set([
+      ['a', 4],
+    ]));
+  });
+  it('should be queryable correctly', () => {
+    // @ts-expect-error mock
+    const e = new DatasetEntry(new Map([
+      ['a', { value: 4 }],
+    ]));
+    expect(e.get('a')).toEqual(4);
+    expect(e.get('7')).toBeUndefined();
+  });
 });
