@@ -2,23 +2,31 @@
 import { MutableRefObject } from 'react';
 import { Renderer } from '../genericview/renderer';
 import { select } from 'd3';
-import reactForceGraph2d from 'react-force-graph-2d';
+import reactForceGraph2d, { LinkObject, NodeObject } from 'react-force-graph-2d';
 import ForceGraph, { ForceGraphInstance } from 'force-graph';
-import { FdG } from '../common/Types';
+
+export namespace FdG {
+  export type CustomeNodeObject = NodeObject & {
+    description: string
+  };
+
+  export type CustomeLinkObject = LinkObject & {};
+}
+
 export interface RenderSettings {
     // chart settings
-    width:      number,                           
-    height:     number,                          
+    width:      number,
+    height:     number,
     backgroundColor: string,
 
     // node settings
-    nodeRelSize:   number,                           
+    nodeRelSize:   number,
 
-    // link settings    
-    arrowSize:  number,                           
+    // link settings
+    arrowSize:  number,
     linkColor: string,
 
-    // optional settings  
+    // optional settings
 }
 
 export interface GraphData {
@@ -42,7 +50,7 @@ export class FdGRenderer implements Renderer<RenderSettings, GraphData> {
      * Manipulate the graph via his methods taking the values from settings interface
      * @param graph instance of type ForceGraphInstance used to maninuplate the graph via
      * his methods
-     * 
+     *
      */
     private makechart(graph: ForceGraphInstance): void {
         graph
@@ -55,11 +63,11 @@ export class FdGRenderer implements Renderer<RenderSettings, GraphData> {
         .nodeRelSize(this.settings.nodeRelSize)
         .nodeAutoColorBy('id')
         .nodeLabel('id')
-        
+
         // link settings
         .linkDirectionalArrowLength(this.settings.arrowSize)
         .linkAutoColorBy('source')
-        
+
         // TODO: find new settings to apply
     }
 
