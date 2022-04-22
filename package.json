@@ -25,6 +25,11 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
+    "jest": {
+        "moduleNameMapper": {
+            "d3": "<rootDir>/node_modules/d3/dist/d3.min.js"
+        }
+    },
     "eslintConfig": {
         "extends": [
             "react-app",
@@ -36,6 +41,11 @@
             "project": [
                 "./tsconfig.json"
             ]
+        },
+        "rules": {
+          "@typescript-eslint/no-use-before-define": "off",
+          "@typescript-eslint/no-shadow": "off",
+          "no-restricted-syntax": "off"
         }
     },
     "browserslist": {
