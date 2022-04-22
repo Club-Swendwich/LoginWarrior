@@ -14,6 +14,19 @@ describe('Dataset', () => {
     expect(d.isEmpty()).toBeFalsy();
     expect(d.size).toEqual(1);
   });
+  it('should contains the correct entries', () => {
+    const d = new Dataset([]);
+    const values = [
+      { signature: 3, value: 4 },
+      { signature: 3, value: 5 },
+      { signature: 3, value: 6 },
+    ];
+    for (const v of values) {
+      // @ts-expect-error mock
+      d.insert(v);
+    }
+    expect(d.entries()).toEqual(values);
+  });
   it('should respect his signature on insert', () => {
     const d = new Dataset([]);
 

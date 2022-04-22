@@ -4,14 +4,18 @@ export type DatasetSignature = Set<[string, StorableType]>;
 
 export class Dataset {
   constructor(
-    private entries: DatasetEntry[],
+    private _entries: DatasetEntry[],
   ) { }
 
   public get signature(): DatasetSignature {
     if (this.isEmpty()) {
       return new Set();
     }
-    return this.entries[0].signature;
+    return this._entries[0].signature;
+  }
+
+  public entries(): DatasetEntry[] {
+    return this._entries;
   }
 
   public isEmpty(): boolean {
@@ -19,14 +23,14 @@ export class Dataset {
   }
 
   public get size(): number {
-    return this.entries.length;
+    return this._entries.length;
   }
 
   public insert(e: DatasetEntry): boolean {
     if (!this.isEmpty() && this.signature !== e.signature) {
       return false;
     }
-    this.entries.push(e);
+    this._entries.push(e);
     return true;
   }
 }
