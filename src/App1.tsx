@@ -1,7 +1,7 @@
 import React, {
   MutableRefObject, useEffect, useMemo, useRef,
 } from 'react';
-import { SankeyRenderer } from './sankey/rendv2';
+import { SankeyRenderer } from './sankey/sankRendererv1';
 
 function App() {
   const ref = useRef<HTMLDivElement>(null);
