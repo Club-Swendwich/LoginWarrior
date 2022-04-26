@@ -1,17 +1,37 @@
 import { StorableType, StorableTypeToRepr } from './datatypes';
 
-export type DatasetSignature = [string, StorableType][];
+export type DatasetSignature = Set<[string, StorableType]>;
 
 export class Dataset {
   constructor(
-    private entries: DatasetEntry[],
+    private _entries: DatasetEntry[],
   ) { }
 
   public get signature(): DatasetSignature {
-    if (this.entries.length === 0) {
-      return [];
+    if (this.isEmpty()) {
+      return new Set();
     }
-    return this.entries[0].signature;
+    return this._entries[0].signature;
+  }
+
+  public entries(): DatasetEntry[] {
+    return this._entries;
+  }
+
+  public isEmpty(): boolean {
+    return this.size === 0;
+  }
+
+  public get size(): number {
+    return this._entries.length;
+  }
+
+  public insert(e: DatasetEntry): boolean {
+    if (!this.isEmpty() && this.signature !== e.signature) {
+      return false;
+    }
+    this._entries.push(e);
+    return true;
   }
 }
 
@@ -32,8 +52,8 @@ export class DatasetEntry {
   ) { }
 
   public get signature(): DatasetSignature {
-    return Array.from(this.data.entries())
-      .map(([s, v]) => [s, v.type]);
+    return new Set(Array.from(this.data.entries())
+      .map(([s, v]) => [s, v.type]));
   }
 
   public get(k: string): any | undefined {
