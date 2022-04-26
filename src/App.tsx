@@ -1,7 +1,8 @@
 import React from 'react';
+import { Sankey } from "./sankey";
 
 function App() {
-  return <div>Hello world!</div>;
+  return <div><Sankey /></div>;
 }
 
 export default App;
