@@ -1,4 +1,4 @@
-import { Dataset } from '../model/dataset'
+import { Dataset } from '../model/dataset';
 
 export interface Mapper<MapLogic, Renderable> {
   updateMapLogic(ml: MapLogic): void;
