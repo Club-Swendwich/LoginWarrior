@@ -20,11 +20,13 @@ describe('Transformer', () => {
 
   it('should correctly perform query when is empty', () => {
     const t = Transformer.new();
-    expect(t.compatibleStorableTypes(GraphableType.Color)).toEqual([]);
-    expect(t.compatibleTransformers(StorableType.Int, GraphableType.Color)).toEqual([]);
+    expect(t.compatibleStorableTypes(GraphableType.Color)).toEqual(new Set());
+    expect(t.compatibleTransformers(StorableType.Int, GraphableType.Color)).toEqual(new Set());
   });
 
-  function sameMembers<T>(a: T[], b: T[]) {
+  function sameMembers(_a: any, _b: any) {
+    const a = Array.from(_a);
+    const b = Array.from(_b);
     expect(a).toEqual(expect.arrayContaining(b));
     expect(b).toEqual(expect.arrayContaining(a));
   }
