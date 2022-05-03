@@ -14,7 +14,7 @@ interface DimensionResult<T> {
 
 export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
   public constructor(
-    private readonly querryable: TransformationQuerryable,
+    private readonly queryable: TransformationQuerryable,
     private readonly signature: DatasetSignature,
     private currentSelection: SPDimensions,
   ) { }
@@ -23,40 +23,40 @@ export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
     return this.currentSelection;
   }
 
-  public aviableFields(): DimensionResult<Set<[string, StorableType]>> {
+  public availableFields(): DimensionResult<Set<[string, StorableType]>> {
     return {
-      x: this.aviableFieldsFor(GraphableType.Real),
-      y: this.aviableFieldsFor(GraphableType.Real),
-      shape: this.aviableFieldsFor(GraphableType.Shape),
-      color: this.aviableFieldsFor(GraphableType.Color),
-      size: this.aviableFieldsFor(GraphableType.Int),
+      x: this.availableFieldsFor(GraphableType.Real),
+      y: this.availableFieldsFor(GraphableType.Real),
+      shape: this.availableFieldsFor(GraphableType.Shape),
+      color: this.availableFieldsFor(GraphableType.Color),
+      size: this.availableFieldsFor(GraphableType.Int),
     };
   }
 
-  private aviableFieldsFor(type: GraphableType): Set<[string, StorableType]> {
-    const aviableFields = this.querryable
+  private availableFieldsFor(type: GraphableType): Set<[string, StorableType]> {
+    const availableFields = this.queryable
       .compatibleStorableTypes(type);
     return new Set(
       Array.from(this.signature)
-        .filter(([, t]) => aviableFields.has(t)),
+        .filter(([, t]) => availableFields.has(t)),
     );
   }
 
-  public aviableMappers(): DimensionResult<Set<TransformationSignature>> {
+  public availableMappers(): DimensionResult<Set<TransformationSignature>> {
     return {
-      x: this.aviableMappersFor(this.currentSelection.x[0], GraphableType.Real),
-      y: this.aviableMappersFor(this.currentSelection.y[0], GraphableType.Real),
-      size: this.aviableMappersFor(this.currentSelection.size[0], GraphableType.Int),
-      color: this.aviableMappersFor(this.currentSelection.color[0], GraphableType.Color),
-      shape: this.aviableMappersFor(this.currentSelection.shape[0], GraphableType.Shape),
+      x: this.availableMappersFor(this.currentSelection.x[0], GraphableType.Real),
+      y: this.availableMappersFor(this.currentSelection.y[0], GraphableType.Real),
+      size: this.availableMappersFor(this.currentSelection.size[0], GraphableType.Int),
+      color: this.availableMappersFor(this.currentSelection.color[0], GraphableType.Color),
+      shape: this.availableMappersFor(this.currentSelection.shape[0], GraphableType.Shape),
     };
   }
 
-  private aviableMappersFor(selectedField: string, toReach: GraphableType):
+  private availableMappersFor(selectedField: string, toReach: GraphableType):
   Set<TransformationSignature> {
     const fieldType = Array.from(this.signature)
       .find(([n]) => n === selectedField)![1];
-    const name = this.querryable.compatibleTransformers(fieldType, toReach);
+    const name = this.queryable.compatibleTransformers(fieldType, toReach);
     return new Set(
       Array.from(name).map((name) => ({
         from: fieldType,
