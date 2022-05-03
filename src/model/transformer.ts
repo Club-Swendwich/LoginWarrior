@@ -27,7 +27,7 @@ export interface TransformationQuerryable {
    * @param g the return type.
    * @returns all the storable types that can reach g
    */
-  compatibleStorableTypes(g: GraphableType): StorableType[];
+  compatibleStorableTypes(g: GraphableType): Set<StorableType>;
 
   /**
    * Gets all the transformations identifier that have s as argument and g as
@@ -36,7 +36,7 @@ export interface TransformationQuerryable {
    * @param g The return type
    * @returns All the transformer that have type s -> g
    */
-  compatibleTransformers(s: StorableType, g: GraphableType): TransformationIdentifier[];
+  compatibleTransformers(s: StorableType, g: GraphableType): Set<TransformationIdentifier>;
 }
 
 /**
@@ -90,25 +90,25 @@ implements TransformationQuerryable, TransformationProvider {
     return this.transformers.get(s.to)?.get(s.from)?.get(s.identifier);
   }
 
-  compatibleStorableTypes(g: GraphableType): StorableType[] {
+  compatibleStorableTypes(g: GraphableType): Set<StorableType> {
     const graphables = this.transformers.get(g);
     if (graphables === undefined) {
-      return [];
+      return new Set();
     }
-    return Array.from(graphables.keys());
+    return new Set(graphables.keys());
   }
 
-  compatibleTransformers(s: StorableType, g: GraphableType): TransformationIdentifier[] {
+  compatibleTransformers(s: StorableType, g: GraphableType): Set<TransformationIdentifier> {
     const graphables = this.transformers.get(g);
     if (graphables === undefined) {
-      return [];
+      return new Set();
     }
 
     const storables = graphables.get(s);
     if (storables === undefined) {
-      return [];
+      return new Set();
     }
 
-    return Array.from(storables.keys());
+    return new Set(storables.keys());
   }
 }
