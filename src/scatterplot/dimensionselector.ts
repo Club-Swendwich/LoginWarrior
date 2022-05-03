@@ -54,14 +54,20 @@ export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
 
   private availableMappersFor(selectedField: string, toReach: GraphableType):
   Set<TransformationSignature> {
-    const fieldType = Array.from(this.signature)
-      .find(([n]) => n === selectedField)![1];
+    const field = Array.from(this.signature)
+      .find(([n]) => n === selectedField);
+
+    if (field === undefined) {
+      throw new Error('Cannot find the selected field in the signature!');
+    }
+
+    const fieldType = field[1];
     const name = this.queryable.compatibleTransformers(fieldType, toReach);
     return new Set(
-      Array.from(name).map((name) => ({
+      Array.from(name).map((currentName) => ({
         from: fieldType,
         to: toReach,
-        identifier: name,
+        identifier: currentName,
       })),
     );
   }
