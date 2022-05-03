@@ -56,4 +56,3 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
     };
   }
 }
-

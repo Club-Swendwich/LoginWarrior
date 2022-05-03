@@ -1,4 +1,4 @@
-import { TransformationSignature } from '../model/transformer'
+import { TransformationSignature } from '../model/transformer';
 
 export interface SPDimensions {
   readonly x: [string, TransformationSignature];
@@ -7,4 +7,3 @@ export interface SPDimensions {
   readonly shape: [string, TransformationSignature];
   readonly color: [string, TransformationSignature];
 }
-

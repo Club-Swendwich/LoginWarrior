@@ -12,12 +12,16 @@ interface DimensionResult<T> {
   readonly shape: T
 }
 
-class SPDimensionSelector implements DimensionSelector<SPDimensions> {
+export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
   public constructor(
     private readonly querryable: TransformationQuerryable,
     private readonly signature: DatasetSignature,
     private currentSelection: SPDimensions,
   ) { }
+
+  public get selectedDimensions(): SPDimensions {
+    return this.currentSelection;
+  }
 
   public aviableFields(): DimensionResult<Set<[string, StorableType]>> {
     return {
