@@ -2,13 +2,28 @@ import { dsvFormat } from 'd3';
 import { Dataset, DatasetEntry } from './dataset';
 import { StorableType } from './datatypes';
 
+/**
+ * Interface that represents a generic loader fot a dataset
+ */
 export interface DatasetParser {
-  parse: (content: string) => Dataset;
+  /**
+   * Parse a string in a dataset
+   * @param content The string to eb parse
+   * @returns The parsed dataset or undefined if the parsing failed
+   */
+  parse: (content: string) => Dataset | undefined;
 }
 
+/**
+ * Class that represents a csv parse made specifically for our dataset
+ */
 export class CSVDatasetParser implements DatasetParser {
+  /**
+   * Construct a new CSVDatasetParser by the csv separator
+   * @param separator the csv separator by default the semicolon
+   */
   constructor(
-    private separator: string,
+    private separator: string = ";",
   ) { }
 
   public parse(content: string): Dataset | undefined {
