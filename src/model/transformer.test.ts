@@ -34,9 +34,9 @@ describe('Transformer', () => {
   it('should return no choices when the graphable is empty', () => {
     const t = Transformer.new();
     // @ts-expect-error We aren't mocking the entire object
-    t.add({ from: StorableType.Int, to: GraphableType.Real, identifier: 'a'}, {});
+    t.add({ from: StorableType.Int, to: GraphableType.Real, identifier: 'a' }, {});
     expect(t.compatibleTransformers(StorableType.String, GraphableType.Real)).toEqual(new Set());
-  })
+  });
 
   it('should correctly discriminate between different signatures', () => {
     const t = Transformer.new();
