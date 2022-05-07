@@ -23,7 +23,7 @@ export class CSVDatasetParser implements DatasetParser {
    * @param separator the csv separator by default the semicolon
    */
   constructor(
-    private separator: string = ";",
+    private separator: string = ';',
   ) { }
 
   public parse(content: string): Dataset | undefined {
