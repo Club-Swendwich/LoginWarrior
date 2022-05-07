@@ -14,63 +14,70 @@ function App() {
     const ref = useRef<HTMLDivElement>(null)
     const settings = useMemo(() => ({
       width: 1000,
-      height: 100
+      height: 500
     }), []);
     
     const data = useMemo(() => ({
-    nodes: [{
-        nodeId: 0,
-        name: "node0"
-    }, {
-        nodeId: 1,
-        name: "node1"
-    }, {
-        nodeId: 2,
-        name: "node2"
-    }, {
-        nodeId: 3,
-        name: "node3"
-    }, {
-        nodeId: 4,
-        name: "node4"
-    }],
-      links: [{
-        source: 0,
-        target: 2,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 1,
-        target: 2,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 1,
-        target: 3,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 0,
-        target: 4,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 2,
-        target: 3,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 2,
-        target: 4,
-        value: 2,
-        uom: 'Widget(s)'
-    }, {
-        source: 3,
-        target: 4,
-        value: 4,
-        uom: 'Widget(s)'
-    }]
-    }), [])
+      nodes: [{
+          nodeId: 0,
+          name: "node0"
+      }, {
+          nodeId: 1,
+          name: "node1"
+      }, {
+          nodeId: 2,
+          name: "node2"
+      }, {
+          nodeId: 3,
+          name: "node3"
+      }, {
+          nodeId: 4,
+          name: "node4"
+      }, {
+          nodeId: 5,
+          name: "node5"
+      }],
+        links: [{
+          source: 0,
+          target: 2,
+          value: 2,
+
+      }, {
+          source: 1,
+          target: 2,
+          value: 2,
+
+      }, {
+          source: 1,
+          target: 3,
+          value: 2,
+
+      }, {
+          source: 0,
+          target: 4,
+          value: 2,
+
+      }, {
+          source: 2,
+          target: 3,
+          value: 2,
+
+      }, {
+          source: 2,
+          target: 4,
+          value: 2,
+
+      }, {
+          source: 3,
+          target: 4,
+          value: 4,
+
+      }, {
+          source: 5,
+          target: 2,
+          value: 10
+      }]
+      }), [])
 
     const renderer = useMemo(() => new SKRenderer(settings, data), [settings, data])
     useEffect(() => {

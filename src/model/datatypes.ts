@@ -47,6 +47,7 @@ export enum LoginType {
   Logout,
 }
 
+// Sankey datatypes
 export type CustomNode = {
   nodeId: number;
   name: string;
@@ -56,5 +57,4 @@ export type CustomLink = {
   source: number;
   target: number;
   value: number;
-  uom: string;
 }
