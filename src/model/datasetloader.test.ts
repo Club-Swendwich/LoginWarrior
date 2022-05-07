@@ -1,15 +1,16 @@
 import { Dataset, DatasetEntry } from './dataset';
-import { CSVDatasetParser } from './datasetloader';
+import { CSVDatasetParser, ParseError } from './datasetloader';
 import { StorableType } from './datatypes';
 
 describe('datasetloader', () => {
-  it('should parse an empty dataset', async () => {
+  it('should handle an empty dataset', () => {
     const p = new CSVDatasetParser(';');
-    expect(p.parse('')).toEqual(new Dataset([]));
+    expect(p.parse('')).toEqual(ParseError.InvalidFormat);
+    expect(p.parse('    ')).toEqual(ParseError.InvalidFormat);
   });
-  it('should return undefined on invalid data', async () => {
+  it('should return undefined on invalid data', () => {
     const p = new CSVDatasetParser(';');
-    expect(p.parse('a;b;c;d')).toBeUndefined();
+    expect(p.parse('a;b;c;d')).toEqual(ParseError.InvalidRow);
   });
   it('should parse a line', () => {
     const line = '1;2;3;4;a;b;c;d';

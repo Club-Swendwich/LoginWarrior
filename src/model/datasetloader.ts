@@ -1,4 +1,4 @@
-import { dsvFormat } from 'd3';
+import { dsvFormat, DSV } from 'd3';
 import { Dataset, DatasetEntry } from './dataset';
 import { StorableType } from './datatypes';
 
@@ -9,31 +9,50 @@ export interface DatasetParser {
   /**
    * Parse a string in a dataset
    * @param content The string to eb parse
-   * @returns The parsed dataset or undefined if the parsing failed
+   * @returns The parsed dataset or an error if the parsing failed
    */
-  parse: (content: string) => Dataset | undefined;
+  parse: (content: string) => Dataset | ParseError;
+}
+
+/**
+ * The reason behind the paring fail
+ */
+export enum ParseError {
+  /**
+   * The file format was invalid, eg. invalid json
+   */
+  InvalidFormat,
+  /**
+   * One of the entries was invalid, eg. not enough fields in a csv row
+   */
+  InvalidRow,
 }
 
 /**
  * Class that represents a csv parse made specifically for our dataset
  */
 export class CSVDatasetParser implements DatasetParser {
+  private readonly format: DSV;
+
   /**
    * Construct a new CSVDatasetParser by the csv separator
    * @param separator the csv separator by default the semicolon
    */
-  constructor(
-    private separator: string = ';',
-  ) { }
-
-  public parse(content: string): Dataset | undefined {
-    return CSVDatasetParser.parseRows(dsvFormat(this.separator).parseRows(content));
+  constructor(separator: string = ';') {
+    this.format = dsvFormat(separator);
   }
 
-  private static parseRows(data: string[][]): Dataset | undefined {
+  public parse(content: string): Dataset | ParseError {
+    if (content.trim() === '') return ParseError.InvalidFormat;
+
+    const dsvRead = this.format.parseRows(content);
+    return CSVDatasetParser.parseRows(dsvRead);
+  }
+
+  private static parseRows(data: string[][]): Dataset | ParseError {
     const mappedData = data.map(CSVDatasetParser.parseCSVEntry);
     if (mappedData.includes(undefined)) {
-      return undefined;
+      return ParseError.InvalidRow;
     }
     return new Dataset(mappedData as DatasetEntry[]);
   }
@@ -46,10 +65,10 @@ export class CSVDatasetParser implements DatasetParser {
     const appId = entry[4];
 
     if (userId === undefined
-        || timestamp === undefined
-        || evenType === undefined
-        || encodedIp === undefined
-        || appId === undefined) {
+      || timestamp === undefined
+      || evenType === undefined
+      || encodedIp === undefined
+      || appId === undefined) {
       return undefined;
     }
 
