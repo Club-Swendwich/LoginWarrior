@@ -66,7 +66,7 @@ export class DatasetEntry {
 
   public get(k: string): DatasetValue | EntryLookUpError {
     const maybeEntry = this.data.get(k);
-    if(maybeEntry === undefined) {
+    if (maybeEntry === undefined) {
       return EntryLookUpError.NotFound;
     }
     return maybeEntry;

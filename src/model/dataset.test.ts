@@ -51,11 +51,11 @@ describe('Dataset', () => {
   it('should respect mappings', () => {
     const d = new Dataset([
       // @ts-expect-error mock
-      1, 2, 3
+      1, 2, 3,
     ]);
     const dPlusOne = new Dataset([
       // @ts-expect-error mock
-      2, 3, 4
+      2, 3, 4,
     ]);
     // @ts-expect-error mock
     d.map((x) => x + 1);
@@ -89,14 +89,14 @@ describe('DatasetEntry', () => {
   it('should be idempotent and preserve order on map id', () => {
     const d = new Dataset([
       // @ts-expect-error mock
-      'a', 'b', 'c'
+      'a', 'b', 'c',
     ]);
     const dSame = new Dataset([
       // @ts-expect-error mock
-      'a', 'b', 'c'
+      'a', 'b', 'c',
     ]);
 
-    d.map((a) => a)
+    d.map((a) => a);
     expect(d).toEqual(dSame);
   });
 });
