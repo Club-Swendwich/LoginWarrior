@@ -72,4 +72,31 @@ describe('DatasetEntry', () => {
     expect(e.get('a')).toEqual(4);
     expect(e.get('7')).toBeUndefined();
   });
+  it('should be idempotent and preserve order on map id', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c'
+    ]);
+    const dSame = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c'
+    ]);
+
+    d.map((a) => a)
+    expect(d).toEqual(dSame);
+  });
+  it('should respect mappings', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      1, 2, 3
+    ]);
+    const dPlusOne = new Dataset([
+      // @ts-expect-error mock
+      2, 3, 4
+    ]);
+    // @ts-expect-error mock
+    d.map((x) => x + 1);
+
+    expect(d).toEqual(dPlusOne);
+  });
 });
