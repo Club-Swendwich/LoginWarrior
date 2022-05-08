@@ -27,6 +27,14 @@ describe('Dataset', () => {
     }
     expect(d.entries()).toEqual(values);
   });
+  it('should respect coherence setting', () => {
+    expect(() => new Dataset([
+      // @ts-expect-error mock
+      { signature: 1 },
+      // @ts-expect-error mock
+      { signature: 2 },
+    ], true)).toThrowError('incoherent dataset');
+  });
   it('should respect his signature on insert', () => {
     const d = new Dataset([]);
 
@@ -59,8 +67,20 @@ describe('Dataset', () => {
     ]);
     // @ts-expect-error mock
     d.map((x) => x + 1);
-
     expect(d).toEqual(dPlusOne);
+  });
+  it('should be idempotent and preserve order on map id', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c',
+    ]);
+    const dSame = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c',
+    ]);
+
+    d.map((a) => a);
+    expect(d).toEqual(dSame);
   });
 });
 
@@ -85,18 +105,5 @@ describe('DatasetEntry', () => {
     ]));
     expect(e.get('a')).toEqual({ value: 4 });
     expect(e.get('7')).toEqual(EntryLookUpError.NotFound);
-  });
-  it('should be idempotent and preserve order on map id', () => {
-    const d = new Dataset([
-      // @ts-expect-error mock
-      'a', 'b', 'c',
-    ]);
-    const dSame = new Dataset([
-      // @ts-expect-error mock
-      'a', 'b', 'c',
-    ]);
-
-    d.map((a) => a);
-    expect(d).toEqual(dSame);
   });
 });
