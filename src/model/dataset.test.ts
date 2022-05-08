@@ -48,6 +48,20 @@ describe('Dataset', () => {
     })).toBeFalsy();
     expect(d.size).toEqual(2);
   });
+  it('should respect mappings', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      1, 2, 3
+    ]);
+    const dPlusOne = new Dataset([
+      // @ts-expect-error mock
+      2, 3, 4
+    ]);
+    // @ts-expect-error mock
+    d.map((x) => x + 1);
+
+    expect(d).toEqual(dPlusOne);
+  });
 });
 
 describe('DatasetEntry', () => {
@@ -84,19 +98,5 @@ describe('DatasetEntry', () => {
 
     d.map((a) => a)
     expect(d).toEqual(dSame);
-  });
-  it('should respect mappings', () => {
-    const d = new Dataset([
-      // @ts-expect-error mock
-      1, 2, 3
-    ]);
-    const dPlusOne = new Dataset([
-      // @ts-expect-error mock
-      2, 3, 4
-    ]);
-    // @ts-expect-error mock
-    d.map((x) => x + 1);
-
-    expect(d).toEqual(dPlusOne);
   });
 });
