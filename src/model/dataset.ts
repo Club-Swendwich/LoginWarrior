@@ -90,6 +90,9 @@ export class Dataset {
   }
 }
 
+/**
+ * The type of values that can be stored in the dataset tagged by type
+ */
 export type DatasetValue = {
   type: StorableType.Int
   value: StorableTypeToRepr<StorableType.Int>
@@ -101,20 +104,42 @@ export type DatasetValue = {
   value: StorableTypeToRepr<StorableType.LoginType>
 };
 
+/**
+ * Represents the various error can be encountered when querying a
+ * property on the dataset
+ */
 export enum EntryLookUpError {
+  /**
+   * The requested property is not present.
+   */
   NotFound,
 }
 
+/**
+ * Represent a specific entry on the dataset
+ */
 export class DatasetEntry {
+  /**
+   * Construct an entry by its fields and values
+   * @param data
+   */
   constructor(
     private readonly data: Map<string, DatasetValue>,
   ) { }
 
+  /**
+   * Returns the signature of the entry (same as the dataset)
+   */
   public get signature(): DatasetSignature {
     return new Set(Array.from(this.data.entries())
       .map(([s, v]) => [s, v.type]));
   }
 
+  /**
+   * Gets a a value in the dataset
+   * @param k the name of the field
+   * @returns the value if the field is present of an error
+   */
   public get(k: string): DatasetValue | EntryLookUpError {
     const maybeEntry = this.data.get(k);
     if (maybeEntry === undefined) {
