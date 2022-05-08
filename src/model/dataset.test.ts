@@ -1,4 +1,4 @@
-import { Dataset, DatasetEntry } from './dataset';
+import { Dataset, DatasetEntry, EntryLookUpError } from './dataset';
 
 describe('Dataset', () => {
   it('should have an empty signature when empty', () => {
@@ -83,8 +83,8 @@ describe('DatasetEntry', () => {
     const e = new DatasetEntry(new Map([
       ['a', { value: 4 }],
     ]));
-    expect(e.get('a')).toEqual(4);
-    expect(e.get('7')).toBeUndefined();
+    expect(e.get('a')).toEqual({ value: 4 });
+    expect(e.get('7')).toEqual(EntryLookUpError.NotFound);
   });
   it('should be idempotent and preserve order on map id', () => {
     const d = new Dataset([

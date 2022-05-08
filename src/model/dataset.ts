@@ -15,7 +15,7 @@ export class Dataset {
   }
 
   public map(a: (d: DatasetEntry) => DatasetEntry) {
-    this.currentEntries.map(a);
+    this.currentEntries = this.currentEntries.map(a);
   }
 
   public entries(): DatasetEntry[] {
@@ -50,6 +50,10 @@ export type DatasetValue = {
   value: StorableTypeToRepr<StorableType.LoginType>
 };
 
+export enum EntryLookUpError {
+  NotFound,
+}
+
 export class DatasetEntry {
   constructor(
     private readonly data: Map<string, DatasetValue>,
@@ -60,7 +64,11 @@ export class DatasetEntry {
       .map(([s, v]) => [s, v.type]));
   }
 
-  public get(k: string): any | undefined {
-    return this.data.get(k)?.value;
+  public get(k: string): DatasetValue | EntryLookUpError {
+    const maybeEntry = this.data.get(k);
+    if(maybeEntry === undefined) {
+      return EntryLookUpError.NotFound;
+    }
+    return maybeEntry;
   }
 }
