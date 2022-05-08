@@ -14,6 +14,10 @@ export class Dataset {
     return this.currentEntries[0].signature;
   }
 
+  public map(a: (d: DatasetEntry) => DatasetEntry) {
+    this.currentEntries.map(a);
+  }
+
   public entries(): DatasetEntry[] {
     return this.currentEntries;
   }
