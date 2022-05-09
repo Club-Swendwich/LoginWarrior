@@ -1,5 +1,5 @@
 import { RenderingSettingsSelector } from '../genericview/renderingsetting';
-import { SPRenderSettings } from './renderersettings';
+import SPRenderSettings from './renderersettings';
 
 class SPRenderingSettingsSelector implements RenderingSettingsSelector<SPRenderSettings> {
   public constructor(
