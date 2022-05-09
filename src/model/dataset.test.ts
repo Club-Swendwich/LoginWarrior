@@ -1,4 +1,4 @@
-import { Dataset, DatasetEntry } from './dataset';
+import { Dataset, DatasetEntry, EntryLookUpError } from './dataset';
 
 describe('Dataset', () => {
   it('should have an empty signature when empty', () => {
@@ -27,6 +27,14 @@ describe('Dataset', () => {
     }
     expect(d.entries()).toEqual(values);
   });
+  it('should respect coherence setting', () => {
+    expect(() => new Dataset([
+      // @ts-expect-error mock
+      { signature: 1 },
+      // @ts-expect-error mock
+      { signature: 2 },
+    ], true)).toThrowError('incoherent dataset');
+  });
   it('should respect his signature on insert', () => {
     const d = new Dataset([]);
 
@@ -47,6 +55,32 @@ describe('Dataset', () => {
       signature: 4,
     })).toBeFalsy();
     expect(d.size).toEqual(2);
+  });
+  it('should respect mappings', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      1, 2, 3,
+    ]);
+    const dPlusOne = new Dataset([
+      // @ts-expect-error mock
+      2, 3, 4,
+    ]);
+    // @ts-expect-error mock
+    d.map((x) => x + 1);
+    expect(d).toEqual(dPlusOne);
+  });
+  it('should be idempotent and preserve order on map id', () => {
+    const d = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c',
+    ]);
+    const dSame = new Dataset([
+      // @ts-expect-error mock
+      'a', 'b', 'c',
+    ]);
+
+    d.map((a) => a);
+    expect(d).toEqual(dSame);
   });
 });
 
@@ -69,7 +103,7 @@ describe('DatasetEntry', () => {
     const e = new DatasetEntry(new Map([
       ['a', { value: 4 }],
     ]));
-    expect(e.get('a')).toEqual(4);
-    expect(e.get('7')).toBeUndefined();
+    expect(e.get('a')).toEqual({ value: 4 });
+    expect(e.get('7')).toEqual(EntryLookUpError.NotFound);
   });
 });
