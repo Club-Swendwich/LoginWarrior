@@ -19,8 +19,9 @@ import {
   SankeyData,
   SankeyDataLink,
   SankeyDataNode,
-  SankeySettings,
 } from './types';
+
+import { SankeySettings } from './sanksettings'
 import {
   getData,
   isFullRectNode,
