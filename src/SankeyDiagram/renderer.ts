@@ -43,15 +43,14 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                     .attr("width", width)
                     .attr("height", height);
 
-        // Creo il grafico
         const graph = d3Sankey.sankey()
                         .nodeWidth(25)
                         .nodePadding(10)
                         .extent([[1, 1], [width - 1, height - 6]]);
         graph(this.SKRenderableData);
+        
         const links = this.createLinks(svg);
         this.createNodes(svg, graph, links);
-
     }
 
     private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {     
@@ -65,10 +64,15 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                     .attr("fill", "none")
                     .attr("stroke-width", function(d: any) { 
                         return Math.max(1, d.width); 
-                    });
-        /**
-         * TODO: Mouseover sui path per scurire il collegamento
-         */
+                    })
+                    .on("mouseover", function () {
+                        d3.select(this)
+                        .attr("stroke-opacity", 0.5)
+                    })
+                    .on("mouseleave", function () {
+                        d3.select(this)
+                        .attr("stroke-opacity", 0.2)
+                    })
         return link;
     }
 
@@ -76,9 +80,13 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                         graph: d3Sankey.SankeyLayout<d3Sankey.SankeyGraph<{}, {}>, {}, {}>, 
                         link: d3.Selection<SVGPathElement, SLink, SVGGElement, unknown>): void {
         
+        /**
+         * TODO: Stop drag when the node goes outside the borders
+         * TODO: implement node's title 
+         */
         const _self = this;
         const color = d3.scaleOrdinal(d3.schemeCategory10);
-        // Creo i nodi 
+        
         const node = svg.append("g")
                 .selectAll(".node")
                 .data(this.SKRenderableData.nodes)
@@ -90,11 +98,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                 .attr("width", function (d: any) { return d.x1 - d.x0; })
                 .attr("fill", function (d: any) { return color(d.name.replace(/ .*/, "")); })
                 .attr("stroke", "#000");
-
-        // Make nodes draggable
-        /**
-         * TODO: stop drag when it cross the borders 
-         */
+   
         svg.selectAll<SVGElement, unknown>(".node")
         .call(
             d3.drag<SVGElement, unknown>()
