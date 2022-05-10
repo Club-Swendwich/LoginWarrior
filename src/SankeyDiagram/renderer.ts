@@ -34,7 +34,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
         this.SKRenderableData = p;
     }
     
-    public render(ref: MutableRefObject<HTMLDivElement>): void {
+    render(ref: MutableRefObject<HTMLDivElement>): void {
         const height = this.settings.height;
         const width = this.settings.width;
         
@@ -53,6 +53,11 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
         this.createNodes(svg, graph, links);
     }
 
+    /**
+     * Function that takes the plot area as input and then it creates and appends the links to the plot area (with some additional props)
+     * @param svg the plot area 
+     * @returns the created links
+     */
     private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {     
         const link = svg.append("g").selectAll(".link")
                     .data(this.SKRenderableData.links)
@@ -75,6 +80,13 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                     })
         return link;
     }
+
+    /**
+     * Function that creates and appends nodes to the plot area and makes them draggable
+     * @param svg the plot area
+     * @param graph the SankeyLayout 
+     * @param link path between nodes
+     */
 
     private createNodes(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, 
                         graph: d3Sankey.SankeyLayout<d3Sankey.SankeyGraph<{}, {}>, {}, {}>, 
@@ -119,10 +131,18 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
         );
     }
     
+    /**
+     * Get the svg width
+     * @returns the width of the svg
+     */
     public get svgWidth(): number {
         return this.settings.width;
     }
 
+    /**
+     * Get the svg height
+     * @returns the height of the svg
+    */
     public get svgHeight(): number {
         return this.settings.height;
     }
