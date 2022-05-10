@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx'
+import { observable, action } from 'mobx';
 import SPRenderingSettingsSelector from './renderingsettings';
 import SPRenderSettings from './renderersettings';
 
@@ -15,6 +15,26 @@ export default class RenderingSettingsSelectorVM {
 
   @action
   updateSettings(settings: SPRenderSettings) : void {
+    this.model = new SPRenderingSettingsSelector(settings);
+  }
+
+  @action
+  setWidth(domain: [number, number]): void {
+    const tmpsettings = this.model.selectedSettings;
+    const settings: SPRenderSettings = {
+      domainX: domain,
+      domainY: tmpsettings.domainY,
+    };
+    this.model = new SPRenderingSettingsSelector(settings);
+  }
+
+  @action
+  setHeight(domain: [number, number]): void {
+    const tmpsettings = this.model.selectedSettings;
+    const settings: SPRenderSettings = {
+      domainX: tmpsettings.domainX,
+      domainY: domain,
+    };
     this.model = new SPRenderingSettingsSelector(settings);
   }
 }
