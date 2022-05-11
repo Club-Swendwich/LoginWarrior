@@ -6,8 +6,8 @@ import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 import chroma from "chroma-js";
 
-type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
-type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
+export type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
+export type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
 
 export interface GraphData {
     nodes: SNode[];
@@ -48,7 +48,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                         .nodePadding(10)
                         .extent([[1, 1], [width - 1, height - 6]]);
         graph(this.SKRenderableData);
-        
+
         const links = this.createLinks(svg);
         this.createNodes(svg, graph, links);
     }
