@@ -3,12 +3,15 @@
 import React, {
   ChangeEvent, ChangeEventHandler, Dispatch, FunctionComponent, SetStateAction,
 } from 'react';
+import { StorableType } from '../model/datatypes';
 import { TransformationSignature } from '../model/transformer';
 
 export const LITERAL_VALUE = 'Literal';
 
 interface SelectorProp {
   readonly name: string
+  readonly fields: string[]
+  readonly maps: TransformationSignature[]
   readonly selection: {
     readonly set: Dispatch<SetStateAction<[string, TransformationSignature]>>
     readonly get: [string, TransformationSignature]
