@@ -1,15 +1,8 @@
 import { Mapper } from '../genericview/mapper';
 import { Dataset, DatasetEntry } from '../model/dataset';
-import { TransformationProvider, TransformationSignature } from '../model/transformer';
+import { TransformationProvider } from '../model/transformer';
+import { SPDimensions } from './dimensions';
 import { SPREnderablePoint } from './renderer';
-
-export interface SPMapperSettings {
-  readonly x: [string, TransformationSignature];
-  readonly y: [string, TransformationSignature];
-  readonly size: [string, TransformationSignature];
-  readonly shape: [string, TransformationSignature];
-  readonly color: [string, TransformationSignature];
-}
 
 interface MapFnAccumulator {
   x: (e: DatasetEntry) => any;
@@ -20,12 +13,12 @@ interface MapFnAccumulator {
 }
 
 // TODO: implement map tests
-export class SPMapper implements Mapper<SPMapperSettings, SPREnderablePoint[]> {
+export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
   private mapFn : MapFnAccumulator;
 
   constructor(
     private transformer: TransformationProvider,
-    settings: SPMapperSettings,
+    settings: SPDimensions,
   ) {
     this.mapFn = this.makeMapFn(settings);
   }
@@ -34,11 +27,11 @@ export class SPMapper implements Mapper<SPMapperSettings, SPREnderablePoint[]> {
     return d.entries().map(this.apply);
   }
 
-  public updateMapLogic(ml: SPMapperSettings): void {
+  public updateMapLogic(ml: SPDimensions): void {
     this.mapFn = this.makeMapFn(ml);
   }
 
-  private makeMapFn(s: SPMapperSettings): MapFnAccumulator {
+  private makeMapFn(s: SPDimensions): MapFnAccumulator {
     const xM = this.transformer.get(s.x[1])!;
     const yM = this.transformer.get(s.y[1])!;
     const sizeM = this.transformer.get(s.size[1])!;

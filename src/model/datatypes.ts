@@ -42,7 +42,7 @@ export type Shape = 'star' | 'triangle' | 'cross' | 'square';
 export type Color = [number, number, number, number];
 
 export enum LoginType {
-  LoginSuccess,
+  LoginSuccess = 1,
   LoginFail,
   Logout,
 }

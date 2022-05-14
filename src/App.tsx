@@ -1,3 +1,8 @@
+import { OutputList } from "./SankeyDiagram/viewModel/output"
+import  output  from "./SankeyDiagram/viewModel/settingsSelectorView"
+import  SankeyViewSettings  from "./SankeyDiagram/viewModel/settingsSelectorView"
+import {SankeyRenderingSettingsSelector} from "./SankeyDiagram/sankRenderingSettingsSelector"
+
 /* eslint-disable */
 import {
   MutableRefObject,
@@ -95,7 +100,10 @@ function App() {
         `}
       </style>
       {/* eslint-disable */}
+      <main className="text-gray-400 bg-gray-900 body-font">
+     <SankeyViewSettings output={OutputList} /*settings={SankeyRenderingSettingsSelector}*//> 
       <div ref={ref} className="renderArea"/>
+      </main>
     </>
     );
 }
