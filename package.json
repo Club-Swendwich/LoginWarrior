@@ -16,6 +16,7 @@
         "eslint-config-airbnb": "^19.0.4",
         "force-graph": "^1.42.9",
         "mobx": "^6.5.0",
+        "mobx-react": "^7.4.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-force-graph-2d": "^1.23.10",
