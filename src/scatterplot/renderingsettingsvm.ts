@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import SPRenderingSettingsSelector from './renderingsettings';
 import SPRenderSettings from './renderersettings';
 
@@ -38,14 +38,17 @@ export default class SPRenderingSettingsSelectorVM {
     this.model = new SPRenderingSettingsSelector(settings);
   }
 
+  @computed
   get getSettings(): SPRenderSettings {
     return this.model.selectedSettings;
   }
 
+  @computed
   get getWidth(): [number, number] {
     return this.model.selectedSettings.domainX;
   }
 
+  @computed
   get getHeight(): [number, number] {
     return this.model.selectedSettings.domainY;
   }
