@@ -2,106 +2,65 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/function-component-definition */
 
-import { Dispatch, FormEventHandler, useState } from 'react';
+import { FormEventHandler, useState } from 'react';
+import { observer } from 'mobx-react';
 import { StorableType } from '../model/datatypes';
 import { TransformationSignature } from '../model/transformer';
-import { SPDimensions } from './dimensions';
-import { DimensionResult, SPDimensionSelector } from './dimensionselector';
 import {
   ColorSelector, IntSelector, RealSelector, ShapeSelector,
 }
   from './SPdimselectors';
+import { SPDimensionSelectorVM } from './dimensionselectiorvm';
 
 export interface SPDimensionSelectorViewProp {
-  spDimensions: SPDimensions
-  spDimensionSelector: SPDimensionSelector
-  setDimensionSelection: Dispatch<DimensionResult<[string, TransformationSignature]>>
+  viewmodel: SPDimensionSelectorVM
 }
 
 export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
-  const { spDimensions, spDimensionSelector, setDimensionSelection } = prop;
+  const { viewmodel } = prop;
 
-  spDimensionSelector.availableFields().x.forEach(getxNames);
-  spDimensionSelector.availableFields().y.forEach(getyNames);
-  spDimensionSelector.availableFields().shape.forEach(getsizeNames);
-  spDimensionSelector.availableFields().size.forEach(getshapeNames);
-  spDimensionSelector.availableFields().color.forEach(getcolorNames);
+  const xMaps = viewmodel.mapX;
+  const yMaps = viewmodel.mapY;
+  const sizeMaps = viewmodel.mapSize;
+  const shapeMaps = viewmodel.mapShape;
+  const colorMaps = viewmodel.mapColor;
 
-  spDimensionSelector.availableMappers().x.forEach(getxMaps);
-  spDimensionSelector.availableMappers().y.forEach(getyMaps);
-  spDimensionSelector.availableMappers().size.forEach(getsizeMaps);
-  spDimensionSelector.availableMappers().shape.forEach(getshapeMaps);
-  spDimensionSelector.availableMappers().color.forEach(getcolorMaps);
+  const xFieldsNames = getNames(viewmodel.fieldX);
+  const yFieldsNames = getNames(viewmodel.fieldY);
+  const sizeFieldsNames = getNames(viewmodel.fieldSize);
+  const shapeFieldsNames = getNames(viewmodel.fieldShape);
+  const colorFieldsNames = getNames(viewmodel.fieldColor);
 
-  let xNames: string[];
-  let yNames: string[];
-  let sizeNames: string[];
-  let shapeNames: string[];
-  let colorNames: string[];
-
-  let xMaps: string[];
-  let yMaps: string[];
-  let sizeMaps: string[];
-  let shapeMaps: string[];
-  let colorMaps: string[];
-
-  function getxNames(name: [string, StorableType]) {
-    // eslint-disable-next-line prefer-destructuring
-    xNames.push(name[0]);
-  }
-  function getyNames(name: [string, StorableType]) {
-    // eslint-disable-next-line prefer-destructuring
-    yNames.push(name[0]);
-  }
-  function getsizeNames(name: [string, StorableType]) {
-    // eslint-disable-next-line prefer-destructuring
-    sizeNames.push(name[0]);
-  }
-  function getshapeNames(name: [string, StorableType]) {
-    // eslint-disable-next-line prefer-destructuring
-    shapeNames.push(name[0]);
-  }
-  function getcolorNames(name: [string, StorableType]) {
-    // eslint-disable-next-line prefer-destructuring
-    colorNames.push(name[0]);
+  function getNames(names: Set<[string, StorableType]>): string[] {
+    const fields: string[] = [];
+    names.forEach((val) => fields.push(val[0]));
+    return fields;
   }
 
-  function getxMaps(name: TransformationSignature) {
-    // eslint-disable-next-line prefer-destructuring
-    xMaps.push(name.identifier);
-  }
-  function getyMaps(name: TransformationSignature) {
-    // eslint-disable-next-line prefer-destructuring
-    yMaps.push(name.identifier);
-  }
-  function getsizeMaps(name: TransformationSignature) {
-    // eslint-disable-next-line prefer-destructuring
-    sizeMaps.push(name.identifier);
-  }
-  function getshapeMaps(name: TransformationSignature) {
-    // eslint-disable-next-line prefer-destructuring
-    shapeMaps.push(name.identifier);
-  }
-  function getcolorMaps(name: TransformationSignature) {
-    // eslint-disable-next-line prefer-destructuring
-    colorMaps.push(name.identifier);
-  }
+  const [xField, setXField] = useState<string>();
+  const [yFields, setYField] = useState<string>();
+  const [sizeField, setSizeField] = useState<string>();
+  const [shapeField, setShapeField] = useState<string>();
+  const [colorField, setColorField] = useState<string>();
 
-  const [x, setX] = useState(spDimensions.x);
-  const [y, setY] = useState(spDimensions.y);
-  const [size, setSize] = useState(spDimensions.size);
-  const [shape, setShape] = useState(spDimensions.shape);
-  const [color, setColor] = useState(spDimensions.color);
+  const [xMap, setXMap] = useState<TransformationSignature>();
+  const [yMap, setYMap] = useState<TransformationSignature>();
+  const [sizeMap, setSizeMap] = useState<TransformationSignature>();
+  const [shapeMap, setShapeMap] = useState<TransformationSignature>();
+  const [colorMap, setColorMap] = useState<TransformationSignature>();
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setDimensionSelection({
-      x,
-      y,
-      size,
-      shape,
-      color,
-    });
+    viewmodel.updateXAxisField(xField!);
+    viewmodel.updateYAxisField(yFields!);
+    viewmodel.updateSizeField(sizeField!);
+    viewmodel.updateShapeField(shapeField!);
+    viewmodel.updateColorField(colorField!);
+    viewmodel.updateXAxisMap(xMap!);
+    viewmodel.updateYAxisMap(yMap!);
+    viewmodel.updateSizeMap(sizeMap!);
+    viewmodel.updateShapeMap(shapeMap!);
+    viewmodel.updateColorMap(colorMap!);
   };
 
   return (
@@ -109,49 +68,55 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
       <label htmlFor="xaxis" id="xaxis">X Axis:</label>
       <RealSelector
         name="axisx"
-        selection={{
-          set: setX,
-          get: x,
+        set={{
+          setField: setXField,
+          setMap: setXMap,
         }}
-        fields={xNames}
+        fields={xFieldsNames}
+        maps={xMaps}
       />
       <label htmlFor="yaxis" id="yaxis">Y Axis:</label>
       <RealSelector
         name="axisy"
-        selection={{
-          set: setY,
-          get: y,
+        set={{
+          setField: setYField,
+          setMap: setYMap,
         }}
-        fields={yFields}
+        fields={yFieldsNames}
+        maps={yMaps}
       />
       <label htmlFor="size" id="size">Size:</label>
       <IntSelector
         name="size"
-        selection={{
-          set: setSize,
-          get: size,
+        set={{
+          setField: setSizeField,
+          setMap: setSizeMap,
         }}
-        fields={sizeFields}
+        fields={sizeFieldsNames}
+        maps={sizeMaps}
       />
       <label htmlFor="shape" id="shape">Shape:</label>
       <ShapeSelector
         name="shape"
-        selection={{
-          set: setShape,
-          get: shape,
+        set={{
+          setField: setShapeField,
+          setMap: setShapeMap,
         }}
-        fields={shapeFields}
+        fields={shapeFieldsNames}
+        maps={shapeMaps}
       />
       <label htmlFor="color" id="color">Color:</label>
       <ColorSelector
         name="color"
-        selection={{
-          set: setColor,
-          get: color,
+        set={{
+          setField: setColorField,
+          setMap: setColorMap,
         }}
-        fields={colorFields}
+        fields={colorFieldsNames}
+        maps={colorMaps}
       />
       <input type="submit" value="Applica dimensioni" />
     </form>
   );
 };
+export default observer(SPDimensionSelectorView);

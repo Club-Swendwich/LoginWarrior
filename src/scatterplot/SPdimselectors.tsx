@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {
-  ChangeEvent, ChangeEventHandler, Dispatch, FunctionComponent, SetStateAction,
+  ChangeEvent, ChangeEventHandler, Dispatch, FunctionComponent,
 } from 'react';
-import { StorableType } from '../model/datatypes';
 import { TransformationSignature } from '../model/transformer';
 
 export const LITERAL_VALUE = 'Literal';
@@ -11,11 +10,11 @@ export const LITERAL_VALUE = 'Literal';
 interface SelectorProp {
   readonly name: string
   readonly fields: string[]
-  readonly maps: TransformationSignature[]
-  readonly selection: {
-    readonly set: Dispatch<SetStateAction<[string, TransformationSignature]>>
-    readonly get: [string, TransformationSignature]
-}
+  readonly maps: Set<TransformationSignature>
+  readonly set: {
+    readonly setField: Dispatch<React.SetStateAction<string | undefined>>
+    readonly setMap: Dispatch<React.SetStateAction<TransformationSignature | undefined>>
+  }
   readonly literal: {
     readonly default: string
     readonly Component: FunctionComponent<DefaultProp>
@@ -28,28 +27,32 @@ interface DefaultProp {
   readonly onChange: (s: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
 }
 
-function Selector(prop: SelectorProp) {
+export function Selector(prop: SelectorProp) {
   const {
-    literal, name, selection,
+    literal, name, set, fields, maps,
   } = prop;
 
-  const setSelection0: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
+  const setFields: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
     const val = s.target.value;
     if (val === LITERAL_VALUE) {
-      selection.set([val, literal.default]);
-    } else {
-      selection.set([val, selection.get(val)![1]]);
+      set.setField(val);
+      return literalInput;
     }
+    set.setField(val);
+    ConverterOption();
+    return null;
   };
-  const setSelection1: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
-    selection.set([selection.get[0], s.target.value]);
+
+  const setMaps: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
+    const x = Array.from(maps.values());
+    const map = x.find((e) => e.identifier === s.target.value);
+    set.setMap(map);
   };
 
   function FieldOption() {
     return (
-      <select value={selection.get[0]} onChange={setSelection0}>
-        { Array.from(selection.get[0])
-          .map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
+      <select value={fields[0]} onChange={setFields}>
+        {fields.map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
         <option key={`${name}-${LITERAL_VALUE}`} value={LITERAL_VALUE}>{LITERAL_VALUE}</option>
       </select>
     );
@@ -57,21 +60,18 @@ function Selector(prop: SelectorProp) {
 
   const literalInput = (
     <literal.Component
-      onChange={setSelection1}
-      selected={selection.get[1]}
+      onChange={setMaps}
+      selected={Array.from(maps.values())[0].identifier}
       keyV={`${name}-in`}
     />
   );
 
   function ConverterOption() {
-    const option = selection.get[0];
-    if (option === LITERAL_VALUE) {
-      return literalInput;
-    }
-    const opts = selection.get[1]; //???
+    const options: string[] = [];
+    maps.forEach((val) => options.push(val.identifier));
     return (
-      <select value={selection.get[1]} onChange={setSelection1}>
-        { (opts ? opts : []).map(e => <option key={`${name}-${option}`} value={e}>{e}</option>) }
+      <select value={options[0]} onChange={setMaps}>
+        { options.map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
       </select>
     );
   }
@@ -89,12 +89,14 @@ export type FSelectorProp = Omit<SelectorProp, 'literal'>;
 const DEFAULT_REAL = 0;
 export function RealSelector(prop: FSelectorProp) {
   const {
-    selection, name,
+    name, fields, maps, set,
   } = prop;
   return (
     <Selector
       name={name}
-      selection={selection}
+      fields={fields}
+      maps={maps}
+      set={set}
       literal={{
         default: DEFAULT_REAL.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -114,12 +116,14 @@ export function RealSelector(prop: FSelectorProp) {
 const DEFAULT_INT = 0;
 export function IntSelector(prop: FSelectorProp) {
   const {
-    selection, name,
+    name, fields, maps, set,
   } = prop;
   return (
     <Selector
       name={name}
-      selection={selection}
+      fields={fields}
+      maps={maps}
+      set={set}
       literal={{
         default: DEFAULT_INT.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -139,12 +143,14 @@ export function IntSelector(prop: FSelectorProp) {
 const DEFAULT_COLOR = '#F5B7A4';
 export function ColorSelector(prop: FSelectorProp) {
   const {
-    selection, name,
+    name, fields, maps, set,
   } = prop;
   return (
     <Selector
       name={name}
-      selection={selection}
+      fields={fields}
+      maps={maps}
+      set={set}
       literal={{
         default: DEFAULT_COLOR.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -163,15 +169,17 @@ export function ColorSelector(prop: FSelectorProp) {
 const DEFAULT_SHAPE = 'star';
 export function ShapeSelector(prop: FSelectorProp) {
   const {
-    selection, name,
+    name, fields, maps, set,
   } = prop;
   return (
     <Selector
       name={name}
-      selection={selection}
+      fields={fields}
+      maps={maps}
+      set={set}
       literal={{
         default: DEFAULT_SHAPE.toString(),
-        Component: ({ onChange, selected, keyV }) => (
+        Component: ({ onChange, selected }) => (
           <select value={selected} onChange={onChange}>
             <option key={`${name}-star`}>star</option>
           </select>
