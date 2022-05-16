@@ -5,7 +5,7 @@ import {CustomNode, CustomLink} from '../model/datatypes';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 import chroma from "chroma-js";
-import {SankeySettings} from "./sankRendererSettings"
+import SankeySettings from "./sankRendererSettings"
 
 type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
 type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
@@ -31,14 +31,16 @@ export class SKRenderer implements Renderer<SankeySettings, GraphData>{
     public render(ref: MutableRefObject<HTMLDivElement>): void {
         const height = this.settings.height;
         const width = this.settings.width;
+        const nodewidth = this.settings.nodewidth;
         
+
         const svg = d3.select(ref.current)
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height);
 
         const graph = d3Sankey.sankey()
-                        .nodeWidth(20)
+                        .nodeWidth(nodewidth)
                         .nodePadding(10)
                         .extent([[1, 1], [width - 1, height - 6]]);
         graph(this.SKRenderableData);
@@ -48,13 +50,15 @@ export class SKRenderer implements Renderer<SankeySettings, GraphData>{
     }
 
     private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {     
+        const opacity = this.settings.opacity;
+        
         const link = svg.append("g").selectAll(".link")
                     .data(this.SKRenderableData.links)
                     .enter().append("path")
                     .attr("class", "link")
                     .attr("d", d3Sankey.sankeyLinkHorizontal())
                     .attr("stroke", "#000")
-                    .attr("stroke-opacity", 0.2)
+                    .attr("stroke-opacity", opacity)
                     .attr("fill", "none")
                     .attr("stroke-width", function(d: any) { 
                         return Math.max(1, d.width); 
@@ -119,5 +123,13 @@ export class SKRenderer implements Renderer<SankeySettings, GraphData>{
 
     public get svgHeight(): number {
         return this.settings.height;
+    }
+
+    public get svgNodeWidth(): number {
+        return this.settings.nodewidth;
+    }
+
+    public get svgOpacity(): number {
+        return this.settings.opacity;
     }
 }

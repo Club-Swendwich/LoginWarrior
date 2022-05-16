@@ -6,6 +6,8 @@ describe("test SKRenderer", () => {
             {
                 width: 100,
                 height: 100,
+                nodewidth: 20,
+                opacity: 0.2
             },
             // @ts-expect-error We aren't mocking the entire object
             {}
@@ -13,5 +15,7 @@ describe("test SKRenderer", () => {
 
         expect(renderer.svgWidth).toBe(100);
         expect(renderer.svgHeight).toBe(100);
+        expect(renderer.svgHeight).toBe(20);
+        expect(renderer.svgHeight).toBe(0.2);
     });
 });

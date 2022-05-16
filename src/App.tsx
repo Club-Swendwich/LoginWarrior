@@ -1,7 +1,5 @@
 import { OutputList } from "./SankeyDiagram/viewModel/output"
-import  output  from "./SankeyDiagram/viewModel/settingsSelectorView"
 import  SankeyViewSettings  from "./SankeyDiagram/viewModel/settingsSelectorView"
-import {SankeyRenderingSettingsSelector} from "./SankeyDiagram/sankRenderingSettingsSelector"
 
 /* eslint-disable */
 import {
@@ -18,8 +16,10 @@ import * as d3Sankey from 'd3-sankey';
 function App() {
     const ref = useRef<HTMLDivElement>(null)
     const settings = useMemo(() => ({
-      width: 1000,
-      height: 500
+      width: 800,
+      height: 200,
+      nodewidth: 20,
+      opacity: 0.4
     }), []);
     
     const data = useMemo(() => ({
@@ -101,7 +101,7 @@ function App() {
       </style>
       {/* eslint-disable */}
       <main className="text-gray-400 bg-gray-900 body-font">
-     <SankeyViewSettings output={OutputList} /*settings={SankeyRenderingSettingsSelector}*//> 
+     <SankeyViewSettings output={OutputList}/* settings={SankeyRenderingSettingsSelector}*//> 
       <div ref={ref} className="renderArea"/>
       </main>
     </>

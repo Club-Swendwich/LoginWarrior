@@ -22,9 +22,11 @@ SankeyRectNodeGroup (Gruppo di Nodi)
 
 */
 
-export interface SankeySettings {
+export default interface SankeySettings {
     width: number,
     height: number,
-    //fontSize: number,
+    nodewidth: number,
+    opacity: number
 }
+
 

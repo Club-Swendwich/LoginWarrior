@@ -1,5 +1,5 @@
 import { RenderingSettingsSelector } from '../genericview/renderingsetting';
-import { SankeySettings } from './sankRendererSettings';
+import SankeySettings from './sankRendererSettings';
 
 export class SankeyRenderingSettingsSelector implements RenderingSettingsSelector<SankeySettings> {
   public constructor(
@@ -9,6 +9,13 @@ export class SankeyRenderingSettingsSelector implements RenderingSettingsSelecto
   public get selectedSettings(): SankeySettings {
     return this.currentSelection;
   }
+
+  /*
+  public changeHeight(): SankeySettings {
+    this.currentSelection.height = 10;
+    return this.currentSelection;
+  }
+  */
 }
 
 export default SankeyRenderingSettingsSelector;
