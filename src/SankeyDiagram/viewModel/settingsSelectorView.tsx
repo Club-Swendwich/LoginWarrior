@@ -5,10 +5,11 @@ import React , { useState } from 'react'
 import SankeyRenderingSettingsSelector from "../sankRenderingSettingsSelector"
 import SankeySettings from "../sankRendererSettings"
 import { OutputListImpl } from "./output"
+import { Domain } from 'domain'
 
 interface SettingsProp { //Mi serve per mettere apposto
-    output: OutputListImpl
-    settings: SankeyRenderingSettingsSelectorVM
+    output: OutputListImpl;
+    settingsVM: SankeyRenderingSettingsSelectorVM;
 }
 
 export class SankeyRenderingSettingsSelectorVM {
@@ -82,11 +83,17 @@ export class SankeyRenderingSettingsSelectorVM {
     }
   }
 
-
+  
 //Component è un observer del componente output
-export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,settings}) => {
+export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,settingsVM}) => {
 
-    const [value, setValue] = useState<string>(''); //STATE VARIABLE, torna un array di 2 elementi, uno lo stato e l'altra è la FUNZIONE
+
+  const height = useState(settingsVM.getHeight); 
+  const width = useState(settingsVM.getWidth);
+  const nodewidth = useState(settingsVM.getWidth);
+  const opacity = useState(settingsVM.getWidth);
+
+  const [value, setValue] = useState<string>(''); //STATE VARIABLE, torna un array di 2 elementi, uno lo stato e l'altra è la FUNZIONE
      /*const [x, newX] = useState<string>('');         //per settarne il valore
     
 
@@ -110,6 +117,19 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
 
     //cambia sotto, crea un console log che da observer prende per poi fare output
     return <div> 
+    <input type="range" value={value} min="1" max="100" onChange={
+        (event) => {
+            settingsVM.updateSettings = {
+              height: parseFloat(value),
+              width: settingsVM.getWidth,
+              nodewidth: settingsVM.getNodeWidth,
+              opacity: settingsVM.getOpacity
+            }
+        }
+    }/>
+    <button onClick={()=>{
+        output.addOutput(value/*, value*/);
+    }}>Test Output</button>
 
 
     <input value={value} onChange={
@@ -117,17 +137,7 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
             setValue(event.target.value);
         }
     } type= "text"/>
-
-    <button onClick={()=>{
-        output.addOutput(value/*, value*/);
-    }}>Test Output</button>
-
-    <button onClick={()=>{
-      output.addOutput("" + settings.getHeight)
-      console.log(settings.getHeight)
-    }}>getWidth</button> 
-    <br/>
-
+ 
     <button onClick={()=>{
         output.addOutput(value/*, value*/);
     }}>Test Output</button>
@@ -143,4 +153,5 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
 
 
 export default SankeyViewSettings;
+export const InstanceSankeyRenderingSettingsSelectorVm = new SankeyRenderingSettingsSelectorVM();
 

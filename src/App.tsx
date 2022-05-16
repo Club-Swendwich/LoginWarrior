@@ -1,3 +1,4 @@
+import {InstanceSankeyRenderingSettingsSelectorVm} from "./SankeyDiagram/viewModel/settingsSelectorView"
 import { OutputList } from "./SankeyDiagram/viewModel/output"
 import  SankeyViewSettings  from "./SankeyDiagram/viewModel/settingsSelectorView"
 
@@ -101,7 +102,7 @@ function App() {
       </style>
       {/* eslint-disable */}
       <main className="text-gray-400 bg-gray-900 body-font">
-     <SankeyViewSettings output={OutputList}/* settings={SankeyRenderingSettingsSelector}*//> 
+     <SankeyViewSettings output={OutputList} settingsVM={InstanceSankeyRenderingSettingsSelectorVm}/> 
       <div ref={ref} className="renderArea"/>
       </main>
     </>
