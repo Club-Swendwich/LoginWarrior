@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { observer } from 'mobx-react';
-import React, { FormEventHandler, useState } from 'react';
+import React, { FormEventHandler } from 'react';
 import RenderingSettingsSelectorVM from './renderingsettingsvm';
 
 interface Props {
@@ -17,9 +17,9 @@ function View({ viewModel }: Props) {
     };
   };
 
-  const [x] = useState(viewModel.getWidth);
+  const x = viewModel.getWidth;
 
-  const [y] = useState(viewModel.getHeight);
+  const y = viewModel.getHeight;
 
   return (
     <form className="settingsSelector" onSubmit={onSubmit}>
