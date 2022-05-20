@@ -51,7 +51,8 @@
             "@typescript-eslint/no-use-before-define": "off",
             "@typescript-eslint/no-shadow": "off",
             "no-restricted-syntax": "off",
-            "max-classes-per-file": 0
+            "max-classes-per-file": 0,
+            "import/prefer-default-export": "off"
         }
     },
     "browserslist": {
