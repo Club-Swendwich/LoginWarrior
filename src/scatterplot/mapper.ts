@@ -13,7 +13,7 @@ interface MapFnAccumulator {
 }
 
 // TODO: implement map tests
-export default class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
+export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
   private mapFn : MapFnAccumulator;
 
   constructor(
