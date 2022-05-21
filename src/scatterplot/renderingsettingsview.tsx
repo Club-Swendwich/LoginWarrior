@@ -7,7 +7,7 @@ interface Props {
   viewModel: RenderingSettingsSelectorVM;
 }
 
-function View({ viewModel }: Props) {
+function SPRenderingSettingsView({ viewModel }: Props) {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     // eslint-disable-next-line no-param-reassign
@@ -34,4 +34,4 @@ function View({ viewModel }: Props) {
   );
 }
 
-export default observer(View);
+export default observer(SPRenderingSettingsView);

@@ -7,8 +7,8 @@ export default class SPRenderingSettingsSelectorVM {
   private model: SPRenderingSettingsSelector;
 
   public constructor(settings: SPRenderSettings = {
-    domainX: [10, 10],
-    domainY: [10, 10],
+    domainX: [5, 10],
+    domainY: [5, 10],
   }) {
     this.model = new SPRenderingSettingsSelector(settings);
   }
