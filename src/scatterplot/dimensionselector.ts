@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { DimensionSelector } from '../genericview/dimensionselector';
 import { DatasetSignature } from '../model/dataset';
 import { GraphableType, StorableType } from '../model/datatypes';
