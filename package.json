@@ -15,9 +15,9 @@
         "d3fc": "^15.2.4",
         "eslint-config-airbnb": "^19.0.4",
         "force-graph": "^1.42.9",
+        "jest": "^28.1.0",
         "mobx": "^6.5.0",
         "mobx-react": "^7.4.0",
-        "chroma-js": "^2.4.2",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-force-graph-2d": "^1.23.10",
@@ -35,7 +35,8 @@
     "jest": {
         "moduleNameMapper": {
             "d3": "<rootDir>/node_modules/d3/dist/d3.min.js"
-        }
+        },
+        "coverageReporters": ["json", "html"]
     },
     "eslintConfig": {
         "extends": [
