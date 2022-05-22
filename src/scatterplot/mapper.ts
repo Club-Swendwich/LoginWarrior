@@ -1,4 +1,4 @@
-import { Mapper } from '../genericview/mapper';
+import { Mapper, MapperError } from '../genericview/mapper';
 import { Dataset, DatasetEntry } from '../model/dataset';
 import { TransformationProvider } from '../model/transformer';
 import { SPDimensions } from './dimensions';
@@ -12,23 +12,35 @@ interface MapFnAccumulator {
   color: (e: DatasetEntry) => any;
 }
 
-// TODO: implement map tests
 export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
-  private mapFn : MapFnAccumulator;
+  private mapFn : MapFnAccumulator | MapperError;
 
   constructor(
     private transformer: TransformationProvider,
     settings: SPDimensions,
   ) {
-    this.mapFn = this.makeMapFn(settings);
+    try {
+      this.mapFn = this.makeMapFn(settings);
+    } catch (_) {
+      this.mapFn = MapperError.UnknownSignature;
+    }
   }
 
-  public map(d: Dataset): SPREnderablePoint[] {
-    return d.entries().map(this.apply);
+  public map(d: Dataset): SPREnderablePoint[] | MapperError {
+    if (this.mapFn === MapperError.UnknownSignature) return MapperError.UnknownSignature;
+    try {
+      return d.entries().map(this.apply, this);
+    } catch (_) {
+      return MapperError.UnknownField;
+    }
   }
 
   public updateMapLogic(ml: SPDimensions): void {
-    this.mapFn = this.makeMapFn(ml);
+    try {
+      this.mapFn = this.makeMapFn(ml);
+    } catch (_) {
+      this.mapFn = MapperError.UnknownSignature;
+    }
   }
 
   private makeMapFn(s: SPDimensions): MapFnAccumulator {
@@ -47,12 +59,13 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
   }
 
   private apply(d: DatasetEntry): SPREnderablePoint {
+    const mapper = this.mapFn as MapFnAccumulator;
     return {
-      x: this.mapFn.x(d),
-      y: this.mapFn.y(d),
-      size: this.mapFn.size(d),
-      shape: this.mapFn.shape(d),
-      color: this.mapFn.color(d),
+      x: mapper.x(d),
+      y: mapper.y(d),
+      size: mapper.size(d),
+      shape: mapper.shape(d),
+      color: mapper.color(d),
     };
   }
 }

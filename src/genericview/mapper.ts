@@ -9,5 +9,10 @@ import { Dataset } from '../model/dataset';
  */
 export interface Mapper<Dimensions, Renderable> {
   updateMapLogic(ml: Dimensions): void;
-  map(d: Dataset): Renderable
+  map(d: Dataset): Renderable | MapperError
+}
+
+export enum MapperError {
+  UnknownField,
+  UnknownSignature,
 }
