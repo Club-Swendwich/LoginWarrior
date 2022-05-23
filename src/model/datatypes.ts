@@ -7,6 +7,7 @@ export enum StorableType {
   Int,
   String,
   LoginType,
+  ApplicationType
 }
 
 /**
@@ -15,7 +16,8 @@ export enum StorableType {
 export type StorableTypeToRepr<T extends StorableType>
     = T extends StorableType.Int ? Int
       : T extends StorableType.String ? string
-        : LoginType;
+        : T extends StorableType.LoginType ? LoginType
+          : ApplicationType;
 
 /**
  * A type that can be plotted by a graph
@@ -24,7 +26,7 @@ export enum GraphableType {
   Int,
   Real,
   Color,
-  Shape,
+  Shape
 }
 
 /**
@@ -47,14 +49,29 @@ export enum LoginType {
   Logout,
 }
 
+export enum ApplicationType {
+  HRW,
+  ERM,
+  GTL,
+  HRC,
+  HR1,
+  HRM,
+  HUT,
+  DWH,
+  HTR,
+  GAW,
+  HSP,
+  TM3,
+  HCF,
+  MD7
+}
+
 // Sankey datatypes
 export type CustomNode = {
-  nodeId: number;
+  nodeId: string,
   name: string;
 }
 
 export type CustomLink = {
-  source: number;
-  target: number;
-  value: number;
+
 }

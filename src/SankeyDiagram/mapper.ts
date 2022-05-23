@@ -1,86 +1,65 @@
-import { GraphData, SNode, SLink } from "./renderer";
+import { GraphData } from "react-force-graph-2d";
 import { Mapper } from "../genericview/mapper";
 import { Dataset, DatasetEntry } from "../model/dataset";
-import { TransformationProvider, TransformationSignature } from "../model/transformer";
-import { CustomNode, CustomLink } from "../model/datatypes";
+import { TransformationProvider } from "../model/transformer";
+import { SKDimensions } from "./Dimensions/SKDimensions";
+import { SLink, SNode } from "./renderer";
 
-interface NodeMapperSettings {
-    nodeId: [string, TransformationSignature],
-    name: [string, TransformationSignature]
-}
-
-interface LinkMapperSettings {
-    source: [string, TransformationSignature],
-    target: [string, TransformationSignature],
-    value: [string, TransformationSignature]
-}
-
-export interface SKMapperSettings {
-    node: NodeMapperSettings,
-    link: LinkMapperSettings
-}
-
-interface MapFnAccumulator {
-    nodeId: (e: DatasetEntry) => any,
-    name: (e: DatasetEntry) => any,
-    source: (e: DatasetEntry) => any,
-    target: (e: DatasetEntry) => any,
-    value: (e: DatasetEntry) => any,
-}
-
-export class SKMapper implements Mapper<SKMapperSettings, GraphData> {
-    private mapFn: MapFnAccumulator;
+export class SKMapper implements Mapper<SKDimensions, GraphData> {
 
     public constructor(
-        private tranformer: TransformationProvider,
-        private settings: SKMapperSettings
-    ) {
-        this.mapFn = this.makeMapFn(settings);
-    }
-
-    updateMapLogic(ml: SKMapperSettings): void {
-        this.mapFn = this.makeMapFn(ml);
+        private transformer: TransformationProvider,
+        private dimensions: SKDimensions,
+    ) {}
+    
+    updateMapLogic(ml: SKDimensions): void {
+        this.dimensions = ml;
     }
     
     map(d: Dataset): GraphData {
-        const __nodes = d.entries().map(this.applyToNodes);
-        const __links = d.entries().map(this.applyToLinks);
+        const _nodes = this.createNodes();
+        const _links = this.createLinks(d);
 
         return {
-            nodes: __nodes,
-            links: __links
-        };
-    }
-    
-    private makeMapFn(s: SKMapperSettings): MapFnAccumulator {
-        const nodeIdM = this.tranformer.get(s.node.nodeId[1])!;
-        const nameM = this.tranformer.get(s.node.name[1])!;
-        
-        const sourceM = this.tranformer.get(s.link.source[1])!;
-        const targetM = this.tranformer.get(s.link.target[1])!;
-        const valueM = this.tranformer.get(s.link.value[1])!;
-
-        return {
-            nodeId: (d) => nodeIdM(d.get(s.node.nodeId[0])),
-            name: (d) => nameM(d.get(s.node.name[0])),
-            source: (d) => sourceM(d.get(s.link.source[0])),
-            target: (d) => targetM(d.get(s.link.target[0])),
-            value: (d) => valueM(d.get(s.link.value[0]))
+            nodes: _nodes,
+            links: _links
         };
     }
 
-    private applyToNodes(d: DatasetEntry): SNode {
-        return {
-            nodeId: this.mapFn.nodeId(d),
-            name: this.mapFn.name(d)
-        };
+    private createLinks(d : Dataset) {
+        const links: SLink[] = [];
+        this.dimensions.layers.forEach((layer, i) => {
+            d.entries().forEach(element => {
+                const source_result = layer.map(element);
+                const source_index: string = i + "," +  layer.outcomes.indexOf(source_result);
+                
+                const target_index = "";
+                if (this.dimensions.layers[i+1] != null) {
+                    const target_result = this.dimensions.layers[i+1].map(element);
+                    const target_index: string = (i+1) + "," + this.dimensions.layers[i+1].outcomes.indexOf(target_result); 
+                }
+
+                links.push({
+                    source: source_index,
+                    target: target_index,
+                    value: 1 // devo capire bene che cazzo mettere
+                });
+            });
+        });
+
+        return links;
     }
 
-    private applyToLinks(d: DatasetEntry): SLink {
-        return {
-            source: this.mapFn.source(d),
-            target: this.mapFn.target(d),
-            value: this.mapFn.value(d)
-        };
+    private createNodes() {
+        const nodes: SNode[] = [];
+        this.dimensions.layers.forEach((layer, i) => {
+            layer.outcomes.forEach((element, j) => {
+                nodes.push({
+                    nodeId: "" + i + j,
+                    name: `${layer.layerTitle} ${i}`
+                });        
+            });
+        });
+        return nodes;
     }
 }

@@ -8,12 +8,7 @@ import chroma from "chroma-js";
 
 export type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
 export type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
-
-export interface GraphData {
-    nodes: SNode[];
-    links: SLink[];
-}
-
+export type GraphData = d3Sankey.SankeyGraph<CustomNode, CustomLink>;
 export interface RenderSettings {
     width: number,
     height: number,
@@ -43,7 +38,11 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                     .attr("width", width)
                     .attr("height", height);
 
-        const graph = d3Sankey.sankey()
+        const graph = d3Sankey.sankey<GraphData, CustomNode, CustomLink>()
+                        .nodeId(
+                            (accessor: SNode) => accessor.nodeId
+                        )
+                        .nodeAlign(d3Sankey.sankeyLeft)
                         .nodeWidth(25)
                         .nodePadding(10)
                         .extent([[1, 1], [width - 1, height - 6]]);
@@ -89,7 +88,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
      */
 
     private createNodes(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, 
-                        graph: d3Sankey.SankeyLayout<d3Sankey.SankeyGraph<{}, {}>, {}, {}>, 
+                        graph: d3Sankey.SankeyLayout<GraphData, CustomNode, CustomLink>, 
                         link: d3.Selection<SVGPathElement, SLink, SVGGElement, unknown>): void {
         
         /**
@@ -110,25 +109,6 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                 .attr("width", function (d: any) { return d.x1 - d.x0; })
                 .attr("fill", function (d: any) { return color(d.name.replace(/ .*/, "")); })
                 .attr("stroke", "#000");
-   
-        svg.selectAll<SVGElement, unknown>(".node")
-        .call(
-            d3.drag<SVGElement, unknown>()
-            .subject(d => d)
-            .on('start', function () { this.parentNode?.appendChild(this); })
-            .on('drag', function (event, d: any) {
-                var rectY = +d3.select(this).attr("y");
-                var rectX = +d3.select(this).attr("x");
-                d.y0 = d.y0 + event.dy;
-                d.x1 = d.x1 + event.dx;
-                d.x0 = d.x0 + event.dx;
-                var yTranslate = d.y0 - rectY;
-                var xTranslate = d.x0 - rectX;
-                d3.select(this).attr('transform', "translate(" + (xTranslate) + "," + (yTranslate) + ")");
-                graph.update(_self.SKRenderableData);
-                link.attr('d', d3Sankey.sankeyLinkHorizontal());
-            })
-        );
     }
     
     /**
