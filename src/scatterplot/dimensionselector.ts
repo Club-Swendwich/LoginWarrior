@@ -19,6 +19,10 @@ export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
     private currentSelection: SPDimensions,
   ) { }
 
+  public set selectedDimensions(selection: SPDimensions) {
+    this.currentSelection = selection;
+  }
+
   public get selectedDimensions(): SPDimensions {
     return this.currentSelection;
   }
