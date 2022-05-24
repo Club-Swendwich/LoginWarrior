@@ -14,12 +14,12 @@ export default class SPRenderingSettingsSelectorVM {
   }
 
   @action
-  set updateSettings(settings: SPRenderSettings) {
+  updateSettings(settings: SPRenderSettings) {
     this.model = new SPRenderingSettingsSelector(settings);
   }
 
   @action
-  set setWidth(domain: [number, number]) {
+  setWidth(domain: [number, number]) {
     const tmpsettings = this.model.selectedSettings;
     const settings: SPRenderSettings = {
       domainX: domain,
@@ -29,7 +29,7 @@ export default class SPRenderingSettingsSelectorVM {
   }
 
   @action
-  set setHeight(domain: [number, number]) {
+  setHeight(domain: [number, number]) {
     const tmpsettings = this.model.selectedSettings;
     const settings: SPRenderSettings = {
       domainX: tmpsettings.domainX,
