@@ -5,7 +5,7 @@ import { StorableType } from "../../model/datatypes";
  * interface that stores the Sankey Diagram dimensions
  */
 export interface SKDimensions {
-    layers: [string, Layer<any>];
+    layers: [string, Layer<any>][];
 }
 
 export interface Layer<T> {
