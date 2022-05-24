@@ -8,22 +8,19 @@ export interface SKDimensions {
     layers: Layer<StorableType, DatasetEntry>[];
 }
 
-export interface Layer<T, K> {
-    layerTitle: string,
+export interface Layer<T> {
     outcomes: T[];
-    map: (k: K) => T;
+    map: (k: any) => T;
 }
 
 /*
 
 const succesLayer = {
-    layerTitle: "Login type"
     outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout]
     map: (k: LoginType) => k
 };
 
 const isLogout = {
-    layerTitle: "Check logout"
     oucomes: [true, false],
     map: (k: LoginType) => (k == LoginType.Logout)
 };
