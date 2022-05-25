@@ -32,7 +32,6 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     render(ref: MutableRefObject<HTMLDivElement>): void {
         const height = this.settings.height;
         const width = this.settings.width;
-        
         const svg = d3.select(ref.current)
                     .append("svg")
                     .attr("width", width)

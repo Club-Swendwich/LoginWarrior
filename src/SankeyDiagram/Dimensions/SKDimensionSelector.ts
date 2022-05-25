@@ -1,12 +1,8 @@
-/*import { DimensionSelector } from "../../genericview/dimensionselector";
+import { DimensionSelector } from "../../genericview/dimensionselector";
 import { DatasetSignature } from "../../model/dataset";
-import { GraphableType, StorableType } from "../../model/datatypes";
-import { TransformationQuerryable, TransformationSignature } from "../../model/transformer";
+import { GraphableType, StorableType, SankeyLayer, LoginType } from "../../model/datatypes";
+import { TransformationQuerryable, TransformationProvider, TransformationSignature, Transformer } from "../../model/transformer";
 import { SKDimensions } from "./SKDimensions";
-
-interface DimensionResult<T> {
-    readonly layers: T;
-}
 
 export class SkDimensionSelector implements DimensionSelector<SKDimensions> {
     
@@ -19,47 +15,52 @@ export class SkDimensionSelector implements DimensionSelector<SKDimensions> {
     get selectedDimensions(): SKDimensions {
         return this.currentSelection;
     }
-
-    public availableFields(): DimensionResult<Set<[string, StorableType]>> {
-        return {
-            layers: this.availableFieldsFor(GraphableType.Forwarder)
-        };
-    }
-
-    private availableFieldsFor(type: GraphableType): Set<[string, StorableType]> {
-        const _fileds = this.queryable.compatibleStorableTypes(type);
-        return new Set(
-            Array.from(this.signature).filter(([,t]) => _fileds.includes(t))
-        ); 
-    }
-
-    public availableMappers(): DimensionResult<Set<TransformationSignature>> {
-        return {
-            layers: this.availableMappersFor(this.currentSelection.layers, GraphableType.Forwarder)
-        };
-    }
-
-    private availableMappersFor(selectedField: Set<[StorableType, Forwarder]>, 
-        toReach: GraphableType) : Set<TransformationSignature> {
-        const field: Array<StorableType> = [];
+    
+    public getAvailableLayersAtIndex(i: number): Set<TransformationSignature> {
+        const field = Array.from(this.signature)
+            .find(([n]) => n === this.currentSelection.layers[i][0]);
         
-        for (let tuple of selectedField)
-            field.push(tuple[0]);
-        
-        if (field === undefined)
+        if (field == undefined) {
             throw new Error('Cannot find the selected field in the signature');
-
-        const name = this.queryable.compatibleTransformers(field[0], toReach);
-        const result: Set<TransformationSignature> = new Set();
-        let i = 0;
-        for (let currentName of name) {
-            result.add({
-                from: field[i],
-                to: toReach,
-                identifier: currentName
-            });
-            i++;
         }
-        return result;
+
+        const fieldType = field[1];
+        const name = this.queryable.compatibleTransformers(fieldType, GraphableType.SankeyLayer);
+        return new Set(
+            Array.from(name).map((currentName) => ({
+                identifier: currentName,
+                from: fieldType,
+                to: GraphableType.SankeyLayer
+            }))
+        );
     }
-}*/
+    
+    get getAvailableFieldsAtIndex() : Set<[string, StorableType]> {
+        const compatibleStorables = this.queryable.compatibleStorableTypes(GraphableType.SankeyLayer);
+        return new Set(
+            Array.from(this.signature).filter(([, t]) => compatibleStorables.includes(t))
+        );
+    }
+    
+    get layerNumber(): number {
+        return this.currentSelection.layers.length;
+    } 
+    
+    public getLayerAtIndex(i: number) : SankeyLayer<any>{
+        return this.currentSelection.layers[i][1];
+    }
+    
+    public setLayerAtIndex(i: number, l: SankeyLayer<any>) : void {
+        this.currentSelection.layers[i][1] = l;
+    }
+
+    public setFieldAtIndex(i: number, s: string) : [string, TransformationSignature] {
+        this.currentSelection.layers[i][0] = s;
+        const [compatible] = this.getAvailableLayersAtIndex(i);
+        return [s, compatible];
+    }
+
+    public getFieldAtIndex(i: number): string {
+        return this.currentSelection.layers[i][0];
+    }
+}

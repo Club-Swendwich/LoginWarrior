@@ -1,5 +1,3 @@
-import { SankeyLink, SankeyNode } from "d3-sankey";
-
 /**
  * The enum that rappresents a type that can be stored in the dataset
  */
@@ -26,7 +24,8 @@ export enum GraphableType {
   Int,
   Real,
   Color,
-  Shape
+  Shape,
+  SankeyLayer
 }
 
 /**
@@ -36,12 +35,18 @@ export type GraphableTypeToRepr<T extends GraphableType>
     = T extends GraphableType.Int ? Int
       : T extends GraphableType.Real ? Real
         : T extends GraphableType.Color ? Color
-          : Shape;
+          : T extends GraphableType.Shape ? Shape
+            : SankeyLayer<any>;
 
 export type Int = number;
 export type Real = number;
 export type Shape = 'star' | 'triangle' | 'cross' | 'square';
 export type Color = [number, number, number, number];
+
+export interface SankeyLayer<T> {
+  outcomes: T[];
+  map: (k: any) => T;
+};
 
 export enum LoginType {
   LoginSuccess,
@@ -72,6 +77,4 @@ export type CustomNode = {
   name: string;
 }
 
-export type CustomLink = {
-
-}
+export type CustomLink = {}
