@@ -30,13 +30,13 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         const links: SLink[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             d.entries().forEach(element => {
-                const source_result = layer.map(element);
-                const source_index: string = i + "," +  layer.outcomes.indexOf(source_result);
+                const source_result = layer.map(element.get(layer[0]));
+                const source_index: string = i + "," +  layer[1].outcomes.indexOf(source_result);
                 
                 const target_index = "";
                 if (this.dimensions.layers[i+1] != null) {
-                    const target_result = this.dimensions.layers[i+1].map(element);
-                    const target_index: string = (i+1) + "," + this.dimensions.layers[i+1].outcomes.indexOf(target_result); 
+                    const target_result = this.dimensions.layers[i+1].map(element.get(layer[0]));
+                    const target_index: string = (i+1) + "," + this.dimensions.layers[i+1][1].outcomes.indexOf(target_result); 
                 }
 
                 links.push({
@@ -53,10 +53,10 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createNodes() {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
-            layer.outcomes.forEach((element, j) => {
+            layer[1].outcomes.forEach((element, j) => {
                 nodes.push({
                     nodeId: "" + i + j,
-                    name: `${layer.layerTitle} ${i}`
+                    name: `nodox`
                 });        
             });
         });
