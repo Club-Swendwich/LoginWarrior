@@ -1,4 +1,4 @@
-import {observable, autorun, action, computed} from 'mobx'
+import {observable, autorun, action, computed, makeAutoObservable} from 'mobx'
 import { observer } from "mobx-react-lite"
 import { toUnicode } from 'punycode'
 import React , { useState } from 'react'
@@ -6,28 +6,32 @@ import SankeyRenderingSettingsSelector from "../sankRenderingSettingsSelector"
 import SankeySettings from "../sankRendererSettings"
 import { OutputListImpl } from "./output"
 import { Domain } from 'domain'
+import App from "../../App"
 
 interface SettingsProp { //Mi serve per mettere apposto
     output: OutputListImpl;
     settingsVM: SankeyRenderingSettingsSelectorVM;
 }
 
-export class SankeyRenderingSettingsSelectorVM {
+export default class SankeyRenderingSettingsSelectorVM {
     @observable
     private model: SankeyRenderingSettingsSelector;
   
     public constructor(settings: SankeySettings = {
-        width: 200,
-        height: 100,
-        nodewidth: 2,
-        opacity: 0.2
+      width: 400,
+      height: 200,
+      nodewidth: 20,
+      opacity: 0.4
     }) {
+      makeAutoObservable(this);
       this.model = new SankeyRenderingSettingsSelector(settings);
     }
-  
+
+
     @action
     set updateSettings(settings: SankeySettings) {
       this.model = new SankeyRenderingSettingsSelector(settings);
+      console.log("La altezza ora è "+ this.getHeight);
     }
   
     @action/*("update larghezza")*/
@@ -40,6 +44,7 @@ export class SankeyRenderingSettingsSelectorVM {
         opacity: domain
       };
       this.model = new SankeyRenderingSettingsSelector(settings);
+      //const InstanceSankeyRenderingSettingsSelectorVm = new SankeyRenderingSettingsSelectorVM(settings);
     }
     
     /**
@@ -83,7 +88,7 @@ export class SankeyRenderingSettingsSelectorVM {
     }
   }
 
-  
+/*
 //Component è un observer del componente output
 export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,settingsVM}) => {
 
@@ -109,7 +114,7 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
     }}>Cambia X</button>
     <br/>
 
-    */
+    
 
     // SLIDER X
     // FORM Y
@@ -127,11 +132,17 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
             }
         }
     }/>
-    <button onClick={()=>{
-        output.addOutput(value/*, value*/);
-    }}>Test Output</button>
 
-
+  <input type="range" value={value} min="1" max="100" onChange={
+        (event) => {
+            settingsVM.updateSettings = {
+              height: parseFloat(value),
+              width: settingsVM.getWidth,
+              nodewidth: settingsVM.getNodeWidth,
+              opacity: settingsVM.getOpacity
+            }
+        }
+    }/>
     <input value={value} onChange={
         (event) => {
             setValue(event.target.value);
@@ -139,7 +150,7 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
     } type= "text"/>
  
     <button onClick={()=>{
-        output.addOutput(value/*, value*/);
+        output.addOutput(value/*, value);
     }}>Test Output</button>
 
     <ul>
@@ -150,8 +161,9 @@ export const SankeyViewSettings: React.FC<SettingsProp> = observer(({output,sett
     </ul>
     </div>
 });
+*/
 
+//export default SankeyViewSettings;
 
-export default SankeyViewSettings;
-export const InstanceSankeyRenderingSettingsSelectorVm = new SankeyRenderingSettingsSelectorVM();
+export const InstanceSankeyRenderingSettingsSelectorVm = new SankeyRenderingSettingsSelectorVM()
 
