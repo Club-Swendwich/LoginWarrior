@@ -4,7 +4,6 @@
 
 import { FormEventHandler, useState } from 'react';
 import { observer } from 'mobx-react';
-import { StorableType } from '../model/datatypes';
 import { TransformationSignature } from '../model/transformer';
 import {
   ColorSelector, IntSelector, RealSelector, ShapeSelector,
@@ -25,17 +24,28 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const shapeMaps = viewmodel.mapShape;
   const colorMaps = viewmodel.mapColor;
 
-  const xFieldsNames = getNames(viewmodel.fieldX);
+  const xFieldsNames: string[] = Array.from(viewmodel.fieldX
+    .forEach((val) => xFieldsNames.push(val[0]))!);
+  const yFieldsNames: string[] = Array.from(viewmodel.fieldY
+    .forEach((val) => xFieldsNames.push(val[0]))!);
+  const sizeFieldsNames: string[] = Array.from(viewmodel.fieldX
+    .forEach((val) => xFieldsNames.push(val[0]))!);
+  const shapeFieldsNames: string[] = Array.from(viewmodel.fieldX
+    .forEach((val) => xFieldsNames.push(val[0]))!);
+  const colorFieldsNames: string[] = Array.from(viewmodel.fieldX
+    .forEach((val) => xFieldsNames.push(val[0]))!);
+
+  /*   const xFieldsNames = getNames(viewmodel.fieldX);
   const yFieldsNames = getNames(viewmodel.fieldY);
   const sizeFieldsNames = getNames(viewmodel.fieldSize);
   const shapeFieldsNames = getNames(viewmodel.fieldShape);
-  const colorFieldsNames = getNames(viewmodel.fieldColor);
+  const colorFieldsNames = getNames(viewmodel.fieldColor); */
 
-  function getNames(names: Set<[string, StorableType]>): string[] {
+  /* function getNames(names: Set<[string, StorableType]>): string[] {
     const fields: string[] = [];
     names.forEach((val) => fields.push(val[0]));
     return fields;
-  }
+  } */
 
   const [xField, setXField] = useState<string>();
   const [yFields, setYField] = useState<string>();
