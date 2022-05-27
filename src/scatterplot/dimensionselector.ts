@@ -4,7 +4,7 @@ import { GraphableType, StorableType } from '../model/datatypes';
 import { TransformationQuerryable, TransformationSignature } from '../model/transformer';
 import { SPDimensions } from './dimensions';
 
-interface DimensionResult<T> {
+export interface DimensionResult<T> {
   readonly x: T,
   readonly y: T,
   readonly size: T,
