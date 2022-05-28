@@ -20,7 +20,7 @@ describe('SPRenderingSettingsSelectorVM', () => {
       // @ts-expect-error mock
       current,
     );
-    d.setHeight = [12, 12];
+    d.setHeight([12, 12]);
     expect(d.getHeight).toEqual([12, 12]);
     expect(d.getWidth).toEqual(current.domainX);
     expect(d.getSettings).toEqual({ domainX: current.domainX, domainY: [12, 12] });
@@ -35,7 +35,7 @@ describe('SPRenderingSettingsSelectorVM', () => {
       // @ts-expect-error mock
       current,
     );
-    d.setWidth = [12, 12];
+    d.setWidth([12, 12]);
     expect(d.getWidth).toEqual([12, 12]);
     expect(d.getHeight).toEqual(current.domainY);
     expect(d.getSettings).toEqual({ domainX: [12, 12], domainY: current.domainY });
@@ -54,7 +54,7 @@ describe('SPRenderingSettingsSelectorVM', () => {
       domainX: [20, 20],
       domainY: [20, 20],
     };
-    d.updateSettings = change;
+    d.updateSettings(change);
     expect(d.getSettings).toEqual(change);
     expect(d.getWidth).toEqual(change.domainX);
     expect(d.getHeight).toEqual(change.domainY);
