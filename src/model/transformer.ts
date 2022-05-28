@@ -52,11 +52,11 @@ export interface TransformationProvider {
 }
 
 export class Transformer
-implements TransformationQuerryable, TransformationProvider {
+  implements TransformationQuerryable, TransformationProvider {
   private constructor(
-    private transformers: Map<GraphableType, 
-    Map<StorableType, 
-    Map<TransformationIdentifier, Transformation>>>,
+    private transformers: Map<GraphableType,
+      Map<StorableType,
+        Map<TransformationIdentifier, Transformation>>>,
   ) { }
 
   /**

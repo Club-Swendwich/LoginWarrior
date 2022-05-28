@@ -1,8 +1,9 @@
-import { SankeyLayer, StorableType } from "../../model/datatypes";
+import { TransformationSignature } from "../../model/transformer";
+
 
 /**
  * interface that stores the Sankey Diagram dimensions
  */
 export interface SKDimensions {
-    layers: [string, SankeyLayer<any>][];
+    layers: [string, TransformationSignature][];
 }
