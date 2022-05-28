@@ -9,7 +9,7 @@ import {
   ColorSelector, IntSelector, RealSelector, ShapeSelector,
 }
   from './SPdimselectors';
-import { SPDimensionSelectorVM } from './dimensionselectiorvm';
+import { SPDimensionSelectorVM } from './dimensionselectorvm';
 
 export interface SPDimensionSelectorViewProp {
   viewmodel: SPDimensionSelectorVM

@@ -1,13 +1,25 @@
 import { action, computed, observable } from 'mobx';
 import { SPDimensionSelector } from './dimensionselector';
-import { TransformationSignature } from '../model/transformer';
+import { TransformationSignature, TransformationQuerryable } from '../model/transformer';
 import { StorableType } from '../model/datatypes';
+import { SPDimensions } from './dimensions';
+import { DatasetSignature } from '../model/dataset';
 
 export class SPDimensionSelectorVM {
+  @observable
+  private selector: SPDimensionSelector;
+
   constructor(
-    @observable
-    private readonly selector: SPDimensionSelector,
-  ) { }
+    queryable: TransformationQuerryable,
+    signature: DatasetSignature,
+    currentSelection: SPDimensions,
+  ) {
+    this.selector = new SPDimensionSelector(
+      queryable,
+      signature,
+      currentSelection,
+    );
+  }
 
   @action updateXAxisField(newField: string) {
     const selection = this.selector.selectedDimensions;

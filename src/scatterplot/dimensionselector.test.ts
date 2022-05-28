@@ -85,7 +85,7 @@ describe('SPDimensionSelector', () => {
     });
   });
   it('should return the correct available mapping functions', () => {
-    const d = new SPDimensionSelector(
+    const d = new SPDimensionumnSelector(
       // @ts-expect-error mock
       { compatibleTransformers: () => new Set(['a']) },
       new Set([['a', StorableType.Int]]),
