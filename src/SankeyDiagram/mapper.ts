@@ -28,7 +28,13 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         };
     }
 
-    private createLinks(d: Dataset) {
+    /**
+     * Function that cicle through layers and entries in order to create new links
+     * setting their source and target attributes in the right way
+     * @param d object rappresenting the dataset 
+     * @returns an array of new created links
+     */
+    private createLinks(d: Dataset) : SLink[] {
         const links: SLink[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             d.entries().forEach(element => {
@@ -52,7 +58,12 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         return links;
     }
 
-    private createNodes() {
+    /**
+     * Function that cicles through layers and for every layer cicles through his outcomes
+     * in order to generate for every outcome of every layer the corresponding nodes.
+     * @returns an array of new created nodes
+     */
+    private createNodes() : SNode[] {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
