@@ -13,11 +13,12 @@ import { DatasetSignature } from './model/dataset';
 import { TransformationSignature, TransformationQuerryable } from './model/transformer';
 import { SPDimensions } from './scatterplot/dimensions';
 import { SPMapper } from './scatterplot/mapper';
+import SPViewComposer from './scatterplot/spviewcomposer';
 
 function App() {
   const ref = useRef<HTMLDivElement>(null);
 
-  const data = [
+  /* const data = [
     {
       id: 10,
       timestamp: 1593172218,
@@ -168,26 +169,29 @@ function App() {
     const renderernew = new SPRenderer(points, renderSettingsVM.model.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
   }
+ */
 
+  const datasetSignature: Set<[string, StorableType]> = new Set(
+    [
+      ['id', StorableType.Int],
+      ['timestamp', StorableType.Int],
+      ['loginOutcome', StorableType.LoginType],
+      ['application', StorableType.String],
+      ['ip', StorableType.String],
+    ],
+  );
+  const spDimensions: SPDimensions = {
+    x: ['timestamp', { identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Real }],
+    y: ['loginOutcome', { identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Real }],
+    size: ['application', { identifier: 'application', from: StorableType.String, to: GraphableType.Int }],
+    shape: ['id', { identifier: 'id', from: StorableType.Int, to: GraphableType.Shape }],
+    color: ['ip', { identifier: 'ip', from: StorableType.String, to: GraphableType.Color }],
+  };
   return (
     <>
-      <style>
-        {`
-              .renderArea {
-                  height: 400px;
-              }
-          `}
-      </style>
-      {/* eslint-disable */}
-        <div ref={ref} className="renderArea" id = "render"/>
-				<SPDimensionSelectorView viewmodel={}></SPDimensionSelectorView>
-        <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
-        <button onClick={reload}>
-          Click to reload!
-        </button>
-      </>
+      <div>hello world</div>
+      <SPViewComposer datasetSignature={datasetSignature} spDimensions={spDimensions} />
+    </>
   );
-  
-  }
-  
-  export default App;
+}
+export default App;

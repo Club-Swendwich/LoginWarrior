@@ -1,4 +1,4 @@
-import { SPDimensionSelectorVM } from './dimensionselectorvm';
+/* import { SPDimensionSelectorVM } from './dimensionselectorvm';
 
 const mockStruct = {
   x: 1,
@@ -180,3 +180,4 @@ describe('DimensionSelectorVM', () => {
     expect(m.mapSize).toEqual(1);
   });
 });
+ */
