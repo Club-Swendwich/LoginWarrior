@@ -2,7 +2,7 @@ import { GraphData } from "react-force-graph-2d";
 import { Mapper } from "../genericview/mapper";
 import { Dataset, DatasetEntry } from "../model/dataset";
 import { SankeyLayer } from "../model/datatypes";
-import { TransformationProvider } from "../model/transformer";
+import { TransformationProvider, TransformationSignature } from "../model/transformer";
 import { SKDimensions } from "./Dimensions/SKDimensions";
 import { SLink, SNode } from "./renderer";
 
@@ -14,11 +14,11 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         private dimensions: SKDimensions,
     ) { }
 
-    updateMapLogic(ml: SKDimensions): void {
+    public updateMapLogic(ml: SKDimensions): void {
         this.dimensions = ml;
     }
 
-    map(d: Dataset): GraphData {
+    public map(d: Dataset): GraphData {
         const _nodes = this.createNodes();
         const _links = this.createLinks(d);
 
@@ -29,27 +29,55 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     }
 
     /**
-     * Function that cicle through layers and entries in order to create new links
+     * Function that from a transformation signature return the corresponding SankeyLayer
+     * @param s the transformation signature 
+     * @returns a transformation rappresenting a SankeyLayer
+     */
+    private signatureToLayer(s: TransformationSignature): any {
+        return this.transformer.get(s);
+    }
+
+    /**
+     * Function that calulates the source of the link to push
+     * @param layer the layer 
+     * @param element the dataset entry 
+     * @returns a string rappresenting the source, where the first number rappresents the layer 
+     * and the second rappresents the node
+     */
+    private calculateSource(layer: [string, TransformationSignature], element: DatasetEntry): string {
+        const source_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
+        return "," + this.signatureToLayer(layer[1]).outcomes.indexOf(source_result);
+    }   
+
+    /**
+     * Function that calculates the target of the link to push
+     * @param i index of the layer
+     * @param layer 
+     * @param element the dataset entry
+     * @returns a string that rappresents the target, where the first number rappresents the layer
+     * and the second rappresents the node
+     */
+    private calculateTarget(i: number, layer: [string, TransformationSignature], element: DatasetEntry): string {
+        if (layer != null) {
+            const target_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
+            return (i + 1) + "," + this.signatureToLayer(layer[1]).outcomes.indexOf(target_result);
+        }
+        return "";
+    }
+
+    /**
+     * Function that cicle through layers and entries in order to create new links and
      * setting their source and target attributes in the right way
      * @param d object rappresenting the dataset 
      * @returns an array of new created links
      */
-    private createLinks(d: Dataset) : SLink[] {
+    private createLinks(d: Dataset): SLink[] {
         const links: SLink[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             d.entries().forEach(element => {
-                const source_result = layer.map(element.get(layer[0]));
-                const source_index: string = i + "," + this.transformer.get(layer[1]).outcomes.indexOf(source_result);
-
-                let target_index = "";
-                if (this.dimensions.layers[i + 1] != null) {
-                    const target_result = this.dimensions.layers[i + 1].map(element.get(layer[0]));
-                    target_index = (i + 1) + "," + this.transformer.get(this.dimensions.layers[i + 1][1]).outcomes.indexOf(target_result);
-                }
-
                 links.push({
-                    source: source_index,
-                    target: target_index,
+                    source: i + this.calculateSource(layer, element),
+                    target: this.calculateTarget(i, this.dimensions.layers[i+1], element),
                     value: 1 // devo capire bene che cosa mettere
                 });
             });
@@ -63,13 +91,13 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
      * in order to generate for every outcome of every layer the corresponding nodes.
      * @returns an array of new created nodes
      */
-    private createNodes() : SNode[] {
+    private createNodes(): SNode[] {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
             result.outcomes.forEach((element, j) => {
                 nodes.push({
-                    nodeId: "" + i + j,
+                    nodeId: i + "," + j,
                     name: `nodox`
                 });
             });
