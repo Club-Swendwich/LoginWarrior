@@ -6,6 +6,8 @@ describe("SKRenderer", () => {
             {
                 width: 100,
                 height: 100,
+                nodewidth: 20,
+                opacity: 0.2
             },
             // @ts-expect-error We aren't mocking the entire object
             {}
