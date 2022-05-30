@@ -1,5 +1,3 @@
-import { SankeyLink, SankeyNode } from "d3-sankey";
-
 /**
  * The enum that rappresents a type that can be stored in the dataset
  */
@@ -7,6 +5,7 @@ export enum StorableType {
   Int,
   String,
   LoginType,
+  ApplicationType
 }
 
 /**
@@ -15,7 +14,8 @@ export enum StorableType {
 export type StorableTypeToRepr<T extends StorableType>
     = T extends StorableType.Int ? Int
       : T extends StorableType.String ? string
-        : LoginType;
+        : T extends StorableType.LoginType ? LoginType
+          : ApplicationType;
 
 /**
  * A type that can be plotted by a graph
@@ -25,6 +25,7 @@ export enum GraphableType {
   Real,
   Color,
   Shape,
+  SankeyLayer
 }
 
 /**
@@ -34,12 +35,18 @@ export type GraphableTypeToRepr<T extends GraphableType>
     = T extends GraphableType.Int ? Int
       : T extends GraphableType.Real ? Real
         : T extends GraphableType.Color ? Color
-          : Shape;
+          : T extends GraphableType.Shape ? Shape
+            : SankeyLayer<any>;
 
 export type Int = number;
 export type Real = number;
 export type Shape = 'star' | 'triangle' | 'cross' | 'square';
 export type Color = [number, number, number, number];
+
+export interface SankeyLayer<T> {
+  outcomes: T[];
+  map: (k: any) => T;
+};
 
 export enum LoginType {
   LoginSuccess = 1,
@@ -47,14 +54,27 @@ export enum LoginType {
   Logout,
 }
 
+export enum ApplicationType {
+  HRW,
+  ERM,
+  GTL,
+  HRC,
+  HR1,
+  HRM,
+  HUT,
+  DWH,
+  HTR,
+  GAW,
+  HSP,
+  TM3,
+  HCF,
+  MD7
+}
+
 // Sankey datatypes
 export type CustomNode = {
-  nodeId: number;
+  nodeId: string,
   name: string;
 }
 
-export type CustomLink = {
-  source: number;
-  target: number;
-  value: number;
-}
+export type CustomLink = {}

@@ -102,6 +102,9 @@ export type DatasetValue = {
 } | {
   type: StorableType.LoginType
   value: StorableTypeToRepr<StorableType.LoginType>
+} | {
+  type: StorableType.ApplicationType
+  value: StorableTypeToRepr<StorableType.ApplicationType>
 };
 
 /**
