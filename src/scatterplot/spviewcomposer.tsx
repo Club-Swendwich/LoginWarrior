@@ -292,6 +292,7 @@ export const SPViewComposer = (
 
   return (
     <>
+      <h1>ScatterPlot</h1>
       <style>
         {`
               .renderArea {
@@ -301,11 +302,19 @@ export const SPViewComposer = (
       </style>
       {/* eslint-disable */}
         <div ref={ref} className="renderArea" id = "render"/>
-        <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
-        <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
-        <button onClick={reload}>
-          Click to reload!
-        </button>
+        <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
+          <div style={{display: 'inline-block'}}>
+            <h2>Selezione dimensioni:</h2>
+            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
+          </div>
+          <div style={{display: 'inline-block'}}>
+            <h2>Selezione dominio:</h2>
+            <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
+            <button onClick={reload}>
+              Click to reload!
+            </button>
+          </div>
+        </div>
       </>
   );
 }

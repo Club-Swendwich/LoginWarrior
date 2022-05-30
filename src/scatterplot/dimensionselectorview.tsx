@@ -10,6 +10,7 @@ import {
 }
   from './SPdimselectors';
 import { SPDimensionSelectorVM } from './dimensionselectorvm';
+import { StorableType } from '../model/datatypes';
 
 export interface SPDimensionSelectorViewProp {
   viewmodel: SPDimensionSelectorVM
@@ -24,7 +25,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const shapeMaps = viewmodel.mapShape;
   const colorMaps = viewmodel.mapColor;
 
-  const xFieldsNames: string[] = Array.from(viewmodel.fieldX
+  /*   const xFieldsNames: string[] = Array.from(viewmodel.fieldX
     .forEach((val) => xFieldsNames.push(val[0]))!);
   const yFieldsNames: string[] = Array.from(viewmodel.fieldY
     .forEach((val) => xFieldsNames.push(val[0]))!);
@@ -33,19 +34,19 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const shapeFieldsNames: string[] = Array.from(viewmodel.fieldX
     .forEach((val) => xFieldsNames.push(val[0]))!);
   const colorFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
+    .forEach((val) => xFieldsNames.push(val[0]))!); */
 
-  /*   const xFieldsNames = getNames(viewmodel.fieldX);
+  const xFieldsNames = getNames(viewmodel.fieldX);
   const yFieldsNames = getNames(viewmodel.fieldY);
   const sizeFieldsNames = getNames(viewmodel.fieldSize);
   const shapeFieldsNames = getNames(viewmodel.fieldShape);
-  const colorFieldsNames = getNames(viewmodel.fieldColor); */
+  const colorFieldsNames = getNames(viewmodel.fieldColor);
 
-  /* function getNames(names: Set<[string, StorableType]>): string[] {
+  function getNames(names: Set<[string, StorableType]>): string[] {
     const fields: string[] = [];
     names.forEach((val) => fields.push(val[0]));
     return fields;
-  } */
+  }
 
   const [xField, setXField] = useState<string>();
   const [yFields, setYField] = useState<string>();
@@ -72,59 +73,70 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     viewmodel.updateShapeMap(shapeMap!);
     viewmodel.updateColorMap(colorMap!);
   };
-
+  console.log(xField);
+  console.log(xMap);
   return (
     <form className="dimensionSelector" onSubmit={onSubmit}>
-      <label htmlFor="xaxis" id="xaxis">X Axis:</label>
-      <RealSelector
-        name="axisx"
-        set={{
-          setField: setXField,
-          setMap: setXMap,
-        }}
-        fields={xFieldsNames}
-        maps={xMaps}
-      />
-      <label htmlFor="yaxis" id="yaxis">Y Axis:</label>
-      <RealSelector
-        name="axisy"
-        set={{
-          setField: setYField,
-          setMap: setYMap,
-        }}
-        fields={yFieldsNames}
-        maps={yMaps}
-      />
+      <div style={{ paddingBottom: 24 }}>
+        <label htmlFor="xaxis" id="xaxis">X Axis:</label>
+        <RealSelector
+          name="axisx"
+          set={{
+            setField: setXField,
+            setMap: setXMap,
+          }}
+          fields={xFieldsNames}
+          maps={xMaps}
+        />
+      </div>
+      <div style={{ paddingBottom: 24 }}>
+        <label htmlFor="yaxis" id="yaxis">Y Axis:</label>
+        <RealSelector
+          name="axisy"
+          set={{
+            setField: setYField,
+            setMap: setYMap,
+          }}
+          fields={yFieldsNames}
+          maps={yMaps}
+        />
+      </div>
       <label htmlFor="size" id="size">Size:</label>
-      <IntSelector
-        name="size"
-        set={{
-          setField: setSizeField,
-          setMap: setSizeMap,
-        }}
-        fields={sizeFieldsNames}
-        maps={sizeMaps}
-      />
+      <div style={{ paddingBottom: 24 }}>
+        <IntSelector
+          name="size"
+          set={{
+            setField: setSizeField,
+            setMap: setSizeMap,
+          }}
+          fields={sizeFieldsNames}
+          maps={sizeMaps}
+        />
+      </div>
       <label htmlFor="shape" id="shape">Shape:</label>
-      <ShapeSelector
-        name="shape"
-        set={{
-          setField: setShapeField,
-          setMap: setShapeMap,
-        }}
-        fields={shapeFieldsNames}
-        maps={shapeMaps}
-      />
+      <div style={{ paddingBottom: 24 }}>
+        <ShapeSelector
+          name="shape"
+          set={{
+            setField: setShapeField,
+            setMap: setShapeMap,
+          }}
+          fields={shapeFieldsNames}
+          maps={shapeMaps}
+        />
+      </div>
       <label htmlFor="color" id="color">Color:</label>
-      <ColorSelector
-        name="color"
-        set={{
-          setField: setColorField,
-          setMap: setColorMap,
-        }}
-        fields={colorFieldsNames}
-        maps={colorMaps}
-      />
+      <div style={{ paddingBottom: 24 }}>
+        <ColorSelector
+          name="color"
+          set={{
+            setField: setColorField,
+            setMap: setColorMap,
+          }}
+          fields={colorFieldsNames}
+          maps={colorMaps}
+        />
+      </div>
       <input type="submit" value="Applica dimensioni" />
     </form>
   );

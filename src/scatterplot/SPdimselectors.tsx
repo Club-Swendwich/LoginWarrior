@@ -39,7 +39,7 @@ export function Selector(prop: SelectorProp) {
       return literalInput;
     }
     set.setField(val);
-    ConverterOption();
+    //ConverterOption();
     return null;
   };
 
@@ -51,7 +51,7 @@ export function Selector(prop: SelectorProp) {
 
   function FieldOption() {
     return (
-      <select value={fields[0]} onChange={setFields}>
+      <select defaultValue={fields[0]} onChange={setFields}>
         {fields.map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
         <option key={`${name}-${LITERAL_VALUE}`} value={LITERAL_VALUE}>{LITERAL_VALUE}</option>
       </select>
@@ -77,7 +77,7 @@ export function Selector(prop: SelectorProp) {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <FieldOption />
       <ConverterOption />
     </div>
@@ -102,7 +102,7 @@ export function RealSelector(prop: FSelectorProp) {
         Component: ({ onChange, selected, keyV }) => (
           <input
             onChange={onChange}
-            value={selected}
+            defaultValue={selected}
             key={keyV}
             type="number"
             step="0.000001"
@@ -129,7 +129,7 @@ export function IntSelector(prop: FSelectorProp) {
         Component: ({ onChange, selected, keyV }) => (
           <input
             onChange={onChange}
-            value={selected}
+            defaultValue={selected}
             key={keyV}
             type="number"
             step="1"
@@ -156,7 +156,7 @@ export function ColorSelector(prop: FSelectorProp) {
         Component: ({ onChange, selected, keyV }) => (
           <input
             onChange={onChange}
-            value={selected}
+            defaultValue={selected}
             key={keyV}
             type="color"
           />
@@ -180,7 +180,7 @@ export function ShapeSelector(prop: FSelectorProp) {
       literal={{
         default: DEFAULT_SHAPE.toString(),
         Component: ({ onChange, selected }) => (
-          <select value={selected} onChange={onChange}>
+          <select defaultValue={selected} onChange={onChange}>
             <option key={`${name}-star`}>star</option>
           </select>
         ),

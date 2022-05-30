@@ -16,7 +16,7 @@ import { SPMapper } from './scatterplot/mapper';
 import SPViewComposer from './scatterplot/spviewcomposer';
 
 function App() {
-  const ref = useRef<HTMLDivElement>(null);
+  //const ref = useRef<HTMLDivElement>(null);
 
   /* const data = [
     {
@@ -188,10 +188,9 @@ function App() {
     color: ['ip', { identifier: 'ip', from: StorableType.String, to: GraphableType.Color }],
   };
   return (
-    <>
-      <div>hello world</div>
+    <div className="app">
       <SPViewComposer datasetSignature={datasetSignature} spDimensions={spDimensions} />
-    </>
+    </div>
   );
 }
 export default App;
