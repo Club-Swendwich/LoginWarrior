@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/function-component-definition */
@@ -37,8 +38,9 @@ export interface SPViewComposerProps {
 }
 
 export const SPViewComposer = (
-  prop: SPViewComposerProps,
+  prop : SPViewComposerProps,
 ) => {
+  const { datasetSignature, spDimensions } = prop;
   const ref = useRef<HTMLDivElement>(null);
 
   function hexToColor(hex: string): Color {
@@ -53,25 +55,17 @@ export const SPViewComposer = (
   transformer.add({ identifier: 'id', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
   transformer.add({ identifier: 'id', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
   transformer.add({ identifier: 'id', from: StorableType.Int, to: GraphableType.Color }, (a: number) : any => hexToColor(a.toString(16)));
-  transformer.add({ identifier: 'id', from: StorableType.Int, to: GraphableType.Shape }, (a: number) : any => 'star');
   transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
   transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
-  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Color }, (a: number) : any => hexToColor(a.toString(16)));
-  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Shape }, (a: number) : any => 'star');
-  transformer.add({ identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Int }, (a: LoginType) : any => 1);
-  transformer.add({ identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Real }, (a: LoginType) : any => 1);
   transformer.add({ identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Color }, (a: LoginType) : any => hexToColor(a.toString(16)));
   transformer.add({ identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Shape }, (a: LoginType) : any => 'star');
-  transformer.add({ identifier: 'application', from: StorableType.String, to: GraphableType.Int }, (a: string) : any => 0);
-  transformer.add({ identifier: 'application', from: StorableType.String, to: GraphableType.Real }, (a: string) : any => 0);
   transformer.add({ identifier: 'application', from: StorableType.String, to: GraphableType.Color }, (a: string) : any => hexToColor(a));
   transformer.add({ identifier: 'application', from: StorableType.String, to: GraphableType.Shape }, (a: string) : any => 'star');
   transformer.add({ identifier: 'ip', from: StorableType.String, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('.', ''), 10));
   transformer.add({ identifier: 'ip', from: StorableType.String, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('.', ''), 10));
   transformer.add({ identifier: 'ip', from: StorableType.String, to: GraphableType.Color }, (a: string) : any => hexToColor(a));
-  transformer.add({ identifier: 'ip', from: StorableType.String, to: GraphableType.Shape }, (a: string) : any => 'star');
 
-  const data: DataProp[] = [
+  const data: DataProp[] = useMemo(() => [
     {
       id: 10,
       timestamp: 1593172218,
@@ -128,88 +122,54 @@ export const SPViewComposer = (
       application: 'HRW',
       ip: '',
     },
-  ];
+  ], []);
 
-  const datasetentry: DatasetEntry[] = [
+  const datasetentry: DatasetEntry[] = useMemo(() => [
     new DatasetEntry(
-      new Map([['id', { type: StorableType.Int, value: data[0].id }]]),
+      new Map([
+        ['id', { type: StorableType.Int, value: data[0].id }],
+        ['timestamp', { type: StorableType.Int, value: data[0].timestamp }],
+        ['loginOutcome', { type: StorableType.LoginType, value: data[0].loginOutcome }],
+        ['application', { type: StorableType.String, value: data[0].application }],
+        ['ip', { type: StorableType.String, value: data[0].ip }],
+      ]),
     ),
     new DatasetEntry(
-      new Map([['timestamp', { type: StorableType.Int, value: data[0].timestamp }]]),
+      new Map([['id', { type: StorableType.Int, value: data[1].id }],
+        ['timestamp', { type: StorableType.Int, value: data[1].timestamp }],
+        ['loginOutcome', { type: StorableType.LoginType, value: data[1].loginOutcome }],
+        ['application', { type: StorableType.String, value: data[1].application }],
+        ['ip', { type: StorableType.String, value: data[1].ip }],
+      ]),
     ),
     new DatasetEntry(
-      new Map([['loginOutcome', { type: StorableType.LoginType, value: data[0].loginOutcome }]]),
+      new Map([['id', { type: StorableType.Int, value: data[2].id }],
+        ['timestamp', { type: StorableType.Int, value: data[2].timestamp }],
+        ['loginOutcome', { type: StorableType.LoginType, value: data[2].loginOutcome }],
+        ['application', { type: StorableType.String, value: data[2].application }],
+        ['ip', { type: StorableType.String, value: data[2].ip }],
+      ]),
     ),
     new DatasetEntry(
-      new Map([['application', { type: StorableType.String, value: data[0].application }]]),
+      new Map([['id', { type: StorableType.Int, value: data[3].id }],
+        ['timestamp', { type: StorableType.Int, value: data[3].timestamp }],
+        ['loginOutcome', { type: StorableType.LoginType, value: data[3].loginOutcome }],
+        ['application', { type: StorableType.String, value: data[3].application }],
+        ['ip', { type: StorableType.String, value: data[3].ip }],
+      ]),
     ),
     new DatasetEntry(
-      new Map([['ip', { type: StorableType.String, value: data[0].ip }]]),
+      new Map([['id', { type: StorableType.Int, value: data[4].id }],
+        ['timestamp', { type: StorableType.Int, value: data[4].timestamp }],
+        ['loginOutcome', { type: StorableType.LoginType, value: data[4].loginOutcome }],
+        ['application', { type: StorableType.String, value: data[4].application }],
+        ['ip', { type: StorableType.String, value: data[4].ip }],
+      ]),
     ),
-    new DatasetEntry(
-      new Map([['id', { type: StorableType.Int, value: data[1].id }]]),
-    ),
-    new DatasetEntry(
-      new Map([['timestamp', { type: StorableType.Int, value: data[1].timestamp }]]),
-    ),
-    new DatasetEntry(
-      new Map([['loginOutcome', { type: StorableType.LoginType, value: data[1].loginOutcome }]]),
-    ),
-    new DatasetEntry(
-      new Map([['application', { type: StorableType.String, value: data[1].application }]]),
-    ),
-    new DatasetEntry(
-      new Map([['ip', { type: StorableType.String, value: data[1].ip }]]),
-    ),
-    new DatasetEntry(
-      new Map([['id', { type: StorableType.Int, value: data[2].id }]]),
-    ),
-    new DatasetEntry(
-      new Map([['timestamp', { type: StorableType.Int, value: data[2].timestamp }]]),
-    ),
-    new DatasetEntry(
-      new Map([['loginOutcome', { type: StorableType.LoginType, value: data[2].loginOutcome }]]),
-    ),
-    new DatasetEntry(
-      new Map([['application', { type: StorableType.String, value: data[2].application }]]),
-    ),
-    new DatasetEntry(
-      new Map([['ip', { type: StorableType.String, value: data[2].ip }]]),
-    ),
-    new DatasetEntry(
-      new Map([['id', { type: StorableType.Int, value: data[3].id }]]),
-    ),
-    new DatasetEntry(
-      new Map([['timestamp', { type: StorableType.Int, value: data[3].timestamp }]]),
-    ),
-    new DatasetEntry(
-      new Map([['loginOutcome', { type: StorableType.LoginType, value: data[3].loginOutcome }]]),
-    ),
-    new DatasetEntry(
-      new Map([['application', { type: StorableType.String, value: data[3].application }]]),
-    ),
-    new DatasetEntry(
-      new Map([['ip', { type: StorableType.String, value: data[3].ip }]]),
-    ),
-    new DatasetEntry(
-      new Map([['id', { type: StorableType.Int, value: data[4].id }]]),
-    ),
-    new DatasetEntry(
-      new Map([['timestamp', { type: StorableType.Int, value: data[4].timestamp }]]),
-    ),
-    new DatasetEntry(
-      new Map([['loginOutcome', { type: StorableType.LoginType, value: data[4].loginOutcome }]]),
-    ),
-    new DatasetEntry(
-      new Map([['application', { type: StorableType.String, value: data[4].application }]]),
-    ),
-    new DatasetEntry(
-      new Map([['ip', { type: StorableType.String, value: data[4].ip }]]),
-    ),
+  ], [data]);
 
-  ];
-
-  const spMapper: SPMapper = new SPMapper(transformer, prop.spDimensions);
+  // eslint-disable-next-line max-len
+  const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
 
   const points = useMemo(() => [
     {
@@ -245,10 +205,10 @@ export const SPViewComposer = (
   const dimensionSelectorVM = useMemo(() => ({
     model: new SPDimensionSelectorVM(
       transformer,
-      prop.datasetSignature,
-      prop.spDimensions,
+      datasetSignature,
+      spDimensions,
     ),
-  }), []);
+  }), [datasetSignature, spDimensions, transformer]);
 
   // eslint-disable-next-line max-len
   const renderSettingsVM = useMemo(() => ({
@@ -274,8 +234,20 @@ export const SPViewComposer = (
   // eslint-disable-next-line max-len
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderer = useMemo(
-    () => new SPRenderer(mapCheck(datasetentry), renderSettingsVM.model.getSettings),
-    [datasetentry, renderSettingsVM.model.getSettings],
+    () => {
+      console.log(spMapper.map(new Dataset(datasetentry)));
+      return new SPRenderer(
+        points,
+        renderSettingsVM.model.getSettings,
+      );
+    },
+    /* if (spMapper.map(new Dataset(datasetentry)) !== MapperError.UnknownField
+      && spMapper.map(new Dataset(datasetentry)) !== MapperError.UnknownSignature) {
+        */
+    /* }
+      return new SPRenderer([], renderSettingsVM.model.getSettings); */
+
+    [datasetentry, points, renderSettingsVM.model.getSettings, spMapper],
   );
 
   useEffect(() => {
@@ -286,7 +258,7 @@ export const SPViewComposer = (
 
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
-    const renderernew = new SPRenderer(mapCheck(datasetentry), renderSettingsVM.model.getSettings);
+    const renderernew = new SPRenderer(points, renderSettingsVM.model.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
   }
 
@@ -305,7 +277,6 @@ export const SPViewComposer = (
         <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
           <div style={{display: 'inline-block'}}>
             <h2>Selezione dimensioni:</h2>
-            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
           </div>
           <div style={{display: 'inline-block'}}>
             <h2>Selezione dominio:</h2>

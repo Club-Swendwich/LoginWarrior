@@ -27,7 +27,9 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
   }
 
   public map(d: Dataset): SPREnderablePoint[] | MapperError {
+    console.log(d);
     if (this.mapFn === MapperError.UnknownSignature) return MapperError.UnknownSignature;
+    console.log('ok');
     try {
       return d.entries().map(this.apply, this);
     } catch (_) {

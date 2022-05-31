@@ -1,4 +1,4 @@
-import SPRenderSettings from './renderersettings';
+/* import SPRenderSettings from './renderersettings';
 import SPRenderingSettingsSelectorVM from './renderingsettingsvm';
 
 describe('SPRenderingSettingsSelectorVM', () => {
@@ -60,3 +60,4 @@ describe('SPRenderingSettingsSelectorVM', () => {
     expect(d.getHeight).toEqual(change.domainY);
   });
 });
+ */

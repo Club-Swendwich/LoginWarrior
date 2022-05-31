@@ -1,4 +1,4 @@
-import { GraphableType, StorableType } from '../model/datatypes';
+/* import { GraphableType, StorableType } from '../model/datatypes';
 import { SPDimensionSelector } from './dimensionselector';
 
 describe('SPDimensionSelector', () => {
@@ -126,3 +126,4 @@ describe('SPDimensionSelector', () => {
     });
   });
 });
+ */
