@@ -18,7 +18,7 @@ import SPViewComposer from './scatterplot/spviewcomposer';
 function App() {
   const ref = useRef<HTMLDivElement>(null);
 
-
+    /*
   const signature: DatasetSignature = new Set(
     [
       ['id', StorableType.Int],
@@ -35,7 +35,7 @@ function App() {
     shape: ['id', { identifier: 'id', from: StorableType.Int, to: GraphableType.Shape }],
     color: ['ip', { identifier: 'ip', from: StorableType.String, to: GraphableType.Color }],
   };
-
+  */
 function App(): JSX.Element {
     const ref = useRef<HTMLDivElement>(null)
     console.log("altezza impostata = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight)
