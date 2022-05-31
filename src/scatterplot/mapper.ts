@@ -1,5 +1,5 @@
 import { Mapper, MapperError } from '../genericview/mapper';
-import { Dataset, DatasetEntry } from '../model/dataset';
+import { Dataset, DatasetEntry, DatasetValue } from '../model/dataset';
 import { TransformationProvider } from '../model/transformer';
 import { SPDimensions } from './dimensions';
 import { SPREnderablePoint } from './renderer';
@@ -24,14 +24,17 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
     } catch (_) {
       this.mapFn = MapperError.UnknownSignature;
     }
+
+    console.log('mapFn: ', this.mapFn);
   }
 
   public map(d: Dataset): SPREnderablePoint[] | MapperError {
-    console.log(d);
+    console.log('map.d: ', d);
     if (this.mapFn === MapperError.UnknownSignature) return MapperError.UnknownSignature;
-    console.log('ok');
     try {
-      return d.entries().map(this.apply, this);
+      const a = d.entries().map(this.apply, this);
+      console.log('a: ', a);
+      return a;
     } catch (_) {
       return MapperError.UnknownField;
     }
@@ -52,11 +55,11 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
     const shapeM = this.transformer.get(s.shape[1])!;
     const colorM = this.transformer.get(s.color[1])!;
     return {
-      x: (d) => xM(d.get(s.x[0])),
-      y: (d) => yM(d.get(s.y[0])),
-      size: (d) => sizeM(d.get(s.size[0])),
-      shape: (d) => shapeM(d.get(s.shape[0])),
-      color: (d) => colorM(d.get(s.color[0])),
+      x: (d) => xM((d.get(s.x[0]) as DatasetValue).value),
+      y: (d) => yM((d.get(s.y[0]) as DatasetValue).value),
+      size: (d) => sizeM((d.get(s.size[0]) as DatasetValue).value),
+      shape: (d) => shapeM((d.get(s.shape[0]) as DatasetValue).value),
+      color: (d) => colorM((d.get(s.color[0]) as DatasetValue).value),
     };
   }
 
