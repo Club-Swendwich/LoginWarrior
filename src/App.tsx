@@ -173,19 +173,19 @@ function App() {
 
   const datasetSignature: Set<[string, StorableType]> = new Set(
     [
-      ['id', StorableType.Int],
+      ['userId', StorableType.Int],
       ['timestamp', StorableType.Int],
-      ['loginOutcome', StorableType.LoginType],
-      ['application', StorableType.String],
-      ['ip', StorableType.String],
+      ['eventType', StorableType.LoginType],
+      ['appId', StorableType.String],
+      ['encodedIp', StorableType.String],
     ],
   );
   const spDimensions: SPDimensions = {
-    x: ['timestamp', { identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Real }],
-    y: ['loginOutcome', { identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Real }],
-    size: ['application', { identifier: 'application', from: StorableType.String, to: GraphableType.Int }],
-    shape: ['id', { identifier: 'id', from: StorableType.Int, to: GraphableType.Shape }],
-    color: ['ip', { identifier: 'ip', from: StorableType.String, to: GraphableType.Color }],
+    x: ['timestamp', { identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Int }],
+    y: ['encodedIp', { identifier: 'encodedIp', from: StorableType.String, to: GraphableType.Int }],
+    size: ['userId', { identifier: 'userId', from: StorableType.Int, to: GraphableType.Int }],
+    shape: ['appId', { identifier: 'appId', from: StorableType.String, to: GraphableType.Shape }],
+    color: ['eventType', { identifier: 'eventType', from: StorableType.LoginType, to: GraphableType.Color }],
   };
   return (
     <div className="app">

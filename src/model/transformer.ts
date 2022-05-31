@@ -84,8 +84,6 @@ implements TransformationQuerryable, TransformationProvider {
 
     const idMap = graphMap.get(s.from)!;
     idMap.set(s.identifier, t);
-
-    console.log(this.transformers);
   }
 
   get(s: TransformationSignature): Transformation | undefined {
