@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/function-component-definition */
@@ -48,17 +49,17 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     return fields;
   }
 
-  const [xField, setXField] = useState<string>();
-  const [yFields, setYField] = useState<string>();
-  const [sizeField, setSizeField] = useState<string>();
-  const [shapeField, setShapeField] = useState<string>();
-  const [colorField, setColorField] = useState<string>();
+  const [xField, setXField] = useState<string>(viewmodel.currentXField);
+  const [yFields, setYField] = useState<string>(viewmodel.currentYField);
+  const [sizeField, setSizeField] = useState<string>(viewmodel.currentSizeField);
+  const [shapeField, setShapeField] = useState<string>(viewmodel.currentShapeField);
+  const [colorField, setColorField] = useState<string>(viewmodel.currentColorField);
 
-  const [xMap, setXMap] = useState<TransformationSignature>();
-  const [yMap, setYMap] = useState<TransformationSignature>();
-  const [sizeMap, setSizeMap] = useState<TransformationSignature>();
-  const [shapeMap, setShapeMap] = useState<TransformationSignature>();
-  const [colorMap, setColorMap] = useState<TransformationSignature>();
+  const [xMap, setXMap] = useState<TransformationSignature>(viewmodel.currentXMap);
+  const [yMap, setYMap] = useState<TransformationSignature>(viewmodel.currentYMap);
+  const [sizeMap, setSizeMap] = useState<TransformationSignature>(viewmodel.currentSizeMap);
+  const [shapeMap, setShapeMap] = useState<TransformationSignature>(viewmodel.currentShapeMap);
+  const [colorMap, setColorMap] = useState<TransformationSignature>(viewmodel.currentColorMap);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -73,8 +74,6 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     viewmodel.updateShapeMap(shapeMap!);
     viewmodel.updateColorMap(colorMap!);
   };
-  console.log(xField);
-  console.log(xMap);
   return (
     <form className="dimensionSelector" onSubmit={onSubmit}>
       <div style={{ paddingBottom: 24 }}>
@@ -85,6 +84,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setXField,
             setMap: setXMap,
           }}
+          defaultField={viewmodel.currentXField}
+          defaultMap={viewmodel.currentXMap}
           fields={xFieldsNames}
           maps={xMaps}
         />
@@ -97,6 +98,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setYField,
             setMap: setYMap,
           }}
+          defaultField={viewmodel.currentYField}
+          defaultMap={viewmodel.currentYMap}
           fields={yFieldsNames}
           maps={yMaps}
         />
@@ -109,6 +112,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setSizeField,
             setMap: setSizeMap,
           }}
+          defaultField={viewmodel.currentSizeField}
+          defaultMap={viewmodel.currentSizeMap}
           fields={sizeFieldsNames}
           maps={sizeMaps}
         />
@@ -121,6 +126,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setShapeField,
             setMap: setShapeMap,
           }}
+          defaultField={viewmodel.currentShapeField}
+          defaultMap={viewmodel.currentShapeMap}
           fields={shapeFieldsNames}
           maps={shapeMaps}
         />
@@ -133,6 +140,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setColorField,
             setMap: setColorMap,
           }}
+          defaultField={viewmodel.currentColorField}
+          defaultMap={viewmodel.currentColorMap}
           fields={colorFieldsNames}
           maps={colorMaps}
         />

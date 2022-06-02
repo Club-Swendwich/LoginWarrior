@@ -7,6 +7,8 @@ export enum StorableType {
   Int,
   String,
   LoginType,
+  Date,
+  Ip,
 }
 
 /**
@@ -15,7 +17,9 @@ export enum StorableType {
 export type StorableTypeToRepr<T extends StorableType>
     = T extends StorableType.Int ? Int
       : T extends StorableType.String ? string
-        : LoginType;
+        : T extends StorableType.Date ? Date
+          : T extends StorableType.Ip ? string
+            : LoginType;
 
 /**
  * A type that can be plotted by a graph

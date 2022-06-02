@@ -11,9 +11,11 @@ interface SelectorProp {
   readonly name: string
   readonly fields: string[]
   readonly maps: Set<TransformationSignature>
+  readonly defaultField: string
+  readonly defaultMap: TransformationSignature
   readonly set: {
-    readonly setField: Dispatch<React.SetStateAction<string | undefined>>
-    readonly setMap: Dispatch<React.SetStateAction<TransformationSignature | undefined>>
+    readonly setField: Dispatch<React.SetStateAction<string >>
+    readonly setMap: Dispatch<React.SetStateAction<TransformationSignature >>
   }
   readonly literal: {
     readonly default: string
@@ -29,7 +31,7 @@ interface DefaultProp {
 
 export function Selector(prop: SelectorProp) {
   const {
-    literal, name, set, fields, maps,
+    literal, name, set, fields, maps, defaultField, defaultMap,
   } = prop;
 
   const setFields: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
@@ -39,19 +41,19 @@ export function Selector(prop: SelectorProp) {
       return literalInput;
     }
     set.setField(val);
-    //ConverterOption();
+    ConverterOption();
     return null;
   };
 
   const setMaps: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
     const x = Array.from(maps.values());
     const map = x.find((e) => e.identifier === s.target.value);
-    set.setMap(map);
+    set.setMap(map!);
   };
 
   function FieldOption() {
     return (
-      <select defaultValue={fields[0]} onChange={setFields}>
+      <select defaultValue={defaultField} onChange={setFields}>
         {fields.map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
         <option key={`${name}-${LITERAL_VALUE}`} value={LITERAL_VALUE}>{LITERAL_VALUE}</option>
       </select>
@@ -70,7 +72,7 @@ export function Selector(prop: SelectorProp) {
     const options: string[] = [];
     maps.forEach((val) => options.push(val.identifier));
     return (
-      <select value={options[0]} onChange={setMaps}>
+      <select defaultValue={defaultMap.identifier} onChange={setMaps}>
         { options.map((e) => <option key={`${name}-${e}`} value={e}>{e}</option>) }
       </select>
     );
@@ -89,7 +91,7 @@ export type FSelectorProp = Omit<SelectorProp, 'literal'>;
 const DEFAULT_REAL = 0;
 export function RealSelector(prop: FSelectorProp) {
   const {
-    name, fields, maps, set,
+    name, fields, maps, set, defaultField, defaultMap,
   } = prop;
   return (
     <Selector
@@ -97,6 +99,8 @@ export function RealSelector(prop: FSelectorProp) {
       fields={fields}
       maps={maps}
       set={set}
+      defaultField={defaultField}
+      defaultMap={defaultMap}
       literal={{
         default: DEFAULT_REAL.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -116,7 +120,7 @@ export function RealSelector(prop: FSelectorProp) {
 const DEFAULT_INT = 0;
 export function IntSelector(prop: FSelectorProp) {
   const {
-    name, fields, maps, set,
+    name, fields, maps, set, defaultField, defaultMap,
   } = prop;
   return (
     <Selector
@@ -124,6 +128,8 @@ export function IntSelector(prop: FSelectorProp) {
       fields={fields}
       maps={maps}
       set={set}
+      defaultField={defaultField}
+      defaultMap={defaultMap}
       literal={{
         default: DEFAULT_INT.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -143,7 +149,7 @@ export function IntSelector(prop: FSelectorProp) {
 const DEFAULT_COLOR = '#F5B7A4';
 export function ColorSelector(prop: FSelectorProp) {
   const {
-    name, fields, maps, set,
+    name, fields, maps, set, defaultField, defaultMap,
   } = prop;
   return (
     <Selector
@@ -151,6 +157,8 @@ export function ColorSelector(prop: FSelectorProp) {
       fields={fields}
       maps={maps}
       set={set}
+      defaultField={defaultField}
+      defaultMap={defaultMap}
       literal={{
         default: DEFAULT_COLOR.toString(),
         Component: ({ onChange, selected, keyV }) => (
@@ -169,7 +177,7 @@ export function ColorSelector(prop: FSelectorProp) {
 const DEFAULT_SHAPE = 'star';
 export function ShapeSelector(prop: FSelectorProp) {
   const {
-    name, fields, maps, set,
+    name, fields, maps, set, defaultField, defaultMap,
   } = prop;
   return (
     <Selector
@@ -177,6 +185,8 @@ export function ShapeSelector(prop: FSelectorProp) {
       fields={fields}
       maps={maps}
       set={set}
+      defaultField={defaultField}
+      defaultMap={defaultMap}
       literal={{
         default: DEFAULT_SHAPE.toString(),
         Component: ({ onChange, selected }) => (

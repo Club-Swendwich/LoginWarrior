@@ -38,9 +38,7 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
   constructor(
     private points: SPREnderablePoint[],
     private settings: SPRenderSettings,
-  ) {
-    console.log('constructor: ', this.points);
-  }
+  ) {}
 
   updatePoints(p: SPREnderablePoint[]): void {
     this.points = p;
@@ -54,8 +52,6 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
     // NOTE: This is needed since right now d3fc does not support the render of
     // different shapes on the same series
     // see https://github.com/d3fc/d3fc/issues/1722
-
-    console.log('render: ', this.points);
 
     const grouped = groupByShape(this.points);
 
@@ -142,7 +138,6 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
 export function groupByShape(elements: SPREnderablePoint[]):
 Map<SPREnderablePoint['shape'], SPREnderablePoint[]> {
   const accumulator = new Map<SPREnderablePoint['shape'], SPREnderablePoint[]>();
-  console.log('elements: ', elements);
   for (const element of elements) {
     const key = element.shape;
     const group = accumulator.get(key);

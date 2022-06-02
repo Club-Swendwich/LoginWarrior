@@ -58,9 +58,8 @@ export class CSVDatasetParser implements DatasetParser {
   }
 
   private static parseCSVEntry(entry: string[]): DatasetEntry | undefined {
-    console.log('timestamp: ', entry[2]);
     const userId = Number.parseInt(entry[0], 10)!;
-    const timestamp = new Date(entry[2]).getTime()!;
+    const timestamp = new Date(entry[2])!;
     const evenType = Number.parseInt(entry[3], 10)!;
     const encodedIp = entry[6];
     const appId = entry[4];
@@ -79,7 +78,7 @@ export class CSVDatasetParser implements DatasetParser {
         value: userId,
       }],
       ['timestamp', {
-        type: StorableType.Int,
+        type: StorableType.Date,
         value: timestamp,
       }],
       ['eventType', {
@@ -87,7 +86,7 @@ export class CSVDatasetParser implements DatasetParser {
         value: evenType,
       }],
       ['encodedIp', {
-        type: StorableType.String,
+        type: StorableType.Ip,
         value: encodedIp,
       }],
       ['appId', {

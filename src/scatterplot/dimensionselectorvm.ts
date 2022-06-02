@@ -31,6 +31,7 @@ export class SPDimensionSelectorVM {
     const selection = this.selector.selectedDimensions;
     selection.y[0] = newField;
     this.selector.selectedDimensions = selection;
+    console.log('selection after', this.selector.selectedDimensions);
   }
 
   @action updateSizeField(newField: string) {
@@ -129,5 +130,45 @@ export class SPDimensionSelectorVM {
   @computed get mapColor(): Set<TransformationSignature> {
     const fields = this.selector.availableMappers();
     return fields.color;
+  }
+
+  @computed get currentXField(): string {
+    return this.selector.selectedDimensions.x[0];
+  }
+
+  @computed get currentYField(): string {
+    return this.selector.selectedDimensions.y[0];
+  }
+
+  @computed get currentSizeField(): string {
+    return this.selector.selectedDimensions.size[0];
+  }
+
+  @computed get currentShapeField(): string {
+    return this.selector.selectedDimensions.shape[0];
+  }
+
+  @computed get currentColorField(): string {
+    return this.selector.selectedDimensions.color[0];
+  }
+
+  @computed get currentXMap(): TransformationSignature {
+    return this.selector.selectedDimensions.x[1];
+  }
+
+  @computed get currentYMap(): TransformationSignature {
+    return this.selector.selectedDimensions.y[1];
+  }
+
+  @computed get currentSizeMap(): TransformationSignature {
+    return this.selector.selectedDimensions.size[1];
+  }
+
+  @computed get currentShapeMap(): TransformationSignature {
+    return this.selector.selectedDimensions.shape[1];
+  }
+
+  @computed get currentColorMap(): TransformationSignature {
+    return this.selector.selectedDimensions.color[1];
   }
 }

@@ -26,86 +26,52 @@ import { MapperError } from '../genericview/mapper';
 import { CSVDatasetParser } from '../model/datasetloader';
 
 export interface SPViewComposerProps {
-  datasetSignature: DatasetSignature,
   spDimensions: SPDimensions,
 }
 
 export const SPViewComposer = (
   prop : SPViewComposerProps,
 ) => {
-  const { datasetSignature, spDimensions } = prop;
+  const { spDimensions } = prop;
   const ref = useRef<HTMLDivElement>(null);
 
   const transformer: Transformer = Transformer.new();
 
-  transformer.add({ identifier: 'identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
-  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
-  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
-  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
-  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
-  transformer.add({ identifier: 'eventType', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0.972, 0.486, 0.427, 1]);
-  transformer.add({ identifier: 'eventType', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'star');
-  transformer.add({ identifier: 'appId', from: StorableType.String, to: GraphableType.Color }, () : any => [0.960, 0.925, 0.4, 1]);
-  transformer.add({ identifier: 'appId', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'encodedIp', from: StorableType.String, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('.', ''), 10));
-  transformer.add({ identifier: 'encodedIp', from: StorableType.String, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('.', ''), 10));
-  transformer.add({ identifier: 'encodedIp', from: StorableType.String, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
+  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
+  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
+  transformer.add({ identifier: 'int to color', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
+  transformer.add({ identifier: 'date to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
+  transformer.add({ identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
+  transformer.add({ identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0.972, 0.486, 0.427, 1]);
+  transformer.add({ identifier: 'event to shape', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'star');
+  transformer.add({ identifier: 'app to color', from: StorableType.String, to: GraphableType.Color }, () : any => [0.960, 0.925, 0.4, 1]);
+  transformer.add({ identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
+  transformer.add({ identifier: 'ip to int', from: StorableType.Ip, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
+  transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
+  transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
 
   const pointcsv = '10;744598728;2020-06-15 14:19:45.000;2;ERM;erm3zs02;2.36.88.14;\n10;922713975;2020-11-04 10:56:10.000;2;ERM;erm3zs02;2.228.10.106;\n17;37103170;2021-03-09 09:34:01.000;2;ERM;erm3zs02;62.108.225.252;';
 
   const parser = new CSVDatasetParser(';');
 
-  const dataset = parser.parse(pointcsv);
-
-  console.log('dataset: ', dataset);
+  const dataset = parser.parse(pointcsv) as Dataset;
 
   // eslint-disable-next-line max-len
   const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
 
-  const points = useMemo(() => [
-    {
-      x: 5,
-      y: 5,
-      size: 1000,
-      shape: 'star' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-    {
-      x: 7,
-      y: 7,
-      size: 1000,
-      shape: 'square' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-    {
-      x: 4,
-      y: 3,
-      size: 1000,
-      shape: 'triangle' as Shape,
-      color: [0.6, 0.4, 1, 1] as Color,
-    },
-    {
-      x: 4,
-      y: 8,
-      size: 500,
-      shape: 'triangle' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-  ], []);
-
   const dimensionSelectorVM = useMemo(() => ({
     model: new SPDimensionSelectorVM(
       transformer,
-      datasetSignature,
+      dataset.signature,
       spDimensions,
     ),
-  }), [datasetSignature, spDimensions, transformer]);
+  }), [dataset, spDimensions, transformer]);
 
   // eslint-disable-next-line max-len
   const renderSettingsVM = useMemo(() => ({
     model: new SPRenderingSettingsSelectorVM({
-      domainX: [0, 15],
-      domainY: [0, 20],
+      domainX: [1591223585000, 1616278841000],
+      domainY: [0, 65],
     }),
   }), []);
 
@@ -131,7 +97,6 @@ export const SPViewComposer = (
     }
   }, [ref, renderer, renderSettingsVM.model.getSettings]);
 
-  console.log('points: ', spMapper.map(dataset as Dataset));
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
     const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);

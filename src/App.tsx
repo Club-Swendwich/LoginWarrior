@@ -171,25 +171,16 @@ function App() {
   }
  */
 
-  const datasetSignature: Set<[string, StorableType]> = new Set(
-    [
-      ['userId', StorableType.Int],
-      ['timestamp', StorableType.Int],
-      ['eventType', StorableType.LoginType],
-      ['appId', StorableType.String],
-      ['encodedIp', StorableType.String],
-    ],
-  );
   const spDimensions: SPDimensions = {
-    x: ['timestamp', { identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Int }],
-    y: ['encodedIp', { identifier: 'encodedIp', from: StorableType.String, to: GraphableType.Int }],
-    size: ['userId', { identifier: 'userId', from: StorableType.Int, to: GraphableType.Int }],
-    shape: ['appId', { identifier: 'appId', from: StorableType.String, to: GraphableType.Shape }],
-    color: ['eventType', { identifier: 'eventType', from: StorableType.LoginType, to: GraphableType.Color }],
+    x: ['timestamp', { identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }],
+    y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
+    size: ['userId', { identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }],
+    shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
+    color: ['eventType', { identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }],
   };
   return (
     <div className="app">
-      <SPViewComposer datasetSignature={datasetSignature} spDimensions={spDimensions} />
+      <SPViewComposer spDimensions={spDimensions} />
     </div>
   );
 }
