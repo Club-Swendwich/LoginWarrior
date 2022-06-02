@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     datasetProvider.load('http://localhost:3000/coded_log.csv').then((r) => setDataset(r as Dataset));
-  });
+  }, []);
 
   const spDimensions: SPDimensions = {
     x: ['timestamp', { identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }],

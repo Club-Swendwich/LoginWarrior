@@ -31,16 +31,10 @@ export interface SPViewComposerProps {
   dataset: Dataset
 }
 
-export const SPViewComposer = (
-  prop : SPViewComposerProps,
-) => {
-  const { spDimensions, dataset } = prop;
-  const ref = useRef<HTMLDivElement>(null);
+ const transformer: Transformer = Transformer.new();
 
-  const transformer: Transformer = Transformer.new();
-
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
+  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => 1);
+  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => 1);
   transformer.add({ identifier: 'int to color', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
   transformer.add({ identifier: 'date to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
   transformer.add({ identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
@@ -52,6 +46,12 @@ export const SPViewComposer = (
   transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
   transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
 
+
+export const SPViewComposer = (
+  prop : SPViewComposerProps,
+) => {
+  const { spDimensions, dataset } = prop;
+  const ref = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line max-len
   const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
 
@@ -89,12 +89,14 @@ export const SPViewComposer = (
 
   useEffect(() => {
     if (ref !== null) {
+      console.log("Render effect")
       renderer.render(ref as MutableRefObject<HTMLDivElement>);
     }
-  }, [ref, renderer, renderSettingsVM.model.getSettings]);
+  }, []);
 
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
+    console.log("Render reload")
     spMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
