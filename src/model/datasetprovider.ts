@@ -15,7 +15,13 @@ export class HTTPDatasetProvider implements DatasetProvider {
     ) { }
 
    async load(url: string): Promise<Dataset | ProvideError | ParseError > {
-       let res = await fetch(url);
+       let res
+       try {
+          res = await fetch(url);
+       } catch (_) {
+           return ProvideError.NetworkError;
+       }
+
        if (!res.ok) {
            return ProvideError.NetworkError;
        }
