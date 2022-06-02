@@ -50,7 +50,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   }
 
   const [xField, setXField] = useState<string>(viewmodel.currentXField);
-  const [yFields, setYField] = useState<string>(viewmodel.currentYField);
+  const [yField, setYField] = useState<string>(viewmodel.currentYField);
   const [sizeField, setSizeField] = useState<string>(viewmodel.currentSizeField);
   const [shapeField, setShapeField] = useState<string>(viewmodel.currentShapeField);
   const [colorField, setColorField] = useState<string>(viewmodel.currentColorField);
@@ -64,7 +64,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     viewmodel.updateXAxisField(xField!);
-    viewmodel.updateYAxisField(yFields!);
+    viewmodel.updateYAxisField(yField!);
     viewmodel.updateSizeField(sizeField!);
     viewmodel.updateShapeField(shapeField!);
     viewmodel.updateColorField(colorField!);
@@ -84,10 +84,14 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setXField,
             setMap: setXMap,
           }}
-          defaultField={viewmodel.currentXField}
-          defaultMap={viewmodel.currentXMap}
+          defaultField={xField}
+          defaultMap={xMap}
           fields={xFieldsNames}
           maps={xMaps}
+          onNewSelection={(s: string) => {
+            viewmodel.updateXAxisField(s);
+            setXMap(viewmodel.currentXMap);
+          }}
         />
       </div>
       <div style={{ paddingBottom: 24 }}>
@@ -98,10 +102,14 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setYField,
             setMap: setYMap,
           }}
-          defaultField={viewmodel.currentYField}
-          defaultMap={viewmodel.currentYMap}
+          defaultField={yField}
+          defaultMap={yMap}
           fields={yFieldsNames}
           maps={yMaps}
+          onNewSelection={(s: string) => {
+            viewmodel.updateYAxisField(s);
+            setYMap(viewmodel.currentYMap);
+          }}
         />
       </div>
       <label htmlFor="size" id="size">Size:</label>
@@ -112,10 +120,14 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setSizeField,
             setMap: setSizeMap,
           }}
-          defaultField={viewmodel.currentSizeField}
-          defaultMap={viewmodel.currentSizeMap}
+          defaultField={sizeField}
+          defaultMap={sizeMap}
           fields={sizeFieldsNames}
           maps={sizeMaps}
+          onNewSelection={(s: string) => {
+            viewmodel.updateSizeField(s);
+            setSizeMap(viewmodel.currentSizeMap);
+          }}
         />
       </div>
       <label htmlFor="shape" id="shape">Shape:</label>
@@ -126,10 +138,14 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setShapeField,
             setMap: setShapeMap,
           }}
-          defaultField={viewmodel.currentShapeField}
-          defaultMap={viewmodel.currentShapeMap}
+          defaultField={shapeField}
+          defaultMap={shapeMap}
           fields={shapeFieldsNames}
           maps={shapeMaps}
+          onNewSelection={(s: string) => {
+            viewmodel.updateShapeField(s);
+            setShapeMap(viewmodel.currentShapeMap);
+          }}
         />
       </div>
       <label htmlFor="color" id="color">Color:</label>
@@ -140,10 +156,14 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
             setField: setColorField,
             setMap: setColorMap,
           }}
-          defaultField={viewmodel.currentColorField}
-          defaultMap={viewmodel.currentColorMap}
+          defaultField={colorField}
+          defaultMap={colorMap}
           fields={colorFieldsNames}
           maps={colorMaps}
+          onNewSelection={(s: string) => {
+            viewmodel.updateColorField(s);
+            setColorMap(viewmodel.currentColorMap);
+          }}
         />
       </div>
       <input type="submit" value="Applica dimensioni" />

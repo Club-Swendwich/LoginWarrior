@@ -1,4 +1,4 @@
-import { SankeyLink, SankeyNode } from "d3-sankey";
+import { SankeyLink, SankeyNode } from 'd3-sankey';
 
 /**
  * The enum that rappresents a type that can be stored in the dataset
@@ -55,10 +55,10 @@ export enum LoginType {
 export type CustomNode = {
   nodeId: number;
   name: string;
-}
+};
 
 export type CustomLink = {
   source: number;
   target: number;
   value: number;
-}
+};

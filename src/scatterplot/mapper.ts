@@ -30,7 +30,7 @@ export class SPMapper implements Mapper<SPDimensions, SPREnderablePoint[]> {
     if (this.mapFn === MapperError.UnknownSignature) return MapperError.UnknownSignature;
     try {
       return d.entries().map(this.apply, this);
-    } catch (_) {
+    } catch (e) {
       return MapperError.UnknownField;
     }
   }

@@ -62,6 +62,8 @@ export class SPDimensionSelector implements DimensionSelector<SPDimensions> {
       .find(([n]) => n === selectedField);
 
     if (field === undefined) {
+      console.log(selectedField);
+      console.log(toReach);
       throw new Error('Cannot find the selected field in the signature!');
     }
 

@@ -21,35 +21,54 @@ export class SPDimensionSelectorVM {
     );
   }
 
+  @computed get currentSelection() : SPDimensions {
+    return this.selector.selectedDimensions;
+  }
+
   @action updateXAxisField(newField: string) {
     const selection = this.selector.selectedDimensions;
     selection.x[0] = newField;
+    selection.x[1] = this.selector.availableMappers().x.values().next().value;
     this.selector.selectedDimensions = selection;
+    this.selector.availableMappers();
+    console.log('available mappers x', this.mapX);
   }
 
   @action updateYAxisField(newField: string) {
     const selection = this.selector.selectedDimensions;
     selection.y[0] = newField;
-    this.selector.selectedDimensions = selection;
-    console.log('selection after', this.selector.selectedDimensions);
+    selection.y[1] = this.selector.availableMappers().y.values().next().value;
+    if (selection.y[0] !== this.selector.selectedDimensions.y[0]) {
+      this.selector.selectedDimensions = selection;
+    }
+    this.selector.availableMappers();
+    console.log('available mappers y', this.mapY);
   }
 
   @action updateSizeField(newField: string) {
     const selection = this.selector.selectedDimensions;
     selection.size[0] = newField;
+    selection.size[1] = this.selector.availableMappers().size.values().next().value;
     this.selector.selectedDimensions = selection;
+    this.selector.availableMappers();
+    console.log('available mappers size', this.mapSize);
   }
 
   @action updateColorField(newField: string) {
     const selection = this.selector.selectedDimensions;
     selection.color[0] = newField;
+    selection.color[1] = this.selector.availableMappers().color.values().next().value;
     this.selector.selectedDimensions = selection;
+    this.selector.availableMappers();
+    console.log('available mappers color', this.mapColor);
   }
 
   @action updateShapeField(newField: string) {
     const selection = this.selector.selectedDimensions;
     selection.shape[0] = newField;
+    selection.shape[1] = this.selector.availableMappers().shape.values().next().value;
     this.selector.selectedDimensions = selection;
+    this.selector.availableMappers();
   }
 
   @action updateXAxisMap(newField: TransformationSignature) {
