@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   const spDimensions: SPDimensions = {
-    x: ['timestamp', { identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }],
+    x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
     y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
     size: ['userId', { identifier: 'default', from: StorableType.Int, to: GraphableType.Int }],
     shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
