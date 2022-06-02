@@ -15,16 +15,17 @@ interface SelectorProp {
     readonly setField: Dispatch<React.SetStateAction<string >>
     readonly setMap: Dispatch<React.SetStateAction<TransformationSignature >>
   }
-  readonly onNewSelection: (s: string) => void
+  readonly onNewFieldSelection: (s: string) => void
+  readonly onNewMapSelection: (s: TransformationSignature) => void
 }
 
 export function Selector(prop: SelectorProp) {
   const {
-    name, set, fields, maps, defaultField, defaultMap, onNewSelection,
+    name, set, fields, maps, defaultField, defaultMap, onNewFieldSelection, onNewMapSelection,
   } = prop;
 
   const setFields: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
-    onNewSelection(s.target.value);
+    onNewFieldSelection(s.target.value);
     const val = s.target.value;
     set.setField(val);
     ConverterOption();
@@ -34,6 +35,7 @@ export function Selector(prop: SelectorProp) {
   const setMaps: ChangeEventHandler<HTMLSelectElement | HTMLInputElement> = (s) => {
     const x = Array.from(maps.values());
     const map = x.find((e) => e.identifier === s.target.value);
+    onNewMapSelection(map as TransformationSignature);
     set.setMap(map!);
   };
 
@@ -65,7 +67,7 @@ export function Selector(prop: SelectorProp) {
 
 export function RealSelector(prop: SelectorProp) {
   const {
-    name, fields, maps, set, defaultField, defaultMap, onNewSelection,
+    name, fields, maps, set, defaultField, defaultMap, onNewFieldSelection, onNewMapSelection,
   } = prop;
   return (
     <Selector
@@ -75,14 +77,15 @@ export function RealSelector(prop: SelectorProp) {
       set={set}
       defaultField={defaultField}
       defaultMap={defaultMap}
-      onNewSelection={onNewSelection}
+      onNewFieldSelection={onNewFieldSelection}
+      onNewMapSelection={onNewMapSelection}
     />
   );
 }
 
 export function IntSelector(prop: SelectorProp) {
   const {
-    name, fields, maps, set, defaultField, defaultMap, onNewSelection,
+    name, fields, maps, set, defaultField, defaultMap, onNewFieldSelection, onNewMapSelection,
   } = prop;
   return (
     <Selector
@@ -92,14 +95,15 @@ export function IntSelector(prop: SelectorProp) {
       set={set}
       defaultField={defaultField}
       defaultMap={defaultMap}
-      onNewSelection={onNewSelection}
+      onNewFieldSelection={onNewFieldSelection}
+      onNewMapSelection={onNewMapSelection}
     />
   );
 }
 
 export function ColorSelector(prop: SelectorProp) {
   const {
-    name, fields, maps, set, defaultField, defaultMap, onNewSelection,
+    name, fields, maps, set, defaultField, defaultMap, onNewFieldSelection, onNewMapSelection,
   } = prop;
   return (
     <Selector
@@ -109,14 +113,15 @@ export function ColorSelector(prop: SelectorProp) {
       set={set}
       defaultField={defaultField}
       defaultMap={defaultMap}
-      onNewSelection={onNewSelection}
+      onNewMapSelection={onNewMapSelection}
+      onNewFieldSelection={onNewFieldSelection}
     />
   );
 }
 
 export function ShapeSelector(prop: SelectorProp) {
   const {
-    name, fields, maps, set, defaultField, defaultMap, onNewSelection,
+    name, fields, maps, set, defaultField, defaultMap, onNewFieldSelection, onNewMapSelection,
   } = prop;
   return (
     <Selector
@@ -126,7 +131,8 @@ export function ShapeSelector(prop: SelectorProp) {
       set={set}
       defaultField={defaultField}
       defaultMap={defaultMap}
-      onNewSelection={onNewSelection}
+      onNewMapSelection={onNewMapSelection}
+      onNewFieldSelection={onNewFieldSelection}
     />
   );
 }

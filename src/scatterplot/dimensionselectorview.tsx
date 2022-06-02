@@ -88,7 +88,10 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           defaultMap={xMap}
           fields={xFieldsNames}
           maps={xMaps}
-          onNewSelection={(s: string) => {
+          onNewMapSelection={
+            (s: TransformationSignature) => viewmodel.updateXAxisMap(s)
+          }
+          onNewFieldSelection={(s: string) => {
             viewmodel.updateXAxisField(s);
             setXMap(viewmodel.currentXMap);
           }}
@@ -106,7 +109,10 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           defaultMap={yMap}
           fields={yFieldsNames}
           maps={yMaps}
-          onNewSelection={(s: string) => {
+          onNewMapSelection={
+            (s: TransformationSignature) => viewmodel.updateYAxisMap(s)
+          }
+          onNewFieldSelection={(s: string) => {
             viewmodel.updateYAxisField(s);
             setYMap(viewmodel.currentYMap);
           }}
@@ -124,7 +130,10 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           defaultMap={sizeMap}
           fields={sizeFieldsNames}
           maps={sizeMaps}
-          onNewSelection={(s: string) => {
+          onNewMapSelection={
+            (s: TransformationSignature) => viewmodel.updateSizeMap(s)
+          }
+          onNewFieldSelection={(s: string) => {
             viewmodel.updateSizeField(s);
             setSizeMap(viewmodel.currentSizeMap);
           }}
@@ -142,7 +151,10 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           defaultMap={shapeMap}
           fields={shapeFieldsNames}
           maps={shapeMaps}
-          onNewSelection={(s: string) => {
+          onNewMapSelection={
+            (s: TransformationSignature) => viewmodel.updateShapeMap(s)
+          }
+          onNewFieldSelection={(s: string) => {
             viewmodel.updateShapeField(s);
             setShapeMap(viewmodel.currentShapeMap);
           }}
@@ -160,7 +172,10 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           defaultMap={colorMap}
           fields={colorFieldsNames}
           maps={colorMaps}
-          onNewSelection={(s: string) => {
+          onNewMapSelection={
+            (s: TransformationSignature) => viewmodel.updateColorMap(s)
+          }
+          onNewFieldSelection={(s: string) => {
             viewmodel.updateColorField(s);
             setColorMap(viewmodel.currentColorMap);
           }}

@@ -4,10 +4,10 @@
 /* eslint-disable react/function-component-definition */
 
 import {
-  useEffect, useRef, MutableRefObject, useMemo, ReactElement, useState,
+  useEffect, useRef, MutableRefObject, useMemo,
 } from 'react';
 import {
-  Color, GraphableType, LoginType, Shape, StorableType,
+  GraphableType, StorableType,
 } from '../model/datatypes';
 import { SPREnderablePoint, SPRenderer } from './renderer';
 import SPRenderingSettingsSelectorVM from './renderingsettingsvm';
@@ -15,7 +15,7 @@ import SPRenderingSettingsView from './renderingsettingsview';
 import { SPDimensionSelectorView } from './dimensionselectorview';
 import { SPDimensionSelectorVM } from './dimensionselectorvm';
 import {
-  Dataset, DatasetSignature,
+  Dataset,
 } from '../model/dataset';
 import {
   Transformer,
@@ -23,29 +23,46 @@ import {
 import { SPDimensions } from './dimensions';
 import { SPMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
-import { CSVDatasetParser } from '../model/datasetloader';
-import { HTTPDatasetProvider } from '../model/datasetprovider';
 
 export interface SPViewComposerProps {
   spDimensions: SPDimensions,
   dataset: Dataset
 }
 
- const transformer: Transformer = Transformer.new();
+const transformer: Transformer = Transformer.new();
 
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => 1);
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
-  transformer.add({ identifier: 'int to color', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
-  transformer.add({ identifier: 'date to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
-  transformer.add({ identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
-  transformer.add({ identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0.972, 0.486, 0.427, 1]);
-  transformer.add({ identifier: 'event to shape', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'star');
-  transformer.add({ identifier: 'app to color', from: StorableType.String, to: GraphableType.Color }, () : any => [0.960, 0.925, 0.4, 1]);
-  transformer.add({ identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'ip to int', from: StorableType.Ip, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
-  transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
-  transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
-
+transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
+transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
+transformer.add({ identifier: 'int to color', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
+transformer.add({ identifier: 'date to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
+transformer.add({ identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
+transformer.add({ identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0.972, 0.486, 0.427, 1]);
+transformer.add({ identifier: 'event to shape', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'star');
+transformer.add({ identifier: 'app to color', from: StorableType.String, to: GraphableType.Color }, () : any => [0.960, 0.925, 0.4, 1]);
+transformer.add({ identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
+transformer.add({ identifier: 'ip to int', from: StorableType.Ip, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
+transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
+transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
+transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Int }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Real }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
+transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Shape }, () : any => 'square');
+transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Int }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Real }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
+transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Shape }, () : any => 'square');
+transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Int }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Real }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
+transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'square');
+transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Int }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Real }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
+transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
+transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Int }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Real }, () : any => 1);
+transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
+transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Shape }, () : any => 'square');
 
 export const SPViewComposer = (
   prop : SPViewComposerProps,
@@ -66,8 +83,8 @@ export const SPViewComposer = (
   // eslint-disable-next-line max-len
   const renderSettingsVM = useMemo(() => ({
     model: new SPRenderingSettingsSelectorVM({
-      domainX: [1591223585000, 1616278841000],
-      domainY: [0, 65],
+      domainX: [1600651710000, 1625051710000],
+      domainY: [0, 33000],
     }),
   }), []);
 
@@ -89,14 +106,14 @@ export const SPViewComposer = (
 
   useEffect(() => {
     if (ref !== null) {
-      console.log("Render effect")
+      console.log('Render effect');
       renderer.render(ref as MutableRefObject<HTMLDivElement>);
     }
   }, []);
 
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
-    console.log("Render reload")
+    console.log('Render reload');
     spMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
