@@ -50,8 +50,8 @@ describe('scatterplot mapper', () => {
 
     const ds = {
       entries: () => [
-        { get: () => 1 },
-        { get: () => 2 },
+        { get: () => ({ value: 1 }) },
+        { get: () => ({ value: 2 }) },
       ],
     };
 
