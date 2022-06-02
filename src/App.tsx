@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, MutableRefObject, useMemo, FormEventHandler,
+  useEffect, useRef, MutableRefObject, useMemo, FormEventHandler, useState,
 } from 'react';
 import {
   Color, GraphableType, Shape, StorableType,
@@ -9,167 +9,26 @@ import SPRenderingSettingsSelectorVM from './scatterplot/renderingsettingsvm';
 import SPRenderingSettingsView from './scatterplot/renderingsettingsview';
 import SPDimensionSelectorView from './scatterplot/dimensionselectorview';
 import { SPDimensionSelectorVM } from './scatterplot/dimensionselectorvm';
-import { DatasetSignature } from './model/dataset';
+import { Dataset, DatasetSignature } from './model/dataset';
 import { TransformationSignature, TransformationQuerryable } from './model/transformer';
 import { SPDimensions } from './scatterplot/dimensions';
 import { SPMapper } from './scatterplot/mapper';
 import SPViewComposer from './scatterplot/spviewcomposer';
+import { CSVDatasetParser } from './model/datasetloader';
+import { HTTPDatasetProvider } from './model/datasetprovider';
 
 function App() {
-  //const ref = useRef<HTMLDivElement>(null);
+  const pointcsv = '10;744598728;2020-06-15 14:19:45.000;2;ERM;erm3zs02;ip_2;"          ";"          ";zx2e87892e\n10;922713975;2020-11-04 10:56:10.000;2;ERM;erm3zs02;ip_3;"          ";"          ";ukmk56u3zv\n17;37103170;2021-03-09 09:34:01.000;2;ERM;erm3zs02;ip_4;"          ";"          ";x817ikmgsk\n17;84371471;2021-04-29 14:12:31.000;1;ERM;erm3zs02;ip_4;"006       ";vsvefmedzu;r2hhwyei0b\n17;199266238;2021-02-02 09:04:05.000;2;ERM;erm3zs02;ip_4;"          ";"          ";i8cfakl78n\n17;225652999;2021-02-02 09:04:05.000;1;ERM;erm3zs02;ip_4;"006       ";hlqffmgglu;c1wpq4r93s\n17;243769831;2021-03-09 10:23:06.000;1;ERM;erm3zs02;ip_4;"006       ";gqvayusnbd;vl7m9grrhb\n17;245702123;2021-03-04 11:06:45.000;1;ERM;erm3zs02;ip_4;"006       ";gzbsamehsm;jpr32wxbuw\n17;279198338;2021-04-29 14:12:31.000;2;ERM;erm3zs02;ip_4;"          ";"          ";lgbv6iuptf\n17;337103223;2021-03-09 09:34:01.000;1;ERM;erm3zs02;ip_4;"006       ";embuifusll;ffwiz208zg\n17;376457170;2021-03-09 10:23:06.000;2;ERM;erm3zs02;ip_4;"          ";"          ";obl0jk5vc8\n17;639611601;2021-03-04 11:06:45.000;2;ERM;erm3zs02;ip_4;"          ";"          ";osyf4acqg6\n17;675896707;2021-03-04 10:30:15.000;2;ERM;erm3zs02;ip_4;"          ";"          ";g1tjckbix5\n17;753664448;2021-03-04 15:49:20.000;2;ERM;erm3zs02;ip_4;"          ";"          ";e4k5fcvfwl\n17;761869196;2021-03-04 10:30:15.000;1;ERM;erm3zs02;ip_4;"006       ";xsekgselkd;ex3q81ab4p\n17;766604474;2021-04-01 15:23:30.000;1;ERM;erm3zs02;ip_4;"006       ";zxkitutmhn;w08d4p3ads\n17;799436489;2021-03-04 15:49:20.000;1;ERM;erm3zs02;ip_4;"006       ";tiendkgpae;vvpcsitz7u\n17;802221495;2021-04-01 15:23:30.000;2;ERM;erm3zs02;ip_4;"          ";"          ";s5pph8tat9\n17;846757338;2021-03-04 10:30:22.000;2;ERM;erm3zs02;ip_4;"          ";"          ";hm5rim4fdf\n';
 
-  /* const data = [
-    {
-      id: 10,
-      timestamp: 1593172218,
-      loginOutcome: 2,
-      application: 'ERM',
-      ip: '2.228.10.106',
-    },
-    {
-      id: 17,
-      timestamp: 1604487370,
-      loginOutcome: 2,
-      application: 'ERM',
-      ip: '62.108.225.252',
-    },
-    {
-      id: 18,
-      timestamp: 1615285386,
-      loginOutcome: 2,
-      application: 'ERM',
-      ip: '62.108.225.150',
-    },
-    {
-      id: 21,
-      timestamp: 1618754885,
-      loginOutcome: 3,
-      application: 'ERM',
-      ip: '62.108.225.252',
-    },
-    {
-      id: 24,
-      timestamp: 1618754984,
-      loginOutcome: 2,
-      application: 'ERM',
-      ip: '62.108.225.79',
-    },
-    {
-      id: 21,
-      timestamp: 1618754986,
-      loginOutcome: 1,
-      application: 'HR1',
-      ip: '',
-    },
-    {
-      id: 21,
-      timestamp: 1621757889,
-      loginOutcome: 3,
-      application: 'HRC',
-      ip: '',
-    },
-    {
-      id: 21,
-      timestamp: 1623672848,
-      loginOutcome: 1,
-      application: 'HRW',
-      ip: '',
-    },
-  ];
+  const parser = new CSVDatasetParser(';');
 
-  const signature: DatasetSignature = new Set(
-    [
-      ['id', StorableType.Int],
-      ['timestamp', StorableType.Int],
-      ['loginOutcome', StorableType.LoginType],
-      ['application', StorableType.String],
-      ['ip', StorableType.String],
-    ],
-  );
-  const selection: SPDimensions = {
-    x: ['timestamp', { identifier: 'timestamp', from: StorableType.Int, to: GraphableType.Real }],
-    y: ['loginOutcome', { identifier: 'loginOutcome', from: StorableType.LoginType, to: GraphableType.Real }],
-    size: ['application', { identifier: 'application', from: StorableType.String, to: GraphableType.Int }],
-    shape: ['id', { identifier: 'id', from: StorableType.Int, to: GraphableType.Shape }],
-    color: ['ip', { identifier: 'ip', from: StorableType.String, to: GraphableType.Color }],
-  };
+  const datasetProvider = new HTTPDatasetProvider(parser);
 
-  const points = useMemo(() => [
-    {
-      x: 5,
-      y: 5,
-      size: 1000,
-      shape: 'star' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-    {
-      x: 7,
-      y: 7,
-      size: 1000,
-      shape: 'square' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-    {
-      x: 4,
-      y: 3,
-      size: 1000,
-      shape: 'triangle' as Shape,
-      color: [0.6, 0.4, 1, 1] as Color,
-    },
-    {
-      x: 4,
-      y: 8,
-      size: 500,
-      shape: 'triangle' as Shape,
-      color: [1, 0.5, 1, 1] as Color,
-    },
-  ], []);
-
-  const transformationQuerryable: TransformationQuerryable = {
-    compatibleTransformers: () => new Set(['timestamp', 'loginOutcome', 'application', 'id', 'ip']),
-    compatibleStorableTypes: (g) => {
-      if (g === GraphableType.Int) {
-        return new Set([StorableType.Int]);
-      }
-      return new Set();
-    },
-  };
-
-  const transformationProvider: TransformationProvider = { get: {} };
-
-  const dimensionSelectorVM = useMemo(() => ({
-    model: new SPDimensionSelectorVM(
-      transformationQuerryable,
-      signature,
-      selection,
-    ),
-  }), []);
-
-  const spMapper: SPMapper = new SPMapper(transformationProvider, selection);
-
-  // eslint-disable-next-line max-len
-  const renderSettingsVM = useMemo(() => ({
-    model: new SPRenderingSettingsSelectorVM({
-      domainX: [0, 15],
-      domainY: [0, 20],
-    }),
-  }), []);
-
-  // eslint-disable-next-line max-len
-  const renderer = useMemo(() => new SPRenderer(points, renderSettingsVM.model.getSettings), [points, renderSettingsVM.model.getSettings]);
+  const [dataset, setDataset] = useState<null | Dataset>(null);
 
   useEffect(() => {
-    if (ref !== null) {
-      renderer.render(ref as MutableRefObject<HTMLDivElement>);
-    }
-  }, [ref, renderer, renderSettingsVM.model.getSettings, points]);
-
-  function reload() {
-    document.getElementById('render').innerHTML = '';
-    const renderernew = new SPRenderer(points, renderSettingsVM.model.getSettings);
-    renderernew.render(ref as MutableRefObject<HTMLDivElement>);
-  }
- */
+    datasetProvider.load('http://localhost:3000/coded_log.csv').then((r) => setDataset(r as Dataset));
+  });
 
   const spDimensions: SPDimensions = {
     x: ['timestamp', { identifier: 'date to real', from: StorableType.Date, to: GraphableType.Real }],
@@ -178,9 +37,16 @@ function App() {
     shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
     color: ['eventType', { identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }],
   };
+  if (dataset !== null) {
+    return (
+      <div className="app">
+        <SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />
+      </div>
+    );
+  }
   return (
-    <div className="app">
-      <SPViewComposer spDimensions={spDimensions} />
+    <div>
+      Caricamento
     </div>
   );
 }

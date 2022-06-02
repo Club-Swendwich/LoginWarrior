@@ -43,7 +43,10 @@ export class CSVDatasetParser implements DatasetParser {
   }
 
   public parse(content: string): Dataset | ParseError {
-    if (content.trim() === '') return ParseError.InvalidFormat;
+    if (content.trim() === '') {
+      console.log('trimmino', content.trim());
+      return ParseError.InvalidFormat;
+    }
 
     const dsvRead = this.format.parseRows(content);
     return CSVDatasetParser.parseRows(dsvRead);
@@ -52,6 +55,7 @@ export class CSVDatasetParser implements DatasetParser {
   private static parseRows(data: string[][]): Dataset | ParseError {
     const mappedData = data.map(CSVDatasetParser.parseCSVEntry);
     if (mappedData.includes(undefined)) {
+      console.log('rowino', data);
       return ParseError.InvalidRow;
     }
     return new Dataset(mappedData as DatasetEntry[]);
