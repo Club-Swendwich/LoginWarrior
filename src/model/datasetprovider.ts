@@ -6,17 +6,16 @@ export enum ProvideError {
 }
 
 interface DatasetProvider {
-    load: () => Promise<Dataset | ProvideError | ParseError>;
+    load: (url: string) => Promise<Dataset | ProvideError | ParseError>;
 }
 
 export class HTTPDatasetProvider implements DatasetProvider {
     constructor(
-        private readonly url: string,
         private readonly parser: DatasetParser,
     ) { }
 
-   async load(): Promise<Dataset | ProvideError | ParseError > {
-       let res = await fetch(this.url);
+   async load(url: string): Promise<Dataset | ProvideError | ParseError > {
+       let res = await fetch(url);
        if (!res.ok) {
            return ProvideError.NetworkError;
        }
