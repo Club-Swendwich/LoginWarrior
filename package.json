@@ -20,6 +20,7 @@
         "mobx-react": "^7.4.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
+        "react-dropzone": "^14.2.1",
         "react-force-graph-2d": "^1.23.10",
         "react-scripts": "5.0.0",
         "react-test-renderer": "^18.1.0",
@@ -36,7 +37,10 @@
         "moduleNameMapper": {
             "d3": "<rootDir>/node_modules/d3/dist/d3.min.js"
         },
-        "coverageReporters": ["json", "html"]
+        "coverageReporters": [
+            "json",
+            "html"
+        ]
     },
     "eslintConfig": {
         "extends": [

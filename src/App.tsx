@@ -1,6 +1,7 @@
 import React, {
-  useEffect, useRef, MutableRefObject, useMemo, FormEventHandler, useState,
+  useEffect, useRef, MutableRefObject, useMemo, FormEventHandler, useState, useCallback,
 } from 'react';
+import { useDropzone } from 'react-dropzone';
 import {
   Color, GraphableType, Shape, StorableType,
 } from './model/datatypes';
@@ -25,10 +26,26 @@ function App() {
   const datasetProvider = new HTTPDatasetProvider(parser);
 
   const [dataset, setDataset] = useState<null | Dataset>(null);
+  const [drag, setDrag] = useState(false);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     datasetProvider.load('http://localhost:3000/coded_log.csv').then((r) => setDataset(r as Dataset));
+  }, []); */
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const reader = new FileReader();
+
+    reader.onabort = () => console.log('file reading was aborted');
+    reader.onerror = () => console.log('file reading failed');
+    reader.onload = () => {
+      datasetProvider.load(acceptedFiles).then((r) => setDataset(r as Dataset));
+      setDrag(true);
+    };
+
+    // read file contents
+    acceptedFiles.forEach((file) => reader.readAsBinaryString(file));
   }, []);
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const spDimensions: SPDimensions = {
     x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
@@ -37,16 +54,29 @@ function App() {
     shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
     color: ['eventType', { identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }],
   };
-  if (dataset !== null) {
+  console.log(drag);
+  console.log(dataset);
+  if (drag === true) {
+    console.log('drag TRUE');
+    if (dataset !== null) {
+      console.log('non null');
+      return (
+        <div className="app">
+          <SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />
+        </div>
+      );
+    }
+    console.log('null');
     return (
-      <div className="app">
-        <SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />
+      <div>
+        Caricamento
       </div>
     );
   }
   return (
-    <div>
-      Caricamento
+    <div style={{ display: 'flex', width: '100%', height: '150px', border: '1px dashed', justifyContent: 'center', alignItems: 'center' }} className="drag" {...getRootProps()}>
+      <input {...getInputProps()} />
+      <h1>Clicca qui o trascina il file csv nel riquadro</h1>
     </div>
   );
 }
