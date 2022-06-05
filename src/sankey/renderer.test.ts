@@ -16,9 +16,15 @@ describe("SKRenderer", () => {
         expect(renderer.svgHeight).toEqual(100);
     });    
 
-        expect(renderer.svgWidth).toBe(100);
-        expect(renderer.svgHeight).toBe(100);
-        expect(renderer.svgHeight).toBe(20);
-        expect(renderer.svgHeight).toBe(0.2);
+    it('should correctly render an empty input', () =>{
+        // TODO        
+    });
+
+    it('should render correctly a big input', () => {
+        // TODO
+    });
+
+    it('should\'t render if an invalid ref is passed', () => {
+        // TODO
     });
 });

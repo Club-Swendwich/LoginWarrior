@@ -1,8 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react/function-component-definition */
-
 import {
   useEffect, useRef, MutableRefObject, useMemo,
 } from 'react';
@@ -10,23 +5,35 @@ import { timeStamp } from 'console';
 import {
   GraphableType, StorableType,
 } from '../model/datatypes';
-import { SPREnderablePoint, SPRenderer } from './renderer';
-import SPRenderingSettingsSelectorVM from './renderingsettingsvm';
-import SPRenderingSettingsView from './renderingsettingsview';
-import { SPDimensionSelectorView } from './dimensionselectorview';
-import { SPDimensionSelectorVM } from './dimensionselectorvm';
+//RENDERER
+import {
+  SKRenderer
+} from './renderer'
+import * as d3Sankey from 'd3-sankey';
+
+//VIEW  
+import {InstanceSankeyRenderingSettingsSelectorVm} from "./viewModel/settingsSelectorView"
+import  SankeyViewSettings  from "./viewModel/settingsSelectorView"
+import SankeyView from "./viewModel/SankeyView";
+
+//DIMENSION
+import { SKDimensionSelectorView } from './dimensions/SKdimensionselectorview';
+import { SKDimensionSelectorVM } from './dimensions/SKdimensionselectorvm';
 import {
   Dataset, DatasetEntry, DatasetValue,
 } from '../model/dataset';
 import {
   Transformer,
 } from '../model/transformer';
-import { SPDimensions } from './dimensions';
-import { SPMapper } from './mapper';
+import { SKDimensions } from './dimensions/SKDimensions';
+import { SKMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
 
+
+
+
 export interface SPViewComposerProps {
-  spDimensions: SPDimensions,
+  spDimensions: SKDimensions,
   dataset: Dataset
 }
 
@@ -38,47 +45,11 @@ export const SPViewComposer = (
 
   const transformer: Transformer = Transformer.new();
 
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
-  transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
-  transformer.add({ identifier: 'int to color', from: StorableType.Int, to: GraphableType.Color }, () : any => [0.494, 0.905, 0.611, 1]);
-  transformer.add({ identifier: 'timestamp to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
-  transformer.add({ identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
-  transformer.add({ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getDate());
-  transformer.add({ identifier: 'minuti dalla mezzanotte', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getHours() * 60 + a.getMinutes() * 60 + a.getMinutes());
-  transformer.add({ identifier: 'ora del giorno', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getHours());
-  transformer.add({ identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0.972, 0.486, 0.427, 1]);
-  transformer.add({ identifier: 'event to shape', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'star');
-  transformer.add({ identifier: 'app to color', from: StorableType.String, to: GraphableType.Color }, () : any => [0.960, 0.925, 0.4, 1]);
-  transformer.add({ identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'ip to int', from: StorableType.Ip, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
-  transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
-  transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0.780, 0.4, 0.960, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Real }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Real }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Real }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Real }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Real }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Shape }, () : any => 'square');
-
   // eslint-disable-next-line max-len
-  const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
+  const spMapper: SKMapper = useMemo(() => new SKMapper(transformer, spDimensions), [spDimensions, transformer]);
 
   const dimensionSelectorVM = useMemo(() => ({
-    model: new SPDimensionSelectorVM(
+    model: new SKDimensionSelectorVM(
       transformer,
       dataset.signature,
       spDimensions,
@@ -86,28 +57,81 @@ export const SPViewComposer = (
   }), [dataset, spDimensions, transformer]);
 
   // eslint-disable-next-line max-len
-  const renderSettingsVM = useMemo(() => ({
-    model: new SPRenderingSettingsSelectorVM({
-      domainX: [1600651710000, 1625051710000],
-      domainY: [0, 33000],
-    }),
+  const settings = useMemo(() => ({
+    width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
+    height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
+    nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
+    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
   }), []);
 
+  const data = useMemo(() => ({
+    nodes: [{
+        nodeId: 0,
+        name: "node0"
+    }, {
+        nodeId: 1,
+        name: "node1"
+    }, {
+        nodeId: 2,
+        name: "node2"
+    }, {
+        nodeId: 3,
+        name: "node3"
+    }, {
+        nodeId: 4,
+        name: "node4"
+    }, {
+        nodeId: 5,
+        name: "node5"
+    }],
+      links: [{
+        source: 0,
+        target: 2,
+        value: 2,
+
+    }, {
+        source: 1,
+        target: 2,
+        value: 2,
+
+    }, {
+        source: 1,
+        target: 3,
+        value: 2,
+
+    }, {
+        source: 0,
+        target: 4,
+        value: 2,
+
+    }, {
+        source: 2,
+        target: 3,
+        value: 2,
+
+    }, {
+        source: 2,
+        target: 4,
+        value: 2,
+
+    }, {
+        source: 3,
+        target: 4,
+        value: 4,
+
+    }, {
+        source: 5,
+        target: 2,
+        value: 10
+    }]
+    }), [])
   // eslint-disable-next-line max-len
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const renderer = useMemo(
-    () => {
-      let dat: SPREnderablePoint[] = [];
-      if (spMapper.map(dataset as Dataset) !== MapperError.UnknownField) {
-        dat = spMapper.map(dataset as Dataset) as SPREnderablePoint[];
-      }
-      return new SPRenderer(
-        dat,
-        renderSettingsVM.model.getSettings,
-      );
-    },
-    [renderSettingsVM.model.getSettings, spMapper, dataset],
-  );
+  const renderer = useMemo(() => new SKRenderer(settings, data), [settings, data])
+  useEffect(() => {
+      if (ref !== null) 
+        renderer.render(ref as MutableRefObject<HTMLDivElement>)
+  }, [ref, renderer, settings, data])
 
   useEffect(() => {
     if (ref !== null) {
@@ -116,41 +140,103 @@ export const SPViewComposer = (
     }
   }, []);
 
-  function reload(): void {
-    document.getElementById('render')!.innerHTML = '';
-    console.log('Render reload');
-    spMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
-    const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);
-    renderernew.render(ref as MutableRefObject<HTMLDivElement>);
+
+  
+  function reload() {
+    const datanew = ({
+      nodes: [{
+          nodeId: 0,
+          name: "node0"
+      }, {
+          nodeId: 1,
+          name: "node1"
+      }, {
+          nodeId: 2,
+          name: "node2"
+      }, {
+          nodeId: 3,
+          name: "node3"
+      }, {
+          nodeId: 4,
+          name: "node4"
+      }, {
+          nodeId: 5,
+          name: "node5"
+      }],
+        links: [{
+          source: 0,
+          target: 2,
+          value: 2,
+
+      }, {
+          source: 1,
+          target: 2,
+          value: 2,
+
+      }, {
+          source: 1,
+          target: 3,
+          value: 2,
+
+      }, {
+          source: 0,
+          target: 4,
+          value: 2,
+
+      }, {
+          source: 2,
+          target: 3,
+          value: 2,
+
+      }, {
+          source: 2,
+          target: 4,
+          value: 2,
+
+      }, {
+          source: 3,
+          target: 4,
+          value: 4,
+
+      }, {
+          source: 5,
+          target: 2,
+          value: 10
+      }]
+      })
+
+  const settingsnew = ({
+    width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
+    height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
+    nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
+    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
+  });
+  document.getElementById("render").innerHTML = "";
+    const renderernew =  new SKRenderer(settingsnew, datanew);
+    renderernew.render(ref as MutableRefObject<HTMLDivElement>)
+    console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
 
   return (
-    <>
-      <h1>ScatterPlot</h1>
+    <>  
       <style>
         {`
-              .renderArea {
-                  height: 400px;
-              }
-          `}
+          .renderArea {
+              height: 400px;
+          }
+        `}
       </style>
       {/* eslint-disable */}
-        <div ref={ref} className="renderArea" id = "render"/>
-        <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
-          <div style={{display: 'inline-block'}}>
-            <h2>Selezione dimensioni:</h2>
-            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
-          </div>
-          <div style={{display: 'inline-block'}}>
-            <h2>Selezione dominio:</h2>
-            <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
-            <button onClick={reload}>
-              Click to reload!
-            </button>
-          </div>
-        </div>
-      </>
-  );
+      <main className="text-gray-400 bg-gray-900 body-font">
+      <div ref={ref} className="renderArea" id="render"/>
+      <SankeyView viewModel={InstanceSankeyRenderingSettingsSelectorVm}/>
+      <button onClick={reload}>
+        Click to reload!
+      </button>
+      </main>
+    </>
+    );
 }
+
 
 export default SPViewComposer

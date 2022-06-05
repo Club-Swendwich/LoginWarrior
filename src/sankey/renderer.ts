@@ -4,7 +4,6 @@ import { Renderer } from '../genericview/renderer';
 import { CustomNode, CustomLink } from '../model/datatypes';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
-import chroma from "chroma-js";
 import SankeySettings from "./sankRendererSettings"
 
 export type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
@@ -21,9 +20,9 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     public constructor(
         private settings: SankeySettings,
         private SKRenderableData: GraphData
-    ) { }
-
-    updateSettings(s: RenderSettings): void {
+    ) {}
+    
+    updateSettings(s: SankeySettings): void {
         this.settings = s;
     }
     updatePoints(p: GraphData): void {
@@ -33,6 +32,9 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     render(ref: MutableRefObject<HTMLDivElement>): void {
         const height = this.settings.height;
         const width = this.settings.width;
+        const nodewidth = this.settings.nodewidth;
+        
+
         const svg = d3.select(ref.current)
             .append("svg")
             .attr("width", width)
@@ -43,7 +45,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                 (accessor: SNode) => accessor.nodeId
             )
             .nodeAlign(d3Sankey.sankeyLeft)
-            .nodeWidth(25)
+            .nodeWidth(nodewidth)
             .nodePadding(10)
             .extent([[1, 1], [width - 1, height - 6]]);
         graph(this.SKRenderableData);
