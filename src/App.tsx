@@ -37,8 +37,8 @@ function App() {
     x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
     y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
     size: ['userId', { identifier: 'default', from: StorableType.Int, to: GraphableType.Int }],
-    shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
-    color: ['eventType', { identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }],
+    shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
+    color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
   };
   if (drag === true) {
     if (dataset !== null) {
