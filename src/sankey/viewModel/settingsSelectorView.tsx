@@ -4,12 +4,10 @@ import { toUnicode } from 'punycode'
 import React , { useState } from 'react'
 import SankeyRenderingSettingsSelector from "../sankRenderingSettingsSelector"
 import SankeySettings from "../sankRendererSettings"
-import { OutputListImpl } from "./output"
 import { Domain } from 'domain'
 import App from "../../App"
 
 interface SettingsProp { //Mi serve per mettere apposto
-    output: OutputListImpl;
     settingsVM: SankeyRenderingSettingsSelectorVM;
 }
 

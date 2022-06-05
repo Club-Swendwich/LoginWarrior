@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { SankeyLink, SankeyNode } from 'd3-sankey';
-
-=======
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
 /**
  * The enum that rappresents a type that can be stored in the dataset
  */
@@ -10,12 +5,9 @@ export enum StorableType {
   Int,
   String,
   LoginType,
-<<<<<<< HEAD
   Date,
   Ip,
-=======
   ApplicationType
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
 }
 
 /**
@@ -24,14 +16,9 @@ export enum StorableType {
 export type StorableTypeToRepr<T extends StorableType>
     = T extends StorableType.Int ? Int
       : T extends StorableType.String ? string
-<<<<<<< HEAD
         : T extends StorableType.Date ? Date
           : T extends StorableType.Ip ? string
             : LoginType;
-=======
-        : T extends StorableType.LoginType ? LoginType
-          : ApplicationType;
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
 
 /**
  * A type that can be plotted by a graph
@@ -93,12 +80,4 @@ export type CustomNode = {
   name: string;
 };
 
-<<<<<<< HEAD
-export type CustomLink = {
-  source: number;
-  target: number;
-  value: number;
-};
-=======
 export type CustomLink = {}
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5

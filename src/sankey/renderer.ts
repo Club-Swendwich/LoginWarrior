@@ -7,17 +7,6 @@ import * as d3Sankey from 'd3-sankey';
 import chroma from "chroma-js";
 import SankeySettings from "./sankRendererSettings"
 
-<<<<<<< HEAD
-type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
-type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
-
-export interface GraphData {
-    nodes: SNode[];
-    links: SLink[];
-}
-
-export class SKRenderer implements Renderer<SankeySettings, GraphData>{
-=======
 export type SNode = d3Sankey.SankeyNode<CustomNode, CustomLink>;
 export type SLink = d3Sankey.SankeyLink<CustomNode, CustomLink>;
 export type GraphData = d3Sankey.SankeyGraph<CustomNode, CustomLink>;
@@ -29,19 +18,12 @@ export interface RenderSettings {
 }
 
 export class SKRenderer implements Renderer<RenderSettings, GraphData>{
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
     public constructor(
         private settings: SankeySettings,
         private SKRenderableData: GraphData
-<<<<<<< HEAD
-    ) {}
-    
-    updateSettings(s: SankeySettings): void {
-=======
     ) { }
 
     updateSettings(s: RenderSettings): void {
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
         this.settings = s;
     }
     updatePoints(p: GraphData): void {
@@ -51,23 +33,11 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     render(ref: MutableRefObject<HTMLDivElement>): void {
         const height = this.settings.height;
         const width = this.settings.width;
-<<<<<<< HEAD
-        const nodewidth = this.settings.nodewidth;
-        
-
-=======
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
         const svg = d3.select(ref.current)
             .append("svg")
             .attr("width", width)
             .attr("height", height);
 
-<<<<<<< HEAD
-        const graph = d3Sankey.sankey()
-                        .nodeWidth(nodewidth)
-                        .nodePadding(10)
-                        .extent([[1, 1], [width - 1, height - 6]]);
-=======
         const graph = d3Sankey.sankey<GraphData, CustomNode, CustomLink>()
             .nodeId(
                 (accessor: SNode) => accessor.nodeId
@@ -76,7 +46,6 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
             .nodeWidth(25)
             .nodePadding(10)
             .extent([[1, 1], [width - 1, height - 6]]);
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
         graph(this.SKRenderableData);
 
         const links = this.createLinks(svg);
@@ -88,30 +57,6 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
      * @param svg the plot area 
      * @returns the created links
      */
-<<<<<<< HEAD
-    private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {     
-        const opacity = this.settings.opacity;
-        
-        const link = svg.append("g").selectAll(".link")
-                    .data(this.SKRenderableData.links)
-                    .enter().append("path")
-                    .attr("class", "link")
-                    .attr("d", d3Sankey.sankeyLinkHorizontal())
-                    .attr("stroke", "#000")
-                    .attr("stroke-opacity", opacity)
-                    .attr("fill", "none")
-                    .attr("stroke-width", function(d: any) { 
-                        return Math.max(1, d.width); 
-                    })
-                    .on("mouseover", function () {
-                        d3.select(this)
-                        .attr("stroke-opacity", 0.5)
-                    })
-                    .on("mouseleave", function () {
-                        d3.select(this)
-                        .attr("stroke-opacity", 0.2)
-                    })
-=======
     private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {
         const link = svg.append("g").selectAll(".link")
             .data(this.SKRenderableData.links)
@@ -132,7 +77,6 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                 d3.select(this)
                     .attr("stroke-opacity", 0.2)
             })
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
         return link;
     }
 

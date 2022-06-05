@@ -3,7 +3,7 @@ import { Mapper } from "../genericview/mapper";
 import { Dataset, DatasetEntry } from "../model/dataset";
 import { SankeyLayer } from "../model/datatypes";
 import { TransformationProvider, TransformationSignature } from "../model/transformer";
-import { SKDimensions } from "./Dimensions/SKDimensions";
+import { SKDimensions } from "./dimensions/SKDimensions";
 import { SLink, SNode } from "./renderer";
 
 

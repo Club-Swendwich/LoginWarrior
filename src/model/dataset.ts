@@ -103,16 +103,8 @@ export type DatasetValue = {
   type: StorableType.LoginType
   value: StorableTypeToRepr<StorableType.LoginType>
 } | {
-<<<<<<< HEAD
-  type: StorableType.Date
-  value: StorableTypeToRepr<StorableType.Date>
-} | {
-  type: StorableType.Ip
-  value: StorableTypeToRepr<StorableType.Ip>
-=======
   type: StorableType.ApplicationType
   value: StorableTypeToRepr<StorableType.ApplicationType>
->>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
 };
 
 /**

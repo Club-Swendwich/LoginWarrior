@@ -16,22 +16,9 @@ describe("SKRenderer", () => {
         expect(renderer.svgHeight).toEqual(100);
     });    
 
-<<<<<<< HEAD
-    it('should correctly render an empty input', () =>{
-        // TODO        
-    });
-
-    it('should render correctly a big input', () => {
-        // TODO
-    });
-
-    it('should\'t render if an invalid ref is passed', () => {
-        // TODO
-=======
         expect(renderer.svgWidth).toBe(100);
         expect(renderer.svgHeight).toBe(100);
         expect(renderer.svgHeight).toBe(20);
         expect(renderer.svgHeight).toBe(0.2);
->>>>>>> 5a1ad307ec7d680d7d0ecb49d39b6bc1dee4292d
     });
 });

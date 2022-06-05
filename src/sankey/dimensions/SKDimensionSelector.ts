@@ -1,6 +1,6 @@
 import { DimensionSelector } from "../../genericview/dimensionselector";
 import { DatasetSignature } from "../../model/dataset";
-import { GraphableType, StorableType, SankeyLayer, LoginType } from "../../model/datatypes";
+import { GraphableType, StorableType, SankeyLayer } from "../../model/datatypes";
 import { TransformationQuerryable, TransformationSignature } from "../../model/transformer";
 import { SKDimensions } from "./SKDimensions";
 
