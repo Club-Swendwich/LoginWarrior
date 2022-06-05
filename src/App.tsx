@@ -1,68 +1,76 @@
-/* eslint-disable */
-import {
-  MutableRefObject,
-  useEffect,
-  useMemo,
-  useRef
+import React, {
+  useState, useCallback,
 } from 'react';
+import { useDropzone } from 'react-dropzone';
 import {
-  FdGRenderer
-} from './ForceDirectedGraph/fdgRenderer'
+  GraphableType, StorableType,
+} from './model/datatypes';
+import { Dataset } from './model/dataset';
+import { SPDimensions } from './scatterplot/dimensions';
+import SPViewComposer from './scatterplot/spviewcomposer';
+import { CSVDatasetParser } from './model/datasetloader';
 
 function App() {
-    const ref = useRef<HTMLDivElement>(null)
-    const settings = useMemo(() => ({
-      width:      2000,
-      height:     2000,
-      backgroundColor: '#000000',
+  const parser = new CSVDatasetParser(';');
 
-      nodeRelSize:   4,
-      
-      linkColor: '#FFFFFF',
-      arrowSize:  0,
+  const [dataset, setDataset] = useState<null | Dataset>(null);
+  const [drag, setDrag] = useState(false);
 
-      zoomNear:   75,
-      zoomFar:    16000 
-    }), []);
-    
-    const data = useMemo(() => ({
-      nodes: [
-        { id: "node1", name: "Marco", description: "prova descrizione"},
-        { id: "node2", name: "LuBu", description: "prova descrizione"},
-        { id: "node3", name: "Gianni", description: "prova descrizione"},
-        { id: "node4", name: "Filippo", description: "prova descrizione"},
-        { id: "node5", name: "LuBu", description: "prova descrizione"},
-        { id: "node6", name: "Frango", description: "prova descrizione"}
-      ],
-      links: [
-        { source: "node1", target: "node2"},
-        { source: "node2", target: "node1"},
-        { source: "node5", target: "node3"},
-        { source: "node6", target: "node2"},
-        { source: "node6", target: "node1"},
-        { source: "node6", target: "node3"},
-      ]
-    }), [])
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
 
-    const renderer = useMemo(() => new FdGRenderer(settings, data), [settings, data])
-    useEffect(() => {
-        if (ref !== null) 
-          renderer.render(ref as MutableRefObject<HTMLDivElement>)
-    }, [ref, renderer, settings, data])
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onload = () => {
+      // Do whatever you want with the file contents
+        setDataset(parser.parse((reader.result as string).replace(/^[\r\n]+/gm, '')) as Dataset);
+        setDrag(true);
+      };
+      reader.readAsText(file);
+    });
+  }, []);
 
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const spDimensions: SPDimensions = {
+    x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
+    y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
+    size: ['userId', { identifier: 'default', from: StorableType.Int, to: GraphableType.Int }],
+    shape: ['appId', { identifier: 'app to shape', from: StorableType.String, to: GraphableType.Shape }],
+    color: ['eventType', { identifier: 'event to color', from: StorableType.LoginType, to: GraphableType.Color }],
+  };
+  if (drag === true) {
+    if (dataset !== null) {
+      return (
+        <div className="app">
+          <SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />
+        </div>
+      );
+    }
+    console.log('null');
     return (
-    <>  
-      <style>
-        {`
-          .renderArea {
-              height: 400px;
-          }
-        `}
-      </style>
-      {/* eslint-disable */}
-      <div ref={ref} className="renderArea"/>
-    </>
+      <div>
+        Caricamento
+      </div>
     );
+  }
+  return (
+    <div
+      style={{
+        display: 'flex', width: '100%', height: '150px', border: '1px dashed', justifyContent: 'center', alignItems: 'center',
+      }}
+      className="drag"
+      {...getRootProps()}
+    >
+      <input {...getInputProps()} />
+      <h1>Clicca qui o trascina il file csv nel riquadro</h1>
+    </div>
+  );
 }
+<<<<<<< HEAD
 
 export default App;
+=======
+export default App;
+>>>>>>> 648e2aa4ee7cdabf751e0b5bbb89db9e82786654
