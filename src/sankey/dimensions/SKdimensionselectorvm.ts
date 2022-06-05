@@ -1,10 +1,10 @@
 import { action, computed, observable } from 'mobx';
 import { SkDimensionSelector } from './SKDimensionSelector';
-import { TransformationSignature, TransformationQuerryable } from '../model/transformer';
+import { TransformationSignature, TransformationQuerryable } from '../../model/transformer';
 import { SKDimensions } from './SKDimensions';
 import { DatasetSignature } from '../../model/dataset';
 
-export class SPDimensionSelectorVM {
+export class SKDimensionSelectorVM {
   @observable
   private selector: SkDimensionSelector;
 
