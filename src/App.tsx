@@ -43,14 +43,15 @@ function App(): JSX.Element {
 
     const data = useMemo(() => ({
       nodes: [{
-          nodeId: 0,
+          nodeId: "00",
           name: "node0"
       }, {
-          nodeId: 1,
+          nodeId: "01",
           name: "node1"
       }, {
-          nodeId: 2,
+          nodeId: "10",
           name: "node2"
+<<<<<<< HEAD
       }, {
           nodeId: 3,
           name: "node3"
@@ -60,18 +61,15 @@ function App(): JSX.Element {
       }, {
           nodeId: 5,
           name: "node5"
+=======
+>>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
       }],
         links: [{
-          source: 0,
-          target: 2,
+          source: "00",
+          target: "10",
           value: 2,
-
       }, {
-          source: 1,
-          target: 2,
-          value: 2,
-
-      }, {
+<<<<<<< HEAD
           source: 1,
           target: 3,
           value: 2,
@@ -182,6 +180,13 @@ function App(): JSX.Element {
             value: 10
         }]
         })
+=======
+          source: "01",
+          target: "10",
+          value: 10
+      }]
+      }), [])
+>>>>>>> d64862d560a609466103b68f61e2344fc8bce3b5
 
     const settingsnew = ({
       width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,

@@ -2,7 +2,7 @@ import { StorableType, GraphableType } from './datatypes';
 
 type TransformationIdentifier = string;
 
-type Transformation = (a: any) => any;
+type Transformation = any;
 
 /**
  * Reppresent an unique identifier for a transformation
@@ -52,12 +52,11 @@ export interface TransformationProvider {
 }
 
 export class Transformer
-implements TransformationQuerryable, TransformationProvider {
+  implements TransformationQuerryable, TransformationProvider {
   private constructor(
     private transformers: Map<GraphableType,
-    Map<StorableType,
-    Map<TransformationIdentifier,
-    Transformation>>>,
+      Map<StorableType,
+        Map<TransformationIdentifier, Transformation>>>,
   ) { }
 
   /**
