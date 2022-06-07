@@ -28,7 +28,7 @@ function App() {
       };
       reader.readAsText(file);
     });
-  }, []);
+  }, [parser]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
