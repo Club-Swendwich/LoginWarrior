@@ -9,7 +9,7 @@ import { TransformationSignature } from '../model/transformer';
 import {
   ColorSelector, IntSelector, RealSelector, ShapeSelector,
 }
-  from './SPdimselectors';
+  from './selectors';
 import { SPDimensionSelectorVM } from './dimensionselectorvm';
 import { StorableType } from '../model/datatypes';
 
@@ -25,17 +25,6 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const sizeMaps = viewmodel.mapSize;
   const shapeMaps = viewmodel.mapShape;
   const colorMaps = viewmodel.mapColor;
-
-  /*   const xFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const yFieldsNames: string[] = Array.from(viewmodel.fieldY
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const sizeFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const shapeFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const colorFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!); */
 
   const xFieldsNames = getNames(viewmodel.fieldX);
   const yFieldsNames = getNames(viewmodel.fieldY);
@@ -75,7 +64,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     viewmodel.updateColorMap(colorMap!);
   };
   return (
-    <form className="dimensionSelector" onSubmit={onSubmit}>
+    <form className="dimensionSelector">
       <div style={{ paddingBottom: 24 }}>
         <label htmlFor="xaxis" id="xaxis">X Axis:</label>
         <RealSelector
@@ -181,7 +170,6 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <input type="submit" value="Applica dimensioni" />
     </form>
   );
 };

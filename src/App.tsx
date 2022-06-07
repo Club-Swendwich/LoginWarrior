@@ -23,7 +23,6 @@ function App() {
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
-      // Do whatever you want with the file contents
         setDataset(parser.parse((reader.result as string).replace(/^[\r\n]+/gm, '')) as Dataset);
         setDrag(true);
       };
@@ -36,7 +35,7 @@ function App() {
   const spDimensions: SPDimensions = {
     x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
     y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
-    size: ['userId', { identifier: 'default', from: StorableType.Int, to: GraphableType.Int }],
+    size: ['userId', { identifier: '1', from: StorableType.Int, to: GraphableType.Int }],
     shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
     color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
   };
@@ -48,7 +47,6 @@ function App() {
         </div>
       );
     }
-    console.log('null');
     return (
       <div>
         Caricamento

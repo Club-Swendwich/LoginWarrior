@@ -31,7 +31,6 @@ export class SPDimensionSelectorVM {
     selection.x[1] = this.selector.availableMappers().x.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers x', this.mapX);
   }
 
   @action updateYAxisField(newField: string) {
@@ -42,7 +41,6 @@ export class SPDimensionSelectorVM {
       this.selector.selectedDimensions = selection;
     }
     this.selector.availableMappers();
-    console.log('available mappers y', this.mapY);
   }
 
   @action updateSizeField(newField: string) {
@@ -51,7 +49,6 @@ export class SPDimensionSelectorVM {
     selection.size[1] = this.selector.availableMappers().size.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers size', this.mapSize);
   }
 
   @action updateColorField(newField: string) {
@@ -60,7 +57,6 @@ export class SPDimensionSelectorVM {
     selection.color[1] = this.selector.availableMappers().color.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers color', this.mapColor);
   }
 
   @action updateShapeField(newField: string) {

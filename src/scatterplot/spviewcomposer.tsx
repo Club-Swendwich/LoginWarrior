@@ -6,7 +6,6 @@
 import {
   useEffect, useRef, MutableRefObject, useMemo,
 } from 'react';
-import { timeStamp } from 'console';
 import {
   GraphableType, LoginType, StorableType,
 } from '../model/datatypes';
@@ -16,7 +15,7 @@ import SPRenderingSettingsView from './renderingsettingsview';
 import { SPDimensionSelectorView } from './dimensionselectorview';
 import { SPDimensionSelectorVM } from './dimensionselectorvm';
 import {
-  Dataset, DatasetEntry, DatasetValue,
+  Dataset,
 } from '../model/dataset';
 import {
   Transformer,
@@ -148,19 +147,18 @@ const SPViewComposer = (
   transformer.add({ identifier: 'ip to int', from: StorableType.Ip, to: GraphableType.Int }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
   transformer.add({ identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }, (a: string) : any => parseInt(a.replace('ip_', ''), 10));
   transformer.add({ identifier: 'ip to color', from: StorableType.Ip, to: GraphableType.Color }, (a: string) : any => getColor(parseInt(a.replace('ip_', ''), 10)));
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Int }, () : any => 1);
+  transformer.add({ identifier: '1', from: StorableType.Int, to: GraphableType.Int }, () : any => 1);
+  transformer.add({ identifier: '2', from: StorableType.Int, to: GraphableType.Int }, () : any => 2);
+  transformer.add({ identifier: '3', from: StorableType.Int, to: GraphableType.Int }, () : any => 3);
+  transformer.add({ identifier: '4', from: StorableType.Int, to: GraphableType.Int }, () : any => 4);
+  transformer.add({ identifier: '5', from: StorableType.Int, to: GraphableType.Int }, () : any => 5);
   transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Date, to: GraphableType.Int }, () : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Int }, () : any => 1);
   transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Real }, () : any => 1);
   transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
   transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'square');
-  transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Int }, () : any => 1);
   transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-  transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Int }, () : any => 1);
   transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
 
-  // eslint-disable-next-line max-len
   const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
 
   const dimensionSelectorVM = useMemo(() => ({
@@ -171,7 +169,6 @@ const SPViewComposer = (
     ),
   }), [dataset, spDimensions, transformer]);
 
-  // eslint-disable-next-line max-len
   const renderSettingsVM = useMemo(() => ({
     model: new SPRenderingSettingsSelectorVM({
       domainX: [1600651710000, 1625051710000],
@@ -179,8 +176,6 @@ const SPViewComposer = (
     }),
   }), []);
 
-  // eslint-disable-next-line max-len
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderer = useMemo(
     () => {
       let dat: SPREnderablePoint[] = [];
@@ -197,15 +192,12 @@ const SPViewComposer = (
 
   useEffect(() => {
     if (ref !== null) {
-      console.log('Render effect', dataset);
       renderer.render(ref as MutableRefObject<HTMLDivElement>);
-      console.log(appMap);
     }
   }, []);
 
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
-    console.log('Render reload');
     spMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
@@ -223,19 +215,24 @@ const SPViewComposer = (
       </style>
       {/* eslint-disable */}
         <div ref={ref} className="renderArea" id = "render"/>
-        <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
-          <div style={{display: 'inline-block'}}>
-            <h2>Selezione dimensioni:</h2>
-            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
+          <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
+            <div style={{display: 'inline-block'}}>
+              <h2>Selezione dimensioni:</h2>
+              <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
+            </div>
+            <div style={{display: 'inline-block'}}>
+              <h2>Selezione dominio:</h2>
+              <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
+            </div>
           </div>
-          <div style={{display: 'inline-block'}}>
-            <h2>Selezione dominio:</h2>
-            <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
+          <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center'}}>
             <button onClick={reload}>
               Click to reload!
             </button>
           </div>
         </div>
+        
       </>
   );
 }
