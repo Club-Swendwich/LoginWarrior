@@ -1,4 +1,4 @@
-/* import { GraphableType, StorableType } from '../model/datatypes';
+import { GraphableType, StorableType } from '../model/datatypes';
 import { SPDimensionSelector } from './dimensionselector';
 
 describe('SPDimensionSelector', () => {
@@ -85,7 +85,7 @@ describe('SPDimensionSelector', () => {
     });
   });
   it('should return the correct available mapping functions', () => {
-    const d = new SPDimensionumnSelector(
+    const d = new SPDimensionSelector(
       // @ts-expect-error mock
       { compatibleTransformers: () => new Set(['a']) },
       new Set([['a', StorableType.Int]]),
@@ -126,4 +126,3 @@ describe('SPDimensionSelector', () => {
     });
   });
 });
- */

@@ -1,4 +1,4 @@
-/* import SPRenderSettings from './renderersettings';
+import SPRenderSettings from './renderersettings';
 import SPRenderingSettingsSelectorVM from './renderingsettingsvm';
 
 describe('SPRenderingSettingsSelectorVM', () => {
@@ -17,7 +17,6 @@ describe('SPRenderingSettingsSelectorVM', () => {
       domainY: [10, 10],
     };
     const d = new SPRenderingSettingsSelectorVM(
-      // @ts-expect-error mock
       current,
     );
     d.setHeight([12, 12]);
@@ -32,7 +31,6 @@ describe('SPRenderingSettingsSelectorVM', () => {
       domainY: [10, 10],
     };
     const d = new SPRenderingSettingsSelectorVM(
-      // @ts-expect-error mock
       current,
     );
     d.setWidth([12, 12]);
@@ -47,7 +45,6 @@ describe('SPRenderingSettingsSelectorVM', () => {
       domainY: [10, 10],
     };
     const d = new SPRenderingSettingsSelectorVM(
-      // @ts-expect-error mock
       current,
     );
     const change: SPRenderSettings = {
@@ -60,4 +57,3 @@ describe('SPRenderingSettingsSelectorVM', () => {
     expect(d.getHeight).toEqual(change.domainY);
   });
 });
- */

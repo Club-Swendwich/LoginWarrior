@@ -7,7 +7,7 @@ import {
 } from './model/datatypes';
 import { Dataset } from './model/dataset';
 import { SPDimensions } from './scatterplot/dimensions';
-import SPViewComposer from './scatterplot/spviewcomposer';
+import SPViewComposer from './scatterplot/viewcomposer';
 import { CSVDatasetParser } from './model/datasetloader';
 
 function App() {
