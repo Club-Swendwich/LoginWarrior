@@ -76,7 +76,7 @@ const SPViewComposer = (
   }
 
   return (
-    <>
+    <div className="app">
       <h1>ScatterPlot</h1>
       <style>
         {`
@@ -86,26 +86,25 @@ const SPViewComposer = (
           `}
       </style>
       {/* eslint-disable */}
-        <div ref={ref} className="renderArea" id = "render"/>
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-          <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
-            <div style={{display: 'inline-block'}}>
-              <h2>Selezione dimensioni:</h2>
-              <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
-            </div>
-            <div style={{display: 'inline-block'}}>
-              <h2>Selezione dominio:</h2>
-              <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
-            </div>
+      <div ref={ref} className="renderArea" id = "render"/>
+      <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
+        <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
+          <div style={{display: 'inline-block'}}>
+            <h2>Selezione dimensioni:</h2>
+            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
           </div>
-          <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center'}}>
-            <button onClick={reload}>
-              Click to reload!
-            </button>
+          <div style={{display: 'inline-block'}}>
+            <h2>Selezione dominio:</h2>
+            <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
           </div>
         </div>
-        
-      </>
+        <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center'}}>
+          <button onClick={reload}>
+            Click to reload!
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

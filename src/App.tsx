@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, {
   useState, useCallback,
 } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
   GraphableType, StorableType,
 } from './model/datatypes';
@@ -9,16 +11,17 @@ import { Dataset } from './model/dataset';
 import { SPDimensions } from './scatterplot/dimensions';
 import SPViewComposer from './scatterplot/viewcomposer';
 import { CSVDatasetParser } from './model/datasetloader';
+import Navbar from './components/navbar';
+import CSVLoader from './components/csvloader';
 
 function App() {
-  const parser = new CSVDatasetParser(';');
-
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const [drag, setDrag] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
+    acceptedFiles.forEach((file: Blob) => {
       const reader = new FileReader();
+      const parser = new CSVDatasetParser(';');
 
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -28,9 +31,7 @@ function App() {
       };
       reader.readAsText(file);
     });
-  }, [parser]);
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  }, []);
 
   const spDimensions: SPDimensions = {
     x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
@@ -39,31 +40,18 @@ function App() {
     shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
     color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
   };
-  if (drag === true) {
-    if (dataset !== null) {
-      return (
-        <div className="app">
-          <SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />
-        </div>
-      );
-    }
-    return (
-      <div>
-        Caricamento
-      </div>
-    );
-  }
+
   return (
-    <div
-      style={{
-        display: 'flex', width: '100%', height: '150px', border: '1px dashed', justifyContent: 'center', alignItems: 'center',
-      }}
-      className="drag"
-      {...getRootProps()}
-    >
-      <input {...getInputProps()} />
-      <h1>Clicca qui o trascina il file csv nel riquadro</h1>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<CSVLoader onDrop={onDrop} />} />
+        <Route path="/scatter" element={<SPViewComposer spDimensions={spDimensions} dataset={dataset as Dataset} />} />
+        <Route path="/sankey" element={<div />} />
+        <Route path="/settings" element={<div />} />
+      </Routes>
+    </Router>
   );
 }
+
 export default App;
