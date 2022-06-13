@@ -17,8 +17,10 @@ import { SPDimensions } from './dimensions';
 import { SPMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
 import { spTransformerInstance } from './transformer';
+import SPRenderSettings from './renderersettings';
 
 export interface SPViewComposerProps {
+  renderSettings: SPRenderSettings
   spDimensions: SPDimensions,
   dataset: Dataset
 }
@@ -26,27 +28,16 @@ export interface SPViewComposerProps {
 const SPViewComposer = (
   prop : SPViewComposerProps,
 ) => {
-  const { spDimensions, dataset } = prop;
+  const { renderSettings, spDimensions, dataset } = prop;
   const ref = useRef<HTMLDivElement>(null);
 
   const transformer = spTransformerInstance();
 
   const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
 
-  const dimensionSelectorVM = useMemo(() => ({
-    model: new SPDimensionSelectorVM(
-      transformer,
-      dataset.signature,
-      spDimensions,
-    ),
-  }), [dataset, spDimensions, transformer]);
+  const dimensionSelectorVM = useMemo(() => (new SPDimensionSelectorVM(transformer, dataset.signature, spDimensions)), [dataset, spDimensions, transformer]);
 
-  const renderSettingsVM = useMemo(() => ({
-    model: new SPRenderingSettingsSelectorVM({
-      domainX: [1600651710000, 1625051710000],
-      domainY: [0, 33000],
-    }),
-  }), []);
+  const renderSettingsVM = useMemo(() => (new SPRenderingSettingsSelectorVM(renderSettings)), [renderSettings]);
 
   const renderer = useMemo(
     () => {
@@ -56,10 +47,10 @@ const SPViewComposer = (
       }
       return new SPRenderer(
         dat,
-        renderSettingsVM.model.getSettings,
+        renderSettingsVM.getSettings,
       );
     },
-    [renderSettingsVM.model.getSettings, spMapper, dataset],
+    [renderSettingsVM.getSettings, spMapper, dataset],
   );
 
   useEffect(() => {
@@ -70,8 +61,8 @@ const SPViewComposer = (
 
   function reload(): void {
     document.getElementById('render')!.innerHTML = '';
-    spMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
-    const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.model.getSettings);
+    spMapper.updateMapLogic(dimensionSelectorVM.currentSelection);
+    const renderernew = new SPRenderer(spMapper.map(dataset as Dataset) as SPREnderablePoint[], renderSettingsVM.getSettings);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>);
   }
 
@@ -91,11 +82,11 @@ const SPViewComposer = (
         <div style={{display: 'flex' ,flexDirection: 'row' ,justifyContent: 'space-evenly'}}>
           <div style={{display: 'inline-block'}}>
             <h2>Selezione dimensioni:</h2>
-            <SPDimensionSelectorView viewmodel={dimensionSelectorVM.model}></SPDimensionSelectorView>
+            <SPDimensionSelectorView viewmodel={dimensionSelectorVM}></SPDimensionSelectorView>
           </div>
           <div style={{display: 'inline-block'}}>
             <h2>Selezione dominio:</h2>
-            <SPRenderingSettingsView viewModel={renderSettingsVM.model}></SPRenderingSettingsView>
+            <SPRenderingSettingsView viewModel={renderSettingsVM}></SPRenderingSettingsView>
           </div>
         </div>
         <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center'}}>

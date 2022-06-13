@@ -8,6 +8,7 @@ import {
 import { MutableRefObject } from 'react';
 import { GraphableType, GraphableTypeToRepr } from '../model/datatypes';
 import { Renderer } from '../genericview/renderer';
+import SPRenderSettings from './renderersettings';
 
 export interface SPREnderablePoint {
   readonly x: GraphableTypeToRepr<GraphableType.Real>;
@@ -15,11 +16,6 @@ export interface SPREnderablePoint {
   readonly size: GraphableTypeToRepr<GraphableType.Int>;
   readonly shape: GraphableTypeToRepr<GraphableType.Shape>;
   readonly color: GraphableTypeToRepr<GraphableType.Color>;
-}
-
-export interface SPRenderSettings {
-  readonly domainX: [number, number];
-  readonly domainY: [number, number];
 }
 
 export function renderShape(shape: GraphableTypeToRepr<GraphableType.Shape>): SymbolType {
