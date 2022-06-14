@@ -47,7 +47,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private calculateSource(layer: [string, TransformationSignature], element: DatasetEntry): string {
         const source_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
         return "," + this.signatureToLayer(layer[1]).outcomes.indexOf(source_result);
-    }   
+    }
 
     /**
      * Function that calculates the target of the link to push
@@ -77,7 +77,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
             d.entries().forEach(element => {
                 links.push({
                     source: i + this.calculateSource(layer, element),
-                    target: this.calculateTarget(i, this.dimensions.layers[i+1], element),
+                    target: this.calculateTarget(i, this.dimensions.layers[i + 1], element),
                     value: 1 // devo capire bene che cosa mettere
                 });
             });

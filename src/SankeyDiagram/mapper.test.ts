@@ -176,19 +176,19 @@ describe('SankeyDiagram mapper', () => {
             }
         }
 
-        
+
         const m = new SKMapper(
             // @ts-expect-error We aren't mocking the entire  object
             prov,
             dim1,
         );
-            
+
         const dim2 = {
             layers: [
                 ['ApplicationType', { guid: 23 }],
             ]
         };
-            
+
         // @ts-expect-error We aren't mocking the entire  object
         m.updateMapLogic(dim2)
 
@@ -214,7 +214,7 @@ describe('SankeyDiagram mapper', () => {
                 }
             ],
         };
-        
+
         // @ts-expect-error We aren't mocking the entire  object
         expect(m.map(ds)).toEqual({
             nodes: [
