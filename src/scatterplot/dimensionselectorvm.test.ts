@@ -1,4 +1,4 @@
-/* import { SPDimensionSelectorVM } from './dimensionselectorvm';
+import { SPDimensionSelectorVM } from './dimensionselectorvm';
 
 const mockStruct = {
   x: 1,
@@ -49,7 +49,7 @@ describe('DimensionSelectorVM', () => {
           // @ts-expect-error mock
           x: selectedDimensions[1],
         }),
-      },
+      }
     );
 
     expect(m.fieldX).toEqual(420);
@@ -180,4 +180,3 @@ describe('DimensionSelectorVM', () => {
     expect(m.mapSize).toEqual(1);
   });
 });
- */

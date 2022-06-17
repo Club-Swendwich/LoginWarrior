@@ -10,15 +10,9 @@ export class SPDimensionSelectorVM {
   private selector: SPDimensionSelector;
 
   constructor(
-    queryable: TransformationQuerryable,
-    signature: DatasetSignature,
-    currentSelection: SPDimensions,
+    dimensionSelector: SPDimensionSelector
   ) {
-    this.selector = new SPDimensionSelector(
-      queryable,
-      signature,
-      currentSelection,
-    );
+    this.selector = dimensionSelector;
   }
 
   @computed get currentSelection() : SPDimensions {

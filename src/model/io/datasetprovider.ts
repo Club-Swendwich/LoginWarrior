@@ -1,4 +1,4 @@
-import { Dataset } from "./dataset";
+import { Dataset } from "../dataset";
 import { DatasetParser, ParseError } from "./datasetloader";
 
 export enum ProvideError {

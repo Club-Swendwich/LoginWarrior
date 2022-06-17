@@ -22,15 +22,15 @@ describe('datasetloader', () => {
           value: 1,
         }],
         ['timestamp', {
-          type: StorableType.Int,
-          value: 3,
+          type: StorableType.Date,
+          value: new Date('2001-02-28T23:00:00.000Z'),
         }],
         ['eventType', {
           type: StorableType.LoginType,
           value: 4,
         }],
         ['encodedIp', {
-          type: StorableType.String,
+          type: StorableType.Ip,
           value: 'c',
         }],
         ['appId', {
@@ -51,15 +51,15 @@ describe('datasetloader', () => {
           value: 1,
         }],
         ['timestamp', {
-          type: StorableType.Int,
-          value: 3,
+          type: StorableType.Date,
+          value: new Date('2001-02-28T23:00:00.000Z'),
         }],
         ['eventType', {
           type: StorableType.LoginType,
           value: 4,
         }],
         ['encodedIp', {
-          type: StorableType.String,
+          type: StorableType.Ip,
           value: 'c',
         }],
         ['appId', {
@@ -73,15 +73,15 @@ describe('datasetloader', () => {
           value: 2,
         }],
         ['timestamp', {
-          type: StorableType.Int,
-          value: 4,
+          type: StorableType.Date,
+          value: new Date('2001-03-31T22:00:00.000Z'),
         }],
         ['eventType', {
           type: StorableType.LoginType,
           value: 5,
         }],
         ['encodedIp', {
-          type: StorableType.String,
+          type: StorableType.Ip,
           value: 'x',
         }],
         ['appId', {

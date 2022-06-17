@@ -1,4 +1,4 @@
-/* import { MapperError } from '../genericview/mapper';
+import { MapperError } from '../genericview/mapper';
 import { SPMapper } from './mapper';
 
 describe('scatterplot mapper', () => {
@@ -190,4 +190,3 @@ describe('scatterplot mapper', () => {
     expect(m.map(ds)).toEqual(MapperError.UnknownField);
   });
 });
- */
