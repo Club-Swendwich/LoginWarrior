@@ -5,9 +5,10 @@ import { timeStamp } from 'console';
 import {
   GraphableType, StorableType,
 } from '../model/datatypes';
+
 //RENDERER
 import {
-  SKRenderer
+  SKRenderer, GraphData
 } from './renderer'
 import * as d3Sankey from 'd3-sankey';
 
@@ -30,32 +31,50 @@ import { SKMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
 
 
-
-
-export interface SPViewComposerProps {
-  spDimensions: SKDimensions,
+export interface SKViewComposerProps {
+  skDimensions: SKDimensions,
   dataset: Dataset
 }
 
-export const SPViewComposer = (
-  prop : SPViewComposerProps,
+export const SKViewComposer = (
+  prop : SKViewComposerProps,
 ) => {
-  const { spDimensions, dataset } = prop;
+  const { skDimensions, dataset } = prop;
   const ref = useRef<HTMLDivElement>(null);
-
+  console.log("Sono qui");
   const transformer: Transformer = Transformer.new();
 
+  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
+  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
+  transformer.add({ identifier: 'eventType', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
+  transformer.add({ identifier: 'encodedIp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: string) : any => parseInt(a.replace('.', ''), 10));
+  transformer.add({ identifier: 'appId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
+
+  
+  console.log(transformer);
+
   // eslint-disable-next-line max-len
-  const spMapper: SKMapper = useMemo(() => new SKMapper(transformer, spDimensions), [spDimensions, transformer]);
+  const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
 
   const dimensionSelectorVM = useMemo(() => ({
     model: new SKDimensionSelectorVM(
       transformer,
       dataset.signature,
-      spDimensions,
+      skDimensions,
     ),
-  }), [dataset, spDimensions, transformer]);
+  }), [dataset, skDimensions, transformer]);
 
+
+
+  const renderer = useMemo(() => {
+    let data = skMapper.map(dataset as Dataset) as GraphData;
+    console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings);
+    return new SKRenderer(
+      InstanceSankeyRenderingSettingsSelectorVm.getSettings,
+      data,      
+    );
+  },[InstanceSankeyRenderingSettingsSelectorVm.getSettings, skMapper, dataset]);
+  /*
   // eslint-disable-next-line max-len
   const settings = useMemo(() => ({
     width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
@@ -125,13 +144,11 @@ export const SPViewComposer = (
         value: 10
     }]
     }), [])
+  */
+
   // eslint-disable-next-line max-len
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const renderer = useMemo(() => new SKRenderer(settings, data), [settings, data])
-  useEffect(() => {
-      if (ref !== null) 
-        renderer.render(ref as MutableRefObject<HTMLDivElement>)
-  }, [ref, renderer, settings, data])
+  //const renderer = useMemo(() => new SKRenderer(settings, data), [settings, data])
 
   useEffect(() => {
     if (ref !== null) {
@@ -142,7 +159,8 @@ export const SPViewComposer = (
 
 
   
-  function reload() {
+  function reload(): void {
+    /*
     const datanew = ({
       nodes: [{
           nodeId: 0,
@@ -202,8 +220,10 @@ export const SPViewComposer = (
           source: 5,
           target: 2,
           value: 10
-      }]
-      })
+      }
+      
+    ]
+      })*/
 
   const settingsnew = ({
     width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
@@ -211,11 +231,16 @@ export const SPViewComposer = (
     nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
     opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
   });
-  document.getElementById("render").innerHTML = "";
-    const renderernew =  new SKRenderer(settingsnew, datanew);
+
+    document.getElementById("render").innerHTML = "";
+    skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
+    const renderernew =  new SKRenderer(settingsnew, skMapper.map(dataset as Dataset) as GraphData);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>)
     console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
+
+  
+  console.log('test ', skMapper.map(dataset as Dataset));
 
   return (
     <>  
@@ -239,4 +264,4 @@ export const SPViewComposer = (
 }
 
 
-export default SPViewComposer
+export default SKViewComposer
