@@ -12,7 +12,7 @@ import { SPDimensions } from './scatterplot/dimensions';
 import SPViewComposer from './scatterplot/viewcomposer';
 import { CSVDatasetParser } from './model/io/datasetloader';
 import Navbar from './components/navbar';
-import CSVLoader, { CSVDatasetLoaderView } from './components/csvloader';
+import CSVLoader, { CSVDatasetLoaderView } from './components/csvloaderview';
 import { ViewSettingsDownloader, ViewSettingsLoader } from './components/viewsettings';
 import ViewJson, { viewFromJson } from './model/viewjson';
 import SPRenderSettings from './scatterplot/renderersettings';
@@ -22,10 +22,11 @@ import { DatasetInfoView } from './components/datasetinfo';
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
 
-  return (<div>
+  return (
+  <div>
     <DatasetInfoView maybeDataset={dataset} />
     <CSVDatasetLoaderView updateDataset={setDataset} />
-    </div>
+  </div>
   );
 
 //  const [drag, setDrag] = useState(false);

@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
+
+// import { AssertionError } from 'assert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Dataset } from '../model/dataset';
@@ -7,22 +9,26 @@ import { CSVDatasetParser, DatasetParser, ParseError } from '../model/io/dataset
 const Status = ({ status }: { status: CurrentStatus }) => {
   switch (status) {
     case CurrentStatus.Init:
-      return <div>Pronto al caricamento del dataset</div>
-      case CurrentStatus.Init:
-      return <div>Caricamento in corso...</div>
+      return <div>Pronto al caricamento del dataset</div>;
+    case CurrentStatus.Loading:
+      return <div>Caricamento in corso...</div>;
     case CurrentStatus.TooMany:
-      return <div className='msgFail'>Puoi caricare al massimo un file alla volta</div>
+      return <div className="msgFail">Puoi caricare al massimo un file alla volta</div>;
     case CurrentStatus.Aborted:
     case CurrentStatus.Failed:
-      return <div className='msgFail'>C'è stato un errore durante il caricamento del file</div>
+      // eslint-disable-next-line react/no-unescaped-entities
+      return <div className="msgFail">C'è stato un errore durante il caricamento del file</div>;
     case CurrentStatus.InvalidFormat:
-      return <div className='msgFail'>Il file risulta essere del formato sbagliato</div>
+      return <div className="msgFail">Il file risulta essere del formato sbagliato</div>;
     case CurrentStatus.InvalidRow:
-      return <div className='msgFail'>Una riga del dataset risulta essere malformato</div>
+      return <div className="msgFail">Una riga del dataset risulta essere malformato</div>;
     case CurrentStatus.Ok:
-      return <div className='msgSuccess'>Dataset caricato con successo!</div>
+      return <div className="msgSuccess">Dataset caricato con successo!</div>;
+    default:
+      // throw new AssertionError({ message: 'Unreachable! unexpected status!' });
+      return <div />;
   }
-}
+};
 
 export interface DatasetLoaderProps {
   datasetParser: DatasetParser;
@@ -40,19 +46,19 @@ enum CurrentStatus {
   Ok,
 }
 
-export const LoadDatasetView = (prop : DatasetLoaderProps)  => {
+export const LoadDatasetView = (prop : DatasetLoaderProps) => {
   const { datasetParser, updateDataset } = prop;
-
-  console.log("ds view");
 
   const [status, setStatus] = useState(CurrentStatus.Init);
 
   const onDatasetUpload = (files: Blob[]) => {
-    if (files.length != 1) {
-      setStatus(CurrentStatus.TooMany);
+    if (files.length === 0) {
+      return;
     }
 
-    console.log("upload");
+    if (files.length !== 1) {
+      setStatus(CurrentStatus.TooMany);
+    }
 
     const reader = new FileReader();
 
@@ -65,24 +71,22 @@ export const LoadDatasetView = (prop : DatasetLoaderProps)  => {
       const cleanContent = content.replace(/^[\r\n]+/gm, '');
       const parsed = datasetParser.parse(cleanContent);
 
-      console.log("parsed", parsed);
-
       if (parsed === ParseError.InvalidFormat) {
         setStatus(CurrentStatus.InvalidFormat);
         return;
       }
 
-      if (parsed == ParseError.InvalidRow) {
+      if (parsed === ParseError.InvalidRow) {
         setStatus(CurrentStatus.InvalidRow);
         return;
       }
 
       updateDataset(parsed);
       setStatus(CurrentStatus.Ok);
-    }
+    };
 
     reader.readAsText(files[0]);
-  }
+  };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onDatasetUpload });
 
@@ -96,14 +100,12 @@ export const LoadDatasetView = (prop : DatasetLoaderProps)  => {
     >
       <input {...getInputProps()} />
       <h1>Clicca qui o trascina il file csv nel riquadro</h1>
-      <Status status={status}/>
+      <Status status={status} />
     </div>
   );
-}
+};
 
 export interface CSVDatasetLoaderViewProps {
   updateDataset: (d: Dataset) => void;
 }
-export const CSVDatasetLoaderView = ({ updateDataset }: CSVDatasetLoaderViewProps ) => {
-  return LoadDatasetView({ updateDataset, datasetParser: new CSVDatasetParser(";") });
-}
+export const CSVDatasetLoaderView = ({ updateDataset }: CSVDatasetLoaderViewProps) => LoadDatasetView({ updateDataset, datasetParser: new CSVDatasetParser(';') });
