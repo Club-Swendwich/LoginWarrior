@@ -1,5 +1,5 @@
 import { FullViewParser, ScatterPlotJsonParser } from './jsonviewparser';
-import { ViewParserError } from './viewio';
+import { ViewIOError } from './viewio';
 
 describe('ScatterPlotJsonParser', () => {
   it('should handle wrong formats', () => {
@@ -7,7 +7,7 @@ describe('ScatterPlotJsonParser', () => {
 
     const res = s.parse('<xml>');
 
-    expect(res).toEqual(ViewParserError.WrongFormat);
+    expect(res).toEqual(ViewIOError.WrongFormat);
   });
 
   it('should handle missing fields', () => {
@@ -15,7 +15,7 @@ describe('ScatterPlotJsonParser', () => {
 
     const res = s.parse('{}');
 
-    expect(res).toEqual(ViewParserError.MissingField);
+    expect(res).toEqual(ViewIOError.MissingField);
   });
 
   it('should handle one field', () => {
@@ -24,8 +24,8 @@ describe('ScatterPlotJsonParser', () => {
     const resD = s.parse('{ "spDimensions": {} }');
     const resS = s.parse('{ "spSettings": {} }');
 
-    expect(resS).toEqual(ViewParserError.MissingField);
-    expect(resD).toEqual(ViewParserError.MissingField);
+    expect(resS).toEqual(ViewIOError.MissingField);
+    expect(resD).toEqual(ViewIOError.MissingField);
   });
 
   it('should ignore field when the check is disabled', () => {
@@ -48,19 +48,19 @@ describe('ScatterPlotJsonParser', () => {
 describe('FullViewParser', () => {
   it('should handle both failure', () => {
     const f = new FullViewParser(
-      { parse: () => ViewParserError.MissingField },
-      { parse: () => ViewParserError.WrongFormat },
+      { parse: () => ViewIOError.MissingField },
+      { parse: () => ViewIOError.WrongFormat },
     );
 
     // @ts-expect-error We aren't mocking the entire object
     const p = f.parse({});
 
-    expect(p).toEqual(ViewParserError.MissingField);
+    expect(p).toEqual(ViewIOError.MissingField);
   });
 
   it('should handle sp failure', () => {
     const f = new FullViewParser(
-      { parse: () => ViewParserError.MissingField },
+      { parse: () => ViewIOError.MissingField },
       // @ts-expect-error We aren't mocking the entire object
       { parse: () => 'a' },
     );
@@ -68,20 +68,20 @@ describe('FullViewParser', () => {
     // @ts-expect-error We aren't mocking the entire object
     const p = f.parse({});
 
-    expect(p).toEqual(ViewParserError.MissingField);
+    expect(p).toEqual(ViewIOError.MissingField);
   });
 
   it('should handle sl failure', () => {
     const f = new FullViewParser(
       // @ts-expect-error We aren't mocking the entire object
       { parse: () => 'a' },
-      { parse: () => ViewParserError.WrongFormat },
+      { parse: () => ViewIOError.WrongFormat },
     );
 
     // @ts-expect-error We aren't mocking the entire object
     const p = f.parse({});
 
-    expect(p).toEqual(ViewParserError.WrongFormat);
+    expect(p).toEqual(ViewIOError.WrongFormat);
   });
 
   it('should handle a correct format', () => {

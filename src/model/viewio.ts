@@ -1,12 +1,13 @@
-export enum ViewParserError {
+export enum ViewIOError {
     WrongFormat,
-    MissingField
+    MissingField,
+    Null
 };
 
 export interface ViewParser<T> {
-    parse(src: string): T | ViewParserError
+    parse(src: string): T | ViewIOError
 };
 
 export interface ViewSerializer<T> {
-    serialize(src: T): string;
+    serialize(src: T): string | ViewIOError;
 }
