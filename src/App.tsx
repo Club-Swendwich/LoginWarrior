@@ -10,89 +10,90 @@ import {
 import { Dataset, DatasetSignature } from './model/dataset';
 import { SPDimensions } from './scatterplot/dimensions';
 import SPViewComposer from './scatterplot/viewcomposer';
-import { CSVDatasetParser } from './model/datasetloader';
+import { CSVDatasetParser } from './model/io/datasetloader';
 import Navbar from './components/navbar';
-import CSVLoader from './components/csvloader';
+import CSVLoader, { CSVDatasetLoaderView } from './components/csvloader';
 import { ViewSettingsDownloader, ViewSettingsLoader } from './components/viewsettings';
 import ViewJson, { viewFromJson } from './model/viewjson';
 import SPRenderSettings from './scatterplot/renderersettings';
 import { SPDimensionSelectorVM } from './scatterplot/dimensionselectorvm';
+import { DatasetInfoView } from './components/datasetinfo';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
-  const [drag, setDrag] = useState(false);
 
-  const onDropCsv = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: Blob) => {
-      const reader = new FileReader();
-      const parser = new CSVDatasetParser(';');
-
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        setDataset(parser.parse((reader.result as string).replace(/^[\r\n]+/gm, '')) as Dataset);
-        setDrag(true);
-      };
-      reader.readAsText(file);
-    });
-  }, []);
-
-  const onDropSett = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: Blob) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        const uploadedSet = viewFromJson(reader.result as string);
-
-        if (uploadedSet.signature === (dataset as Dataset).signature) {
-          spSettings = uploadedSet.spSettings;
-          spDimensions = uploadedSet.spDimensions;
-          skSettings = uploadedSet.skSettings;
-          skDimensions = uploadedSet.skDimensions;
-        }
-      };
-      reader.readAsText(file);
-    });
-  }, []);
-
-  let spDimensions: SPDimensions = {
-    x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
-    y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
-    size: ['userId', { identifier: '1', from: StorableType.Int, to: GraphableType.Int }],
-    shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
-    color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
-  };
-
-  let spSettings: SPRenderSettings = {
-    domainX: [1600651710000, 1625051710000],
-    domainY: [0, 33000],
-  };
-
-  let skDimensions: any = {};
-
-  let skSettings: any = {};
-
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<CSVLoader onDrop={onDropCsv} />} />
-        <Route path="/scatter" element={<SPViewComposer renderSettings={spSettings} spDimensions={spDimensions} dataset={dataset as Dataset} />} />
-        <Route path="/sankey" element={<div />} />
-        <Route
-          path="/settings"
-          element={(
-            <>
-              <ViewSettingsLoader onDrop={onDropSett} />
-              <ViewSettingsDownloader viewSettings={new ViewJson((dataset as Dataset).signature, spSettings, spDimensions, skSettings, skDimensions)} />
-            </>
-          )}
-        />
-      </Routes>
-    </Router>
+  return (<div>
+    <DatasetInfoView maybeDataset={dataset} />
+    <CSVDatasetLoaderView updateDataset={setDataset} />
+    </div>
   );
+
+//  const [drag, setDrag] = useState(false);
+//
+//  const onDropCsv = useCallback((acceptedFiles) => {
+//    acceptedFiles.forEach((file: Blob) => {
+//      const reader = new FileReader();
+//      const parser = new CSVDatasetParser(';');
+//
+//      reader.onabort = () => console.log('file reading was aborted');
+//      reader.onerror = () => console.log('file reading has failed');
+//      reader.onload = () => {
+//        setDataset(parser.parse((reader.result as string).replace(/^[\r\n]+/gm, '')) as Dataset);
+//        setDrag(true);
+//      };
+//      reader.readAsText(file);
+//    });
+//  }, []);
+//
+//  const onDropSett = useCallback((acceptedFiles) => {
+//    acceptedFiles.forEach((file: Blob) => {
+//      const reader = new FileReader();
+//
+//      reader.onabort = () => console.log('file reading was aborted');
+//      reader.onerror = () => console.log('file reading has failed');
+//      reader.onload = () => {
+//        const uploadedSet = viewFromJson(reader.result as string);
+//
+//        if (uploadedSet.signature === (dataset as Dataset).signature) {
+//          spSettings = uploadedSet.spSettings;
+//          spDimensions = uploadedSet.spDimensions;
+//        }
+//      };
+//      reader.readAsText(file);
+//    });
+//  }, []);
+//
+//  let spDimensions: SPDimensions = {
+//    x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
+//    y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
+//    size: ['userId', { identifier: '1', from: StorableType.Int, to: GraphableType.Int }],
+//    shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
+//    color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
+//  };
+//
+//  let spSettings: SPRenderSettings = {
+//    domainX: [1600651710000, 1625051710000],
+//    domainY: [0, 33000],
+//  };
+//
+//  return (
+//    <Router>
+//      <Navbar />
+//      <Routes>
+//        <Route path="/" element={<CSVLoader onDrop={onDropCsv} />} />
+//        <Route path="/scatter" element={<SPViewComposer renderSettings={spSettings} spDimensions={spDimensions} dataset={dataset as Dataset} />} />
+//        <Route path="/sankey" element={<div />} />
+//        <Route
+//          path="/settings"
+//          element={(
+//            <>
+//              <ViewSettingsLoader onDrop={onDropSett} />
+//            </>
+//          )}
+//        />
+//      </Routes>
+//    </Router>
+//  );
 }
 
 export default App;

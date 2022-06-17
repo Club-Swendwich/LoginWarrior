@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FullView } from '../model/jsonviewparser';
+import { FullView } from '../model/io/jsonviewparser';
 import { ViewIOError, ViewSerializer } from '../model/io/viewio';
 
 interface ViewsDownloaderProp {

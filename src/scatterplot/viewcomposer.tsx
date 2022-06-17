@@ -18,6 +18,7 @@ import { SPMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
 import { spTransformerInstance } from './transformer';
 import SPRenderSettings from './renderersettings';
+import { SPDimensionSelector } from './dimensionselector';
 
 export interface SPViewComposerProps {
   renderSettings: SPRenderSettings
@@ -33,11 +34,25 @@ const SPViewComposer = (
 
   const transformer = spTransformerInstance();
 
-  const spMapper: SPMapper = useMemo(() => new SPMapper(transformer, spDimensions), [spDimensions, transformer]);
+  const spMapper: SPMapper = useMemo(
+    () => new SPMapper(transformer, spDimensions),
+    [spDimensions, transformer],
+  );
 
-  const dimensionSelectorVM = useMemo(() => (new SPDimensionSelectorVM(transformer, dataset.signature, spDimensions)), [dataset, spDimensions, transformer]);
+  const dimensionSelector = useMemo(
+    () => new SPDimensionSelector(transformer, dataset.signature, spDimensions),
+    [dataset, spDimensions, transformer],
+  );
 
-  const renderSettingsVM = useMemo(() => (new SPRenderingSettingsSelectorVM(renderSettings)), [renderSettings]);
+  const dimensionSelectorVM = useMemo(
+    () => new SPDimensionSelectorVM(dimensionSelector),
+    [dimensionSelector],
+  );
+
+  const renderSettingsVM = useMemo(
+    () => new SPRenderingSettingsSelectorVM(renderSettings),
+    [renderSettings],
+  );
 
   const renderer = useMemo(
     () => {

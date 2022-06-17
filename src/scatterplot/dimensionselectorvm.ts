@@ -1,16 +1,15 @@
 import { action, computed, observable } from 'mobx';
 import { SPDimensionSelector } from './dimensionselector';
-import { TransformationSignature, TransformationQuerryable } from '../model/transformer';
+import { TransformationSignature } from '../model/transformer';
 import { StorableType } from '../model/datatypes';
 import { SPDimensions } from './dimensions';
-import { DatasetSignature } from '../model/dataset';
 
 export class SPDimensionSelectorVM {
   @observable
   private selector: SPDimensionSelector;
 
   constructor(
-    dimensionSelector: SPDimensionSelector
+    dimensionSelector: SPDimensionSelector,
   ) {
     this.selector = dimensionSelector;
   }
