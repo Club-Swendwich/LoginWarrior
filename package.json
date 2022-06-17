@@ -21,6 +21,7 @@
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-dropzone": "^14.2.1",
+        "react-file-download": "^0.3.5",
         "react-force-graph-2d": "^1.23.10",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.0",

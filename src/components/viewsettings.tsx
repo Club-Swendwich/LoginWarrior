@@ -11,6 +11,12 @@ export interface ViewSettingsDown {
   viewSettings: ViewJson;
 }
 
+export interface DocumentJson {
+  data: string;
+  fileName: string;
+  fileType: string;
+}
+
 export function ViewSettingsLoader(
   prop : ViewSettingsUp,
 ) {
@@ -26,10 +32,57 @@ export function ViewSettingsLoader(
       {...getRootProps()}
     >
       <input {...getInputProps()} />
-      <h1>Clicca qui o trascina il file csv nel riquadro</h1>
+      <h1>Clicca qui o trascina il file json nel riquadro</h1>
     </div>
   );
 }
+
+// export const ViewSettingsDownloader = async (prop: ViewSettingsDown) => {
+//   const { viewSettings } = prop; // I am assuming that "this.state.myData"
+//   // is an object and I wrote it to file as
+//   // json
+//   const fileName = 'file';
+//   const json = JSON.stringify(viewSettings);
+//   const blob = new Blob([json], { type: 'application/json' });
+//   const href = await URL.createObjectURL(blob);
+//   const link = document.createElement('a');
+//   link.href = href;
+//   link.download = `${fileName}.json`;
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// };
+
+// function handleDownload(viewSettings: ViewJson) {
+//   const data = JSON.stringify(viewSettings);
+//   const fileDownload = require('react-file-download');
+//   fileDownload(data, 'filename.json');
+// }
+
+const downloadFile = (documentJson: DocumentJson) => {
+  // Create a blob with the data we want to download as a file
+  const blob = new Blob([documentJson.data], { type: documentJson.fileType });
+  // Create an anchor element and dispatch a click event on it
+  // to trigger a download
+  const a = document.createElement('a');
+  a.download = documentJson.fileName;
+  a.href = window.URL.createObjectURL(blob);
+  const clickEvt = new MouseEvent('click', {
+    view: window,
+    bubbles: true,
+    cancelable: true,
+  });
+  a.dispatchEvent(clickEvt);
+  a.remove();
+};
+
+const exportToJson = (viewSettings: ViewJson) => {
+  downloadFile({
+    data: JSON.stringify(viewSettings),
+    fileName: 'users.json',
+    fileType: 'text/json',
+  });
+};
 
 export function ViewSettingsDownloader(
   prop: ViewSettingsDown,
@@ -39,10 +92,7 @@ export function ViewSettingsDownloader(
   return (
     <button
       type="button"
-      href={`data:text/json;charset=utf-8,${encodeURIComponent(
-        viewSettings.viewToJson,
-      )}`}
-      download="viewSettings.json"
+      onClick={() => exportToJson(viewSettings)}
     >
       Download Json
     </button>

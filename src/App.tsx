@@ -3,7 +3,6 @@
 import React, {
   useState, useCallback,
 } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
   GraphableType, StorableType,
@@ -89,7 +88,7 @@ function App() {
               <ViewSettingsLoader onDrop={onDropSett} />
               <ViewSettingsDownloader viewSettings={new ViewJson((dataset as Dataset).signature, spSettings, spDimensions, skSettings, skDimensions)} />
             </>
-)}
+          )}
         />
       </Routes>
     </Router>
@@ -99,14 +98,13 @@ function App() {
 export default App;
 
 // TODO decidere se è da usare
-function checkSettings(settings: ViewJson, spDimVM: SPDimensionSelectorVM, signature: DatasetSignature | null) {
+function checkSettings(settings: ViewJson, spDimVM: SPDimensionSelectorVM, signature: DatasetSignature | null): Boolean {
+  const xFieldsNames = getNames(spDimVM.fieldX);
+  const yFieldsNames = getNames(spDimVM.fieldY);
+  const sizeFieldsNames = getNames(spDimVM.fieldSize);
+  const shapeFieldsNames = getNames(spDimVM.fieldShape);
+  const colorFieldsNames = getNames(spDimVM.fieldColor);
   if (signature) {
-    const xFieldsNames = getNames(spDimVM.fieldX);
-    const yFieldsNames = getNames(spDimVM.fieldY);
-    const sizeFieldsNames = getNames(spDimVM.fieldSize);
-    const shapeFieldsNames = getNames(spDimVM.fieldShape);
-    const colorFieldsNames = getNames(spDimVM.fieldColor);
-  
     return (
       settings.signature === signature
       && xFieldsNames.indexOf(settings.spDimensions.x[1].identifier) > -1
@@ -116,6 +114,13 @@ function checkSettings(settings: ViewJson, spDimVM: SPDimensionSelectorVM, signa
       && colorFieldsNames.indexOf(settings.spDimensions.color[1].identifier) > -1
     );
   }
+  return (
+    xFieldsNames.indexOf(settings.spDimensions.x[1].identifier) > -1
+    && yFieldsNames.indexOf(settings.spDimensions.y[1].identifier) > -1
+    && sizeFieldsNames.indexOf(settings.spDimensions.size[1].identifier) > -1
+    && shapeFieldsNames.indexOf(settings.spDimensions.shape[1].identifier) > -1
+    && colorFieldsNames.indexOf(settings.spDimensions.color[1].identifier) > -1
+  );
 }
 
 function getNames(names: Set<[string, StorableType]>): string[] {
