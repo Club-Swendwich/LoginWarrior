@@ -9,7 +9,7 @@ import { ViewIOError, ViewParser } from '../model/io/viewio';
 const Status = ({ status }: { status: CurrentStatus }) => {
   switch (status) {
     case CurrentStatus.Init:
-      return <div>Pronto al caricamento del dataset</div>;
+      return <div>Pronto al caricamento della view</div>;
     case CurrentStatus.Loading:
       return <div>Caricamento in corso...</div>;
     case CurrentStatus.TooMany:

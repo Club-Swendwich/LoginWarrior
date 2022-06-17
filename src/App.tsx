@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, {
-  useState, useCallback,
+  useState, useCallback, useEffect,
 } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
@@ -12,20 +12,29 @@ import { SPDimensions } from './scatterplot/dimensions';
 import SPViewComposer from './scatterplot/viewcomposer';
 import { CSVDatasetParser } from './model/io/datasetloader';
 import Navbar from './components/navbar';
-import CSVLoader, { CSVDatasetLoaderView } from './components/csvloaderview';
-import { ViewSettingsDownloader, ViewSettingsLoader } from './components/viewsettings';
+import CSVLoader, { CSVDatasetLoaderView } from './components/csvloader';
 import ViewJson, { viewFromJson } from './model/viewjson';
 import SPRenderSettings from './scatterplot/renderersettings';
 import { SPDimensionSelectorVM } from './scatterplot/dimensionselectorvm';
 import { DatasetInfoView } from './components/datasetinfo';
+import { FullView } from './model/io/jsonviewparser';
+import { JSONViewsLoaderView } from './components/viewsloader';
+import { JSONViewsDownloaderView, ViewsDownloaderButton } from './components/viewsdownloader';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
+  const [views, setViews] = useState<null | FullView>(null);
+
+  useEffect(() => {
+    console.log(views);
+  }, [ views ]);
 
   return (
   <div>
     <DatasetInfoView maybeDataset={dataset} />
     <CSVDatasetLoaderView updateDataset={setDataset} />
+    <JSONViewsLoaderView updateViews={setViews}/>
+    <JSONViewsDownloaderView views={views}/>
   </div>
   );
 

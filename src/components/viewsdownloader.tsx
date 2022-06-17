@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { FullView } from '../model/io/jsonviewparser';
+import { AnyViewJsonSerializer } from '../model/io/jsonviewserializer';
 import { ViewIOError, ViewSerializer } from '../model/io/viewio';
 
-interface ViewsDownloaderProp {
-  readonly views: FullView;
+interface ViewsDownloaderViewProp {
+  readonly views: FullView | null;
   readonly serializer: ViewSerializer<FullView>;
 }
 
-export const ViewsDownloaderButton = (props: ViewsDownloaderProp) => {
+export const ViewsDownloaderView = (props: ViewsDownloaderViewProp) => {
   const { views, serializer } = props;
+
+  if (views === null) {
+    return <div>Nessuna vista disponibile al momento.</div>
+  }
 
   const [error, setError] = useState(false);
 
@@ -40,3 +45,10 @@ export const ViewsDownloaderButton = (props: ViewsDownloaderProp) => {
     </>
   );
 };
+
+export interface JSONViewsDownloaderView {
+  readonly views: FullView | null;
+}
+
+export const JSONViewsDownloaderView = ({ views }: JSONViewsDownloaderView) =>
+  ViewsDownloaderView({ views, serializer: new AnyViewJsonSerializer() })
