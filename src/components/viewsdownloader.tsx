@@ -11,11 +11,11 @@ interface ViewsDownloaderViewProp {
 export const ViewsDownloaderView = (props: ViewsDownloaderViewProp) => {
   const { views, serializer } = props;
 
-  if (views === null) {
-    return <div>Nessuna vista disponibile al momento.</div>
-  }
-
   const [error, setError] = useState(false);
+
+  if (views === null) {
+    return <div>Nessuna vista disponibile al momento.</div>;
+  }
 
   const serialize = () => serializer.serialize(views);
 
@@ -46,9 +46,9 @@ export const ViewsDownloaderView = (props: ViewsDownloaderViewProp) => {
   );
 };
 
-export interface JSONViewsDownloaderView {
+export interface JSONViewsDownloaderViewProp {
   readonly views: FullView | null;
 }
 
-export const JSONViewsDownloaderView = ({ views }: JSONViewsDownloaderView) =>
-  ViewsDownloaderView({ views, serializer: new AnyViewJsonSerializer() })
+// eslint-disable-next-line max-len
+export const JSONViewsDownloaderView = ({ views }: JSONViewsDownloaderViewProp) => ViewsDownloaderView({ views, serializer: new AnyViewJsonSerializer() });
