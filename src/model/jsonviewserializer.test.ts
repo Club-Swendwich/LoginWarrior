@@ -1,5 +1,5 @@
+import { AnyViewJsonSerializer } from './jsonviewserializer';
 import { ViewIOError } from './viewio';
-import { AnyViewJsonSerializer } from './viewjsonserializer';
 
 describe('AnyViewJsonSerializer', () => {
   it('should reject null', () => {
