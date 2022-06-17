@@ -23,7 +23,7 @@ const Status = ({ status }: { status: CurrentStatus }) => {
     case CurrentStatus.WrongFormat:
       return <div className="msgFail">Il file risulta essere del formato errato</div>;
     case CurrentStatus.Ok:
-      return <div className="msgSuccess">Dataset caricato con successo!</div>;
+      return <div className="msgSuccess">Vista caricata con successo!</div>;
     default:
       // throw new AssertionError({ message: 'Unreachable! unexpected status!' });
       return <div />;

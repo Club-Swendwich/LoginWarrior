@@ -20,14 +20,22 @@ import { DatasetInfoView } from './components/datasetinfo';
 import { FullView } from './model/io/jsonviewparser';
 import { JSONViewsLoaderView } from './components/viewsloader';
 import { JSONViewsDownloaderView, ViewsDownloaderButton } from './components/viewsdownloader';
+import { spTransformerInstance } from './scatterplot/transformer';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const [views, setViews] = useState<null | FullView>(null);
 
-  useEffect(() => {
-    console.log(views);
-  }, [ views ]);
+  const Scatter = ()  => {
+    if (views === null || dataset === null) {
+      return <p>Non sono presenti i dati</p>
+    }
+
+    const [[settings, dimension], _] = views;
+
+    return (<SPViewComposer renderSettings={settings} spDimensions={dimension} dataset={dataset} transformer={spTransformerInstance()}/>);
+  }
+
 
   return (
   <div>
@@ -35,6 +43,7 @@ function App() {
     <CSVDatasetLoaderView updateDataset={setDataset} />
     <JSONViewsLoaderView updateViews={setViews}/>
     <JSONViewsDownloaderView views={views}/>
+    <Scatter/>
   </div>
   );
 
@@ -73,18 +82,8 @@ function App() {
 //    });
 //  }, []);
 //
-//  let spDimensions: SPDimensions = {
-//    x: ['timestamp', { identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }],
-//    y: ['encodedIp', { identifier: 'ip to real', from: StorableType.Ip, to: GraphableType.Real }],
-//    size: ['userId', { identifier: '1', from: StorableType.Int, to: GraphableType.Int }],
-//    shape: ['eventType', { identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }],
-//    color: ['appId', { identifier: 'app color', from: StorableType.String, to: GraphableType.Color }],
-//  };
-//
-//  let spSettings: SPRenderSettings = {
-//    domainX: [1600651710000, 1625051710000],
-//    domainY: [0, 33000],
-//  };
+
+
 //
 //  return (
 //    <Router>
