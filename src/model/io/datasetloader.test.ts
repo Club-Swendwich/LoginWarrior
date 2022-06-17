@@ -1,6 +1,6 @@
-import { Dataset, DatasetEntry } from './dataset';
+import { Dataset, DatasetEntry } from '../dataset';
 import { CSVDatasetParser, ParseError } from './datasetloader';
-import { StorableType } from './datatypes';
+import { StorableType } from '../datatypes';
 
 describe('datasetloader', () => {
   it('should handle an empty dataset', () => {

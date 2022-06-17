@@ -1,5 +1,5 @@
-import { SPDimensions } from '../scatterplot/dimensions';
-import SPRenderSettings from '../scatterplot/renderersettings';
+import { SPDimensions } from '../../scatterplot/dimensions';
+import SPRenderSettings from '../../scatterplot/renderersettings';
 import { ViewParser, ViewIOError } from './viewio';
 
 export type ScatterPlotView = [SPRenderSettings, SPDimensions];

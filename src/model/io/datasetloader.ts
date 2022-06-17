@@ -1,6 +1,6 @@
 import { dsvFormat, DSV } from 'd3';
-import { Dataset, DatasetEntry } from './dataset';
-import { StorableType } from './datatypes';
+import { Dataset, DatasetEntry } from '../dataset';
+import { StorableType } from '../datatypes';
 
 /**
  * Interface that represents a generic loader fot a dataset

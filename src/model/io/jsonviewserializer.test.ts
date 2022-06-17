@@ -19,4 +19,9 @@ describe('AnyViewJsonSerializer', () => {
 
     expect(s.serialize({ a: 1 })).toEqual('{"a":1}');
   });
+  it('should report json', () => {
+    const s = new AnyViewJsonSerializer(true);
+    expect(s.contentType).toEqual('application/json');
+    expect(s.extension).toEqual('json');
+  });
 });
