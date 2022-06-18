@@ -29,7 +29,7 @@ export const DatasetInfoView = ({ maybeDataset } : { maybeDataset : Dataset | nu
   }, [maybeDataset]);
 
   return (
-    <div>
+    <div className="datasetInfoArea">
       <h3>Informazioni sul dataset in uso:</h3>
       { Inner }
     </div>

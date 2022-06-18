@@ -21,14 +21,10 @@ const NotPresentBox = (
   { dataset, settings } : { dataset: boolean, settings: boolean },
 ) => (
   <div>
-    <ul>
-      { dataset && <li className="msgFail">Non è stato caricato il dataset.</li>}
-      { settings && <li className="msgFail">Non è stata caricata nessuna vista.</li>}
-    </ul>
-    <p>
-      <Link to="/data">Carica</Link>
-      {' '}
-      i dati mancanti
+    { dataset && <p className="msgFail">Non è stato caricato il dataset.</p>}
+    { settings && <p className="msgFail">Non è stata caricata nessuna vista.</p>}
+    <p className="msgFail">
+      <Link className="link" to="/data">Carica i dati mancanti.</Link>
     </p>
   </div>
 );

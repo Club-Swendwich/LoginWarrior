@@ -50,7 +50,7 @@ export const ViewsDownloaderView = (props: ViewsDownloaderViewProp) => {
   }, [views, serializer, error]);
 
   return (
-    <div>
+    <div className="datasetInfoArea">
       <h3>Download viste:</h3>
       { Inner }
     </div>

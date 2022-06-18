@@ -30,6 +30,7 @@ function App() {
   return (
     <div className="container">
       <Router>
+        <h1>LoginWarrior</h1>
         <Navbar />
         <Routes>
           <Route

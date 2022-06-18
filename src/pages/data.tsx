@@ -25,16 +25,16 @@ export const DataManagementPage = (prop: DataManagementPageProp) => {
       <div className="info-loader">
         <h2>Dataset</h2>
         <div className="sett-flex-container">
-          <DatasetInfoView maybeDataset={dataset} />
           <CSVDatasetLoaderView updateDataset={updateDataset} />
+          <DatasetInfoView maybeDataset={dataset} />
         </div>
       </div>
       <div className="info-loader">
         <h2>Viste</h2>
         <div>
           <div className="sett-flex-container">
-            <JSONViewsDownloaderView views={view} />
             <JSONViewsLoaderView updateViews={updateView} />
+            <JSONViewsDownloaderView views={view} />
           </div>
         </div>
       </div>
