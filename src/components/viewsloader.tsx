@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
-  FullView, FullViewParser, SankeyJsonParser, ScatterPlotJsonParser,
+  FullViewParser, SankeyJsonParser, ScatterPlotJsonParser,
 } from '../model/io/jsonviewparser';
 import { ViewIOError, ViewParser } from '../model/io/viewio';
+import { FullView } from '../model/views';
 
 const Status = ({ status }: { status: CurrentStatus }) => {
   switch (status) {

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { FullView } from '../model/io/jsonviewparser';
 import { AnyViewJsonSerializer } from '../model/io/jsonviewserializer';
 import { ViewIOError, ViewSerializer } from '../model/io/viewio';
+import { FullView } from '../model/views';
 
 interface ViewsDownloaderViewProp {
   readonly views: FullView | null;

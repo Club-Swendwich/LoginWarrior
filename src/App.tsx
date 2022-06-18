@@ -5,17 +5,20 @@ import React, {
 } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Dataset } from './model/dataset';
-import SPViewComposer from './scatterplot/viewcomposer';
-import { FullView } from './model/io/jsonviewparser';
-import { spTransformerInstance } from './scatterplot/transformer';
 import { DataManagementPage } from './pages/data';
+import { ScatterplotPage } from './pages/scatterplot';
+import { FullView, ScatterPlotView } from './model/views';
 
 import './App.scss';
-import { ScatterplotPage } from './pages/scatterplot';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const [views, setViews] = useState<null | FullView>(null);
+
+  const spView = views === null ? null : views[0];
+  const updateSpView = (s: ScatterPlotView) => {
+    setViews([s, views![1]]);
+  };
 
   return (
     <div>
@@ -23,9 +26,13 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <p>Wait</p>
-          }
+            element={(
+              <ScatterplotPage
+                views={spView}
+                updateViews={updateSpView}
+                dataset={dataset}
+              />
+            )}
           />
           <Route
             path="/data"

@@ -1,10 +1,5 @@
-import { SPDimensions } from '../../scatterplot/dimensions';
-import SPRenderSettings from '../../scatterplot/renderersettings';
+import { FullView, SankeyView, ScatterPlotView } from '../views';
 import { ViewParser, ViewIOError } from './viewio';
-
-export type ScatterPlotView = [SPRenderSettings, SPDimensions];
-// FIXME: Insert the real views
-export type SankeyView = [any, any];
 
 export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
   static readonly SIG_FIELD = 'spSettings';
@@ -37,7 +32,7 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
       return ViewIOError.MissingField;
     }
 
-    return [settings, dimensions];
+    return { settings, dimensions };
   }
 }
 
@@ -66,11 +61,9 @@ export class SankeyJsonParser implements ViewParser<SankeyView> {
       return ViewIOError.MissingField;
     }
 
-    return [settings, dimensions];
+    return { settings, dimensions };
   }
 }
-
-export type FullView = [ScatterPlotView, SankeyView];
 
 export class FullViewParser implements ViewParser<FullView> {
   constructor(

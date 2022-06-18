@@ -4,7 +4,7 @@ import { DatasetInfoView } from '../components/datasetinfo';
 import { JSONViewsDownloaderView } from '../components/viewsdownloader';
 import { JSONViewsLoaderView } from '../components/viewsloader';
 import { Dataset } from '../model/dataset';
-import { FullView } from '../model/io/jsonviewparser';
+import { FullView } from '../model/views';
 
 export interface DataManagementPageProp {
   dataset: Dataset | null;
@@ -35,6 +35,7 @@ export const DataManagementPage = (prop: DataManagementPageProp) => {
           <JSONViewsLoaderView updateViews={updateView} />
         </div>
       </div>
+      <a href="..">Torna alla home</a>
     </div>
   );
 };
