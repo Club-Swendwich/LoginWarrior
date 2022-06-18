@@ -11,21 +11,11 @@ import { spTransformerInstance } from './scatterplot/transformer';
 import { DataManagementPage } from './pages/data';
 
 import './App.scss';
+import { ScatterplotPage } from './pages/scatterplot';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const [views, setViews] = useState<null | FullView>(null);
-
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const Scatter = () => {
-    if (views === null || dataset === null) {
-      return <p>Non sono presenti i dati</p>;
-    }
-
-    const [[settings, dimension]] = views;
-
-    return (<SPViewComposer renderSettings={settings} spDimensions={dimension} dataset={dataset} transformer={spTransformerInstance()} />);
-  };
 
   return (
     <div>
@@ -34,7 +24,7 @@ function App() {
           <Route
             path="/"
             element={
-              <Scatter />
+              <p>Wait</p>
           }
           />
           <Route
