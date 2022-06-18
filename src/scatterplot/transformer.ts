@@ -1,7 +1,7 @@
 import { LoginType, StorableType, GraphableType } from '../model/datatypes';
 import { Transformer } from '../model/transformer';
 
-export function spTransformerInstance(): Transformer {
+export function addScatterplotTransformations(transformer: Transformer): void {
   const colorMap = new Map();
   function getColor(id: number) : number[] {
     if (!colorMap.has(id)) {
@@ -90,11 +90,11 @@ export function spTransformerInstance(): Transformer {
   appIdxMap.set('MD7', 12);
   appIdxMap.set('TM3', 13);
   appIdxMap.set('HCF', 14);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function getAppIdx(app: string) : number[] {
     return appIdxMap.get(app);
   }
-
-  const transformer: Transformer = Transformer.new();
 
   transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Int }, (a: number) : any => a.toFixed(0));
   transformer.add({ identifier: 'int identity', from: StorableType.Int, to: GraphableType.Real }, (a: number) : any => a);
@@ -125,6 +125,4 @@ export function spTransformerInstance(): Transformer {
   transformer.add({ identifier: 'default', from: StorableType.LoginType, to: GraphableType.Shape }, () : any => 'square');
   transformer.add({ identifier: 'default', from: StorableType.String, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
   transformer.add({ identifier: 'default', from: StorableType.Ip, to: GraphableType.Color }, () : any => [0, 0, 0, 1]);
-
-  return transformer;
 }

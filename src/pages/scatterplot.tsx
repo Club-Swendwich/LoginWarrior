@@ -10,12 +10,12 @@ import SPRenderSettings from '../scatterplot/renderersettings';
 import SPRenderingSettingsSelectorVM from '../scatterplot/renderingsettingsvm';
 import { SPDimensionSelectorVM } from '../scatterplot/dimensionselectorvm';
 import { SPDimensionSelector } from '../scatterplot/dimensionselector';
-import { spTransformerInstance } from '../scatterplot/transformer';
 import SPRenderingSettingsSelector from '../scatterplot/renderingsettings';
 import { SPRenderer } from '../scatterplot/renderer';
 import { SPMapper } from '../scatterplot/mapper';
 import { MapperError } from '../genericview/mapper';
 import { ScatterPlotView } from '../model/views';
+import { Transformer } from '../model/transformer';
 
 const NotPresentBox = (
   { dataset, settings } : { dataset: boolean, settings: boolean },
@@ -49,7 +49,7 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
 
   const [status, setStatus] = useState(CurrentStatus.Ok);
   const renderingAreaRef = useRef<HTMLDivElement>(null);
-  const transformer = spTransformerInstance();
+  const transformer = Transformer.provideInstance();
 
   const dimensionSelector = useMemo(
     () => new SPDimensionSelector(transformer, dataset.signature, dimensions),
