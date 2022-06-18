@@ -6,16 +6,15 @@ export default class SPRenderingSettingsSelectorVM {
   @observable
   private model: SPRenderingSettingsSelector;
 
-  public constructor(settings: SPRenderSettings = {
-    domainX: [5, 10],
-    domainY: [5, 10],
-  }) {
-    this.model = new SPRenderingSettingsSelector(settings);
+  public constructor(
+    model: SPRenderingSettingsSelector
+  ) {
+    this.model = model;
   }
 
   @action
   updateSettings(settings: SPRenderSettings) {
-    this.model = new SPRenderingSettingsSelector(settings);
+    this.model.selectedSettings = settings;
   }
 
   @action
