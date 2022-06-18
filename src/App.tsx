@@ -57,11 +57,8 @@ function App() {
   }, []);
 
   const skDimensions : SKDimensions = {
-    layers: [['userId',{ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }],
-             ['timestamp',{ identifier: 'timestamp', from: StorableType.Date, to: GraphableType.SankeyLayer }],
-             ['eventType',{ identifier: 'eventType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
-             ['encodedIp',{ identifier: 'encodedIp', from: StorableType.Ip, to: GraphableType.SankeyLayer }],
-             ['appId',{ identifier: 'appId', from: StorableType.String, to: GraphableType.SankeyLayer }],
+    layers: [
+             ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }]
             ]
   }
   

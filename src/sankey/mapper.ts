@@ -96,7 +96,8 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
-            console.log(result);
+            console.log("Il layer è " , layer[1] );
+            console.log("Il outcomes è " , result.outcomes);
             result.outcomes.forEach((element, j) => {
                 nodes.push({
                     nodeId: i + "," + j,

@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { timeStamp } from 'console';
 import {
-  GraphableType, StorableType,
+  GraphableType, LoginType, StorableType,
 } from '../model/datatypes';
 
 //RENDERER
@@ -29,6 +29,7 @@ import {
 import { SKDimensions } from './dimensions/SKDimensions';
 import { SKMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
+import { SankeyLayer} from "../model/datatypes";
 
 
 export interface SKViewComposerProps {
@@ -44,14 +45,62 @@ export const SKViewComposer = (
   console.log("Sono qui");
   const transformer: Transformer = Transformer.new();
 
-  transformer.add({ identifier: 'timestamp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
-  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
-  transformer.add({ identifier: 'eventType', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
-  transformer.add({ identifier: 'encodedIp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: string) : any => parseInt(a.replace('.', ''), 10));
-  transformer.add({ identifier: 'appId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
 
+  transformer.add({ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, (a: LoginType) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+
+  /*
+  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+  transformer.add({ identifier: 'eventType', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+  transformer.add({ identifier: 'encodedIp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: string) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+  transformer.add({ identifier: 'appId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
   
+
+  transformer.add({ identifier: 'userId', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, (a: ) : any => {
+    const test: SankeyLayer<any> = {
+      outcomes: [0, 1, 2, 3],
+      map: (field: DatasetValue) => field.value
+    }
+    return test;
+  });
+  */
+
   console.log(transformer);
 
   // eslint-disable-next-line max-len
