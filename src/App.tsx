@@ -10,19 +10,27 @@ import { ScatterplotPage } from './pages/scatterplot';
 import { FullView, ScatterPlotView } from './model/views';
 
 import './App.scss';
+import Navbar from './components/navbar';
 
 function App() {
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const [views, setViews] = useState<null | FullView>(null);
 
-  const spView = views === null ? null : views[0];
+  const spView = views === null ? null : views.scatterplot;
+  const sankeyView = views === null ? null : views.sankey;
   const updateSpView = (s: ScatterPlotView) => {
-    setViews([s, views![1]]);
+    setViews(
+      {
+        sankey: views!.sankey,
+        scatterplot: s,
+      },
+    );
   };
 
   return (
     <div className="container">
       <Router>
+        <Navbar />
         <Routes>
           <Route
             path="/"
@@ -43,7 +51,7 @@ function App() {
                 dataset={dataset}
                 updateDataset={setDataset}
               />
-          )}
+            )}
           />
         </Routes>
       </Router>

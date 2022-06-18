@@ -11,4 +11,7 @@ export interface SankeyView {
   dimensions: any;
 }
 
-export type FullView = [ScatterPlotView, SankeyView];
+export interface FullView {
+  scatterplot: ScatterPlotView;
+  sankey: SankeyView;
+};

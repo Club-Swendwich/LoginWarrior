@@ -2,9 +2,9 @@ import { FullView, SankeyView, ScatterPlotView } from '../views';
 import { ViewParser, ViewIOError } from './viewio';
 
 export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
-  static readonly SIG_FIELD = 'spSettings';
+  static readonly SIG_FIELD = 'settings';
 
-  static readonly DIM_FIELD = 'spDimensions';
+  static readonly DIM_FIELD = 'dimensions';
 
   constructor(
     private readonly fullCheck = true,
@@ -14,6 +14,7 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
     let parsed;
     try {
       parsed = JSON.parse(src);
+      console.log(parsed);
     } catch (_) {
       return ViewIOError.WrongFormat;
     }
@@ -22,12 +23,14 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
       return ViewIOError.WrongFormat;
     }
 
-    const settings = parsed[ScatterPlotJsonParser.SIG_FIELD];
+    const settings = parsed.scatterplot[ScatterPlotJsonParser.SIG_FIELD];
+    console.log(settings);
     if (this.fullCheck && settings === undefined) {
       return ViewIOError.MissingField;
     }
 
-    const dimensions = parsed[ScatterPlotJsonParser.DIM_FIELD];
+    const dimensions = parsed.scatterplot[ScatterPlotJsonParser.DIM_FIELD];
+    console.log(dimensions);
     if (this.fullCheck && dimensions === undefined) {
       return ViewIOError.MissingField;
     }
@@ -37,9 +40,9 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
 }
 
 export class SankeyJsonParser implements ViewParser<SankeyView> {
-  static readonly SIG_FIELD = 'skSettings';
+  static readonly SIG_FIELD = 'settings';
 
-  static readonly DIM_FIELD = 'skDimensions';
+  static readonly DIM_FIELD = 'dimensions';
 
   constructor(
     private readonly fullCheck = true,
@@ -47,16 +50,19 @@ export class SankeyJsonParser implements ViewParser<SankeyView> {
 
   parse(src: string): ViewIOError | SankeyView {
     const parsed = JSON.parse(src);
+    console.log(parsed);
     if (parsed === undefined) {
       return ViewIOError.WrongFormat;
     }
 
-    const settings = parsed[SankeyJsonParser.SIG_FIELD];
+    const settings = parsed.sankey[SankeyJsonParser.SIG_FIELD];
+    console.log(settings);
     if (this.fullCheck && settings === undefined) {
       return ViewIOError.MissingField;
     }
 
-    const dimensions = parsed[SankeyJsonParser.DIM_FIELD];
+    const dimensions = parsed.sankey[SankeyJsonParser.DIM_FIELD];
+    console.log(dimensions);
     if (this.fullCheck && dimensions === undefined) {
       return ViewIOError.MissingField;
     }
@@ -82,6 +88,9 @@ export class FullViewParser implements ViewParser<FullView> {
       return sk as ViewIOError;
     }
 
-    return [sp as ScatterPlotView, sk as SankeyView];
+    return {
+      scatterplot: sp as ScatterPlotView,
+      sankey: sk as SankeyView,
+    };
   }
 }
