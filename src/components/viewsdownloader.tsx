@@ -41,7 +41,9 @@ export const ViewsDownloaderView = (props: ViewsDownloaderViewProp) => {
 
     return (
       <>
-        <button onClick={downloadViews} type="button">Scarica le viste!</button>
+        <div className="saveViewButtonArea">
+          <button onClick={downloadViews} type="button">Scarica le viste!</button>
+        </div>
         { error && <div className="errorMsg">C&apos è stato un errore durante il salvataggio delle viste.</div> }
       </>
     );

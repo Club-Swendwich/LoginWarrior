@@ -88,7 +88,7 @@ export const ViewsLoader = ({ viewsParser, updateViews }: ViewsLoaderProp) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onViewsUpload });
 
   return (
-    <div className="drag">
+    <div className="Drag">
       <div className="dragArea" {...getRootProps()}>
         <input {...getInputProps()} />
         <h1>Clicca qui o trascina il file json nel riquadro</h1>
