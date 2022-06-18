@@ -3,10 +3,8 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import { Dataset } from '../model/dataset';
-import { SPDimensions } from '../scatterplot/dimensions';
 import { SPDimensionSelectorView } from '../scatterplot/dimensionselectorview';
 import SPRenderingSettingsView from '../scatterplot/renderingsettingsview';
-import SPRenderSettings from '../scatterplot/renderersettings';
 import SPRenderingSettingsSelectorVM from '../scatterplot/renderingsettingsvm';
 import { SPDimensionSelectorVM } from '../scatterplot/dimensionselectorvm';
 import { SPDimensionSelector } from '../scatterplot/dimensionselector';
@@ -36,15 +34,14 @@ enum CurrentStatus {
 }
 
 export interface ScatterplotSafeRenderProps {
-  renderSettings: SPRenderSettings;
-  dimensions: SPDimensions;
+  view: ScatterPlotView
   dataset: Dataset;
   updateView: (v: ScatterPlotView) => void;
 }
 
 const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
   const {
-    renderSettings, dimensions, dataset, updateView,
+    view, dataset, updateView,
   } = props;
 
   const [status, setStatus] = useState(CurrentStatus.Ok);
@@ -52,13 +49,13 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
   const transformer = Transformer.provideInstance();
 
   const dimensionSelector = useMemo(
-    () => new SPDimensionSelector(transformer, dataset.signature, dimensions),
-    [dataset, transformer, dimensions],
+    () => new SPDimensionSelector(transformer, dataset.signature, view.dimensions),
+    [dataset, transformer, view.dimensions],
   );
 
   const renderingSettingsSelector = useMemo(
-    () => new SPRenderingSettingsSelector(renderSettings),
-    [renderSettings],
+    () => new SPRenderingSettingsSelector(view.settings),
+    [view],
   );
 
   const dimensionSelectorVM = useMemo(
@@ -72,8 +69,8 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
   );
 
   const mapper = useMemo(
-    () => new SPMapper(transformer, dimensions),
-    [transformer, dimensions],
+    () => new SPMapper(transformer, view.dimensions),
+    [transformer, view],
   );
 
   useEffect(() => {
@@ -91,11 +88,11 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
         return;
       }
 
-      const renderer = new SPRenderer(data, renderSettings);
+      const renderer = new SPRenderer(data, view.settings);
       renderer.render(renderingAreaRef as MutableRefObject<HTMLDivElement>);
     };
     render();
-  }, [dataset, mapper, renderSettings]);
+  }, [dataset, mapper, view]);
 
   const onUpdate = () => {
     updateView({
@@ -148,8 +145,7 @@ export const ScatterplotPage = (prop: ScatterplotPageProps) => {
 
   return (
     <ScatterPlotSafeRender
-      renderSettings={views.settings}
-      dimensions={views.dimensions}
+      view={views}
       dataset={dataset}
       updateView={updateViews}
     />

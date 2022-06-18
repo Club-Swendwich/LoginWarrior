@@ -24,7 +24,7 @@ function App() {
   const updateSpView = (s: ScatterPlotView) => {
     setViews(
       {
-        sankey: views!.sankey,
+        sankey: views!.sankey, // Safe non può essere chiamato prima del !null
         scatterplot: s,
       },
     );
