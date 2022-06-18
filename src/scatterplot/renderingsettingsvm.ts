@@ -7,7 +7,7 @@ export default class SPRenderingSettingsSelectorVM {
   private model: SPRenderingSettingsSelector;
 
   public constructor(
-    model: SPRenderingSettingsSelector
+    model: SPRenderingSettingsSelector,
   ) {
     this.model = model;
   }
@@ -24,7 +24,7 @@ export default class SPRenderingSettingsSelectorVM {
       domainX: domain,
       domainY: tmpsettings.domainY,
     };
-    this.model = new SPRenderingSettingsSelector(settings);
+    this.model.selectedSettings = settings;
   }
 
   @action
@@ -34,7 +34,7 @@ export default class SPRenderingSettingsSelectorVM {
       domainX: tmpsettings.domainX,
       domainY: domain,
     };
-    this.model = new SPRenderingSettingsSelector(settings);
+    this.model.selectedSettings = settings;
   }
 
   @computed
