@@ -1,130 +1,238 @@
-.verticalHalf {
-    display: flex;
-    flex-wrap: wrap;
-    >* {
-        flex: 0 0 50%
-    }
-}
+@font-face{
+  font-family: 'Roboto', sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+} 
 
-.dragArea {
-    border: 2px dashed black;
+$primary-light: #006683;
+$on-primary-light: #ffffff;
+$primary-container-light: #bde9ff;
+$on-primary-container-light: #001f2a;
+$secondary-light: #4d616c;
+$on-secondary-light: #ffffff;
+$secondary-container-light: #d0e6f2;
+$on-secondary-container-light: #081e27;
+$tertiary-light: #006c52;
+$on-tertiary-light: #ffffff;
+$tertiary-container-light: #83f8ce;
+$on-tertiary-container-light: #002117;
+$error-light: #ba1a1a;
+$on-error-light: #ffffff;
+$error-container-light: #ffdad6;
+$on-error-container-light: #410002;
+$outline-light: #70787d;
+$background-light: #fbfcfe;
+$on-background-light: #191c1e;
+$surface-light: #fbfcfe;
+$on-surface-light: #191c1e;
+$surface-variant-light: #dce4e9;
+$on-surface-variant-light: #40484c;
+$inverse-surface-light: #2e3132;
+$inverse-on-surface-light: #eff1f3;
+
+
+$primary-dark: #65d3ff;
+$on-primary-dark: #003546;
+$primary-container-dark: #004d64;
+$on-primary-container-dark: #bde9ff;
+$secondary-dark: #b4cad6;
+$on-secondary-dark: #1f333c;
+$secondary-container-dark: #354a53;
+$on-secondary-container-dark: #d0e6f2;
+$tertiary-dark: #65dbb3;
+$on-tertiary-dark: #003829;
+$tertiary-container-dark: #00513d;
+$on-tertiary-container-dark: #83f8ce;
+$error-dark: #ffb4ab;
+$on-error-dark: #690005;
+$error-container-dark: #93000a;
+$on-error-container-dark: #ffdad6;
+$outline-dark: #8a9297;
+$background-dark: #191c1e;
+$on-background-dark: #e1e2e4;
+$surface-dark: #191c1e;
+$on-surface-dark: #e1e2e4;
+$surface-variant-dark: #40484c;
+$on-surface-variant-dark: #c0c8cd;
+$inverse-surface-dark: #e1e2e4;
+$inverse-on-surface-dark: #191c1e;
+
+.verticalHalf {
+  display: flex;
+  flex-wrap: wrap;
+  >* {
+    flex: 0 0 50%
+  }
 }
 
 // MESSAGES
 .msgSuccess,
 .msgFail,
 .msgInfo {
-    border-radius: 10px;
-    margin: 10px 0px;
-    padding: 12px;
+  border-radius: 10px;
+  margin: 10px 0px;
+  padding: 12px;
 }
 
 .msgSuccess {
-    color: #4F8A10;
-    background-color: #DFF2BF;
+  color: #4F8A10;
+  background-color: #DFF2BF;
 }
 
 .msgFail {
-    color: #D8000C;
-    background-color: #FFD2D2;
+  color: #D8000C;
+  background-color: #FFD2D2;
 }
 
 .msgInfo {
-    color: #00529B;
-    background-color: #BDE5F8;
+  color: #00529B;
+  background-color: #BDE5F8;
 }
-
 
 h1, h2 {
     display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 20px;
+  border: 4px solid;
+  border-radius: 10px;
+  border-color: #29344a;
+  background-color: aliceblue;
+  color: #29344a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: larger;
+  font-weight: bold;
+}
+
+
+.Drag {
+    display: flex;
+    height: 150px;
+    border: 2px solid; 
+    border-radius: 20px; 
     justify-content: center;
     align-items: center;
-  }
-  
-  button {
-    padding: 20px;
-    border: 4px solid;
-    border-radius: 10px;
-    border-color: #29344a;
-    background-color: white;
-    color: #29344a;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: larger;
-    font-weight: bold;
-  }
-  
-  
-  .Drag {
-      display: flex;
-      height: 150px;
-      border: 2px solid; 
-      border-radius: 20px; 
-      justify-content: center;
-      align-items: center;
-      flex-direction: column; 
-      margin: 50px;
-      background-color: #29344a;
-  }
-  
-  .renderArea {
-    background-color: white;
-  }
-  
-  .settingsArea {
-    display: flex; 
     flex-direction: column; 
-    justify-content: space-evenly;
+    margin: 50px;
+    background-color: #29344a;
+}
+
+
+.renderArea {
+  background-color: white;
+  height: 500px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.settingsApplyArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.applyButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.settingsArea {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-evenly;
+}
+
+.renderSpace {
+  display: flex;
+  flex-direction: row;
+}
+
+.settings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.fields {
+  display: inline-block;
+}
+
+.applySettingsButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.saveViewButtonArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul {
+  display: block;
+  margin-left: -10px;
+}
+
+ul li {
+  display: block;
+  position: relative;
+}
+
+ul li:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: $background-light;
+  background-color: rgb(10, 11, 13);
+  color: aliceblue;
+}
+
+.container {
+  padding: 1em;
+}
+
+.info-loader {
+  padding: 1em;
+}
+
+.datasetFieldsList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbarArea {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.navbarItem {
+  list-style: none;
+  padding: 5px;
+  color: white;
+  background-color: #29344a;
+  border-radius: 10px;
+  border: 2px solid;
+  border-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.sett-flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  > * {
+    flex: 0 0 45%;
+    padding: 1em;
   }
-  
-  .renderSpace {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .settings {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
-  
-  .fields {
-    display: inline-block;
-  }
-  
-  .applySettingsButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .saveViewButtonArea {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  ul {
-    display: block;
-    margin-left: -10px;
-  }
-  
-  ul li {
-    display: block;
-    position: relative;
-  }
-  
-  ul li:not(:last-child) {
-    margin-bottom: 16px;
-  }
-  
-  ul li:before {
-    content: "";
-    position: absolute;
-    top: 1.2em;
-    left: -30px;
-    margin-top: -.9em;
-    background: linear-gradient(45deg, #29344a, white );
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-  }
+}

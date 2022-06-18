@@ -11,17 +11,19 @@ export const DatasetInfoView = ({ maybeDataset } : { maybeDataset : Dataset | nu
     }
 
     return (
-      <div>
-        <p>
-          Il dataset ha
-          { pad(maybeDataset.size.toString()) }
-          righe!
-        </p>
-        <p>Sono disponibili i seguenti campi:</p>
-        <ul>
-          { Array.from(maybeDataset.signature)
-            .map(([name, type], key) => FieldInfo({ name, type, key })) }
-        </ul>
+      <div className="datasetFieldsList">
+        <div>
+          <p>
+            Il dataset ha
+            { pad(maybeDataset.size.toString()) }
+            righe!
+          </p>
+          <p>Sono disponibili i seguenti campi:</p>
+          <ul>
+            { Array.from(maybeDataset.signature)
+              .map(([name, type], key) => FieldInfo({ name, type, key })) }
+          </ul>
+        </div>
       </div>
     );
   }, [maybeDataset]);

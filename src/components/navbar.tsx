@@ -3,18 +3,12 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <div>
-      <li>
-        <Link to="/">Home</Link>
+    <div className="navbarArea">
+      <li className="navbarItem">
+        <Link to="/">Scatterplot</Link>
       </li>
-      <li>
-        <Link to="/scatter">Scatterplot</Link>
-      </li>
-      <li>
-        <Link to="/sankey">Sankey Diagram</Link>
-      </li>
-      <li>
-        <Link to="/settings">Settings</Link>
+      <li className="navbarItem">
+        <Link to="/data">Settings</Link>
       </li>
     </div>
   );

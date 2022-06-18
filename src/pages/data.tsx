@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { CSVDatasetLoaderView } from '../components/csvloader';
 import { DatasetInfoView } from '../components/datasetinfo';
 import { JSONViewsDownloaderView } from '../components/viewsdownloader';
@@ -23,19 +24,21 @@ export const DataManagementPage = (prop: DataManagementPageProp) => {
       <h1>Gestione dati</h1>
       <div className="info-loader">
         <h2>Dataset</h2>
-        <div className="verticalHalf">
+        <div className="sett-flex-container">
           <DatasetInfoView maybeDataset={dataset} />
           <CSVDatasetLoaderView updateDataset={updateDataset} />
         </div>
       </div>
       <div className="info-loader">
         <h2>Viste</h2>
-        <div className="verticalHalf">
-          <JSONViewsDownloaderView views={view} />
-          <JSONViewsLoaderView updateViews={updateView} />
+        <div>
+          <div className="sett-flex-container">
+            <JSONViewsDownloaderView views={view} />
+            <JSONViewsLoaderView updateViews={updateView} />
+          </div>
         </div>
       </div>
-      <a href="..">Torna alla home</a>
+      <Link to="/">Scatterplot</Link>
     </div>
   );
 };

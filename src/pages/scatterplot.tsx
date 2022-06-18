@@ -1,6 +1,7 @@
 import React, {
   MutableRefObject, useEffect, useMemo, useRef, useState,
 } from 'react';
+import { Link } from 'react-router-dom';
 import { Dataset } from '../model/dataset';
 import { SPDimensions } from '../scatterplot/dimensions';
 import { SPDimensionSelectorView } from '../scatterplot/dimensionselectorview';
@@ -25,7 +26,7 @@ const NotPresentBox = (
       { settings && <li className="msgFail">Non è stata caricata nessuna vista.</li>}
     </ul>
     <p>
-      <a href="./data">Carica</a>
+      <Link to="/data">Carica</Link>
       {' '}
       i dati mancanti
     </p>
@@ -111,13 +112,15 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
     <>
       { (status === CurrentStatus.Ok) && (
       <div>
-        <div ref={renderingAreaRef} />
-        <div>
-          <div>
+        <div ref={renderingAreaRef} className="renderArea" id="render" />
+        <div className="settingsApplyArea">
+          <div className="settingsArea">
             <SPDimensionSelectorView viewmodel={dimensionSelectorVM} />
             <SPRenderingSettingsView viewModel={renderSettingsVM} />
           </div>
-          <button type="button" onClick={onUpdate}>Aggiorna</button>
+          <div className="applyButton">
+            <button type="button" onClick={onUpdate}>Aggiorna</button>
+          </div>
         </div>
       </div>
       ) }

@@ -90,7 +90,7 @@ export const LoadDatasetView = (prop : DatasetLoaderProps) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onDatasetUpload });
 
   return (
-    <div className="drag">
+    <div className="Drag">
       <div className="dragArea" {...getRootProps()}>
         <input {...getInputProps()} />
         <h1>Clicca qui o trascina il file csv nel riquadro</h1>
