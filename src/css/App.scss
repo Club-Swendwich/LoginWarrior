@@ -1,0 +1,105 @@
+@font-face{
+    font-family: 'Roboto', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+} 
+
+$primary-light: #006e28;
+$on-primary-light: #ffffff;
+$primary-container-light: #6bff85;
+$on-primary-container-light: #002107;
+$secondary-light: #466647;
+$on-secondary-light: #ffffff;
+$secondary-container-light: #c7ecc4;
+$on-secondary-container-light: #022108;
+$tertiary-light: #006973;
+$on-tertiary-light: #ffffff;
+$tertiary-container-light: #94f1ff;
+$on-tertiary-container-light: #001f24;
+$error-light: #ba1a1a;
+$on-error-light: #ffffff;
+$error-container-light: #ffdad6;
+$on-error-container-light: #410002;
+$outline-light: #72796f;
+$background-light: #fcfdf7;
+$on-background-light: #1a1c19;
+$surface-light: #fcfdf7;
+$on-surface-light: #1a1c19;
+$surface-variant-light: #dee5d9;
+$on-surface-variant-light: #424940;
+$inverse-surface-light: #2f312d;
+$inverse-on-surface-light: #f0f1eb;
+$primary-dark: #3be366;
+$on-primary-dark: #003911;
+$primary-container-dark: #00531c;
+$on-primary-container-dark: #6bff85;
+$secondary-dark: #acd0a9;
+$on-secondary-dark: #18371c;
+$secondary-container-dark: #2f4e30;
+$on-secondary-container-dark: #c7ecc4;
+$tertiary-dark: #77d4e2;
+$on-tertiary-dark: #00363c;
+$tertiary-container-dark: #004f57;
+$on-tertiary-container-dark: #94f1ff;
+$error-dark: #ffb4ab;
+$on-error-dark: #690005;
+$error-container-dark: #93000a;
+$on-error-container-dark: #ffb4ab;
+$outline-dark: #8c9389;
+$background-dark: #1a1c19;
+$on-background-dark: #e2e3dd;
+$surface-dark: #1a1c19;
+$on-surface-dark: #e2e3dd;
+$surface-variant-dark: #424940;
+$on-surface-variant-dark: #c2c9bd;
+$inverse-surface-dark: #e2e3dd;
+$inverse-on-surface-dark: #2f312d;
+
+.verticalHalf {
+    display: flex;
+    flex-wrap: wrap;
+    >* {
+        flex: 0 0 50%
+    }
+}
+
+.dragArea {
+    border: 2px dashed black;
+}
+
+// MESSAGES
+.msgSuccess,
+.msgFail,
+.msgInfo {
+    border-radius: 10px;
+    margin: 10px 0px;
+    padding: 12px;
+}
+
+.msgSuccess {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.msgFail {
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
+.msgInfo {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: $background-light;
+}
+
+.container {
+    padding: 1em;
+}
+
+.info-loader {
+    padding: 1em;
+    
+}

@@ -21,14 +21,14 @@ export const DataManagementPage = (prop: DataManagementPageProp) => {
   return (
     <div>
       <h1>Gestione dati</h1>
-      <div>
+      <div className="info-loader">
         <h2>Dataset</h2>
         <div className="verticalHalf">
           <DatasetInfoView maybeDataset={dataset} />
           <CSVDatasetLoaderView updateDataset={updateDataset} />
         </div>
       </div>
-      <div>
+      <div className="info-loader">
         <h2>Viste</h2>
         <div className="verticalHalf">
           <JSONViewsDownloaderView views={view} />
