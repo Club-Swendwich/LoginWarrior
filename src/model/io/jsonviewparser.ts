@@ -16,11 +16,11 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
   ) { }
 
   parse(src: string): ViewIOError | ScatterPlotView {
-    let parsed = undefined;
+    let parsed;
     try {
-        parsed = JSON.parse(src);
+      parsed = JSON.parse(src);
     } catch (_) {
-        return ViewIOError.WrongFormat;
+      return ViewIOError.WrongFormat;
     }
 
     if (parsed === undefined) {

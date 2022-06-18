@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Dataset } from '../model/dataset';
 import { StorableType } from '../model/datatypes';
 
 const pad = (str: string) => ` ${str} `;
 
 export const DatasetInfoView = ({ maybeDataset } : { maybeDataset : Dataset | null }) => {
-  if (maybeDataset === null) {
-    return <div className="msgFail">Non è ancora stato caricato un dataset</div>;
-  }
+  const Inner = useMemo(() => {
+    if (maybeDataset === null) {
+      return <div className="msgInfo">Non è ancora stato caricato un dataset</div>;
+    }
+
+    return (
+      <div>
+        <p>
+          Il dataset ha
+          { pad(maybeDataset.size.toString()) }
+          righe!
+        </p>
+        <p>Sono disponibili i seguenti campi:</p>
+        <ul>
+          { Array.from(maybeDataset.signature)
+            .map(([name, type], key) => FieldInfo({ name, type, key })) }
+        </ul>
+      </div>
+    );
+  }, [maybeDataset]);
+
   return (
     <div>
-      <p>
-        Il dataset ha
-        { pad(maybeDataset.size.toString()) }
-        righe!
-      </p>
-      <p>Sono disponibili i seguenti campi:</p>
-      <ul>
-        { Array.from(maybeDataset.signature)
-          .map(([name, type], key) => FieldInfo({ name, type, key })) }
-      </ul>
+      <h3>Informazioni sul dataset in uso:</h3>
+      { Inner }
     </div>
   );
 };

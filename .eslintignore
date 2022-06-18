@@ -1,0 +1,4 @@
+src/model/datatypes.ts
+src/scatterplot/transformer.ts
+src/scatterplot/dimensionselectorview.tsx
+src/scatterplot/viewcomposer.tsx

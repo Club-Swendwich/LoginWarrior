@@ -9,9 +9,9 @@ import { ViewIOError, ViewParser } from '../model/io/viewio';
 const Status = ({ status }: { status: CurrentStatus }) => {
   switch (status) {
     case CurrentStatus.Init:
-      return <div>Pronto al caricamento della view</div>;
+      return null;
     case CurrentStatus.Loading:
-      return <div>Caricamento in corso...</div>;
+      return <div className="msgInfo">Caricamento in corso...</div>;
     case CurrentStatus.TooMany:
       return <div className="msgFail">Puoi caricare al massimo un file alla volta</div>;
     case CurrentStatus.Aborted:
@@ -60,10 +60,10 @@ export const ViewsLoader = ({ viewsParser, updateViews }: ViewsLoaderProp) => {
 
     const reader = new FileReader();
 
+    setStatus(CurrentStatus.Loading);
     reader.onabort = () => setStatus(CurrentStatus.Aborted);
     reader.onerror = () => setStatus(CurrentStatus.Failed);
     reader.onload = () => {
-      setStatus(CurrentStatus.Loading);
       const content = reader.result as string;
       const parsed = viewsParser.parse(content);
 
@@ -87,15 +87,11 @@ export const ViewsLoader = ({ viewsParser, updateViews }: ViewsLoaderProp) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onViewsUpload });
 
   return (
-    <div
-      style={{
-        display: 'flex', width: '100%', height: '150px', border: '1px dashed', justifyContent: 'center', alignItems: 'center',
-      }}
-      className="drag"
-      {...getRootProps()}
-    >
-      <input {...getInputProps()} />
-      <h1>Clicca qui o trascina il file csv nel riquadro</h1>
+    <div className="drag">
+      <div className="dragArea" {...getRootProps()}>
+        <input {...getInputProps()} />
+        <h1>Clicca qui o trascina il file json nel riquadro</h1>
+      </div>
       <Status status={status} />
     </div>
   );
