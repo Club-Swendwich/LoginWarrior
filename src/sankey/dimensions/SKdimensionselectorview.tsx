@@ -44,4 +44,4 @@ export const SKDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     </form>
   );
 };
-export default observer(SPDimensionSelectorView);
+export default observer(SKDimensionSelectorView);

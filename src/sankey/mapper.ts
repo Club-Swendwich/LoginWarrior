@@ -8,10 +8,11 @@ import { SLink, SNode } from "./renderer";
 
 
 export class SKMapper implements Mapper<SKDimensions, GraphData> {
-
+    
     public constructor(
         private transformer: TransformationProvider,
         private dimensions: SKDimensions,
+        
     ) { }
 
     public updateMapLogic(ml: SKDimensions): void {
@@ -95,6 +96,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
+            console.log(result);
             result.outcomes.forEach((element, j) => {
                 nodes.push({
                     nodeId: i + "," + j,

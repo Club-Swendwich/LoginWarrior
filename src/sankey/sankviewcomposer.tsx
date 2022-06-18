@@ -49,6 +49,7 @@ export const SKViewComposer = (
   transformer.add({ identifier: 'eventType', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
   transformer.add({ identifier: 'encodedIp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: string) : any => parseInt(a.replace('.', ''), 10));
   transformer.add({ identifier: 'appId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
+  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => 1);
 
   
   console.log(transformer);

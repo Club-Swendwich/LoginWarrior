@@ -50,10 +50,12 @@ export class SkDimensionSelector implements DimensionSelector<SKDimensions> {
      */
     public getAvailableFieldsAtIndex(): Set<[string, StorableType]> {
         const compatibleStorables = this.queryable.compatibleStorableTypes(GraphableType.SankeyLayer);
+        console.log("stuff" + compatibleStorables);
         return new Set(
-            Array.from(this.signature).filter(([, t]) => compatibleStorables.includes(t))
+            Array.from(this.signature)
         );
     }
+    //FIX
 
     /**
      * Getter of the layer number
