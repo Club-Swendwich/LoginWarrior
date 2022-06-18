@@ -25,21 +25,10 @@ export const SKDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     //Creare form dinamico (chiedere al model numero di nodi) 
-    /*
-    viewmodel.updateXAxisField(xField!);
-    viewmodel.updateYAxisField(yField!);
-    viewmodel.updateSizeField(sizeField!);
-    viewmodel.updateShapeField(shapeField!);
-    viewmodel.updateColorField(colorField!);
-    viewmodel.updateXAxisMap(xMap!);
-    viewmodel.updateYAxisMap(yMap!);
-    viewmodel.updateSizeMap(sizeMap!);
-    viewmodel.updateShapeMap(shapeMap!);
-    viewmodel.updateColorMap(colorMap!);
-    */
   };
   return (
-    <form className="dimensionSelector" onSubmit={onSubmit}>
+    <form className="dimensionSelectorSK" onSubmit={onSubmit}>
+      <label htmlFor= "assegnazione">Assegnazione</label>
       <input type="submit" value="Applica dimensioni" />
     </form>
   );
