@@ -24,7 +24,6 @@ const NotPresentBox = (
       { dataset && <li className="msgFail">Non è stato caricato il dataset.</li>}
       { settings && <li className="msgFail">Non è stata caricata nessuna vista.</li>}
     </ul>
-    )
     <p>
       <a href="./data">Carica</a>
       {' '}
