@@ -135,87 +135,97 @@ $neutral: #2d2e2c;
 
 // END GESTIONE DATI
 // SCATTERPLOT
-.renderArea {
-    height: 25em;
-}
-
-.settingsApplyArea {
-    .settingsArea {
-        display: flex;
-        justify-content: space-around;
-        >* {
-            width: 100%;
-            margin-left: 10em;
-        }
+.scatter {
+    .renderArea {
+        height: 25em;
     }
-    label {
-        padding-bottom: 15px;
-    }
-    .selector {
-        padding-top: 5px;
-        padding-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .applyButton {
-        margin: auto;
-        width: 50%;
+    .errC {
         display: flex;
         justify-content: center;
-        button {
-            width: 80%;
-            height: 3em;
-            margin: 30px auto;
-            background-color: $main;
-            overflow: hidden;
-            border-width: 0;
-            outline: none;
-            border-radius: 2px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-            &:hover {
-                background-color: $main-light;
-                transition: background-color .3s;
+    }
+    >*>.msgFail {
+        margin-top: -23em;
+        width: 50%;
+        height: 2.5em;
+    }
+    .settingsApplyArea {
+        .settingsArea {
+            display: flex;
+            justify-content: space-around;
+            >* {
+                width: 100%;
+                margin-left: 10em;
             }
         }
-    }
-    .dimensionSelector {
-        select {
-            padding-top: 6px;
-            padding-bottom: 6px;
-            padding-left: 6px;
-            font-size: 12px;
-            line-height: 18px;
-            min-height: 18px;
-            background-color: #fff;
-            border: black solid 1px;
-            border-radius: 5px;
-            &:focus {
-                outline: none;
-                background-position: right -75px;
-            }
+        label {
+            padding-bottom: 15px;
         }
-    }
-    .settingsSelector {
-        p {
+        .selector {
             padding-top: 5px;
             padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
         }
-        input {
-            padding-top: 6px;
-            padding-bottom: 6px;
-            padding-left: 6px;
-            font-size: 12px;
-            line-height: 18px;
-            min-height: 18px;
-            border: black solid 1px;
-            border-radius: 5px;
-            &:focus {
+        .applyButton {
+            margin: auto;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            button {
+                width: 80%;
+                height: 3em;
+                margin: 30px auto;
+                background-color: $main;
+                overflow: hidden;
+                border-width: 0;
                 outline: none;
-                background-position: right -75px;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+                &:hover {
+                    background-color: $main-light;
+                    transition: background-color .3s;
+                }
             }
         }
-        input+input {
-            margin-left: 15px;
+        .dimensionSelector {
+            select {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                background-color: #fff;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+        }
+        .settingsSelector {
+            p {
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            input {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+            input+input {
+                margin-left: 15px;
+            }
         }
     }
 }
