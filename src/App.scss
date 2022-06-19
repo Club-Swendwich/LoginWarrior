@@ -90,10 +90,9 @@ $neutral: #000;
     border-radius: 10px;
     border: 2px dashed black;
     text-align: center;
-    >p {
-        padding: 5%;
-        padding-top: 9%;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .Drag {
@@ -164,14 +163,13 @@ $neutral: #000;
         width: 50%;
         height: 2.5em;
     }
+    .dimensionSelector {
+        width: 40%;
+    }
     .settingsApplyArea {
         .settingsArea {
             display: flex;
             justify-content: space-around;
-            >* {
-                width: 100%;
-                margin-left: 10em;
-            }
         }
         label {
             padding-bottom: 15px;
@@ -214,6 +212,7 @@ $neutral: #000;
                 background-color: #fff;
                 border: black solid 1px;
                 border-radius: 5px;
+                width: 48%;
                 &:focus {
                     outline: none;
                     background-position: right -75px;
