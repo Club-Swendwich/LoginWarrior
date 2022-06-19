@@ -14,25 +14,106 @@ export class ScatterPlotJsonParser implements ViewParser<ScatterPlotView> {
     let parsed;
     try {
       parsed = JSON.parse(src);
-      console.log(parsed);
     } catch (_) {
       return ViewIOError.WrongFormat;
     }
 
-    if (parsed === undefined) {
-      return ViewIOError.WrongFormat;
+    if (parsed.scatterplot === undefined) {
+      return ViewIOError.MissingField;
+    }
+
+    if (
+      this.fullCheck
+      && (
+        parsed.scatterplot[ScatterPlotJsonParser.SIG_FIELD] === undefined
+        || parsed.scatterplot[ScatterPlotJsonParser.DIM_FIELD] === undefined
+      )
+    ) {
+      return ViewIOError.MissingField;
     }
 
     const settings = parsed.scatterplot[ScatterPlotJsonParser.SIG_FIELD];
-    console.log(settings);
-    if (this.fullCheck && settings === undefined) {
+    if (
+      this.fullCheck
+      && (
+        settings.domainX === undefined
+        || settings.domainY === undefined
+      )
+    ) {
       return ViewIOError.MissingField;
     }
 
-    const dimensions = parsed.scatterplot[ScatterPlotJsonParser.DIM_FIELD];
-    console.log(dimensions);
-    if (this.fullCheck && dimensions === undefined) {
+    if (
+      this.fullCheck
+      && (
+        isPairMissingField(settings.domainX)
+        || isPairMissingField(settings.domainY)
+      )
+    ) {
       return ViewIOError.MissingField;
+    }
+
+    if (
+      this.fullCheck
+      && (
+        !isPairOfNumber(settings.domainX)
+        || !isPairOfNumber(settings.domainY)
+      )
+    ) {
+      return ViewIOError.WrongFormat;
+    }
+
+    const dimensions = parsed.scatterplot[ScatterPlotJsonParser.DIM_FIELD];
+    if (
+      this.fullCheck
+      && (
+        dimensions.x === undefined
+        || dimensions.y === undefined
+        || dimensions.size === undefined
+        || dimensions.color === undefined
+        || dimensions.shape === undefined
+      )
+    ) {
+      return ViewIOError.MissingField;
+    }
+
+    if (
+      this.fullCheck
+      && (
+        !Array.isArray(dimensions.x)
+        || !Array.isArray(dimensions.y)
+        || !Array.isArray(dimensions.size)
+        || !Array.isArray(dimensions.color)
+        || !Array.isArray(dimensions.shape)
+      )
+    ) {
+      return ViewIOError.WrongFormat;
+    }
+
+    if (
+      this.fullCheck
+      && (
+        isTransMissingFields(dimensions.x)
+        || isTransMissingFields(dimensions.y)
+        || isTransMissingFields(dimensions.size)
+        || isTransMissingFields(dimensions.color)
+        || isTransMissingFields(dimensions.shape)
+      )
+    ) {
+      return ViewIOError.MissingField;
+    }
+
+    if (
+      this.fullCheck
+      && (
+        !isTransCorrectFormat(dimensions.x)
+        || !isTransCorrectFormat(dimensions.y)
+        || !isTransCorrectFormat(dimensions.size)
+        || !isTransCorrectFormat(dimensions.color)
+        || !isTransCorrectFormat(dimensions.shape)
+      )
+    ) {
+      return ViewIOError.WrongFormat;
     }
 
     return { settings, dimensions };
@@ -49,23 +130,24 @@ export class SankeyJsonParser implements ViewParser<SankeyView> {
   ) { }
 
   parse(src: string): ViewIOError | SankeyView {
-    const parsed = JSON.parse(src);
-    console.log(parsed);
-    if (parsed === undefined) {
+    let parsed;
+    try {
+      parsed = JSON.parse(src);
+    } catch (_) {
       return ViewIOError.WrongFormat;
     }
 
     const settings = parsed.sankey[SankeyJsonParser.SIG_FIELD];
-    console.log(settings);
     if (this.fullCheck && settings === undefined) {
       return ViewIOError.MissingField;
     }
 
     const dimensions = parsed.sankey[SankeyJsonParser.DIM_FIELD];
-    console.log(dimensions);
     if (this.fullCheck && dimensions === undefined) {
       return ViewIOError.MissingField;
     }
+
+    // TODO implement check fields
 
     return { settings, dimensions };
   }
@@ -93,4 +175,37 @@ export class FullViewParser implements ViewParser<FullView> {
       sankey: sk as SankeyView,
     };
   }
+}
+
+function isPairMissingField(arr: any) : Boolean {
+  if (Array.isArray(arr)) {
+    return !(arr.length === 2);
+  }
+  return true;
+}
+
+function isPairOfNumber(arr: any) : Boolean {
+  return arr.length === 2
+    && arr.every((value) => typeof value === 'number');
+}
+
+function isTransMissingFields(tran: any) : Boolean {
+  if (tran.length === 2) {
+    return (
+      tran[0] === undefined
+      || tran[1].identifier === undefined
+      || tran[1].from === undefined
+      || tran[1].to === undefined
+    );
+  }
+  return true;
+}
+
+function isTransCorrectFormat(tran: any) : Boolean {
+  return (
+    typeof tran[0] === 'string'
+    && typeof tran[1].identifier === 'string'
+    && typeof tran[1].from === 'number'
+    && typeof tran[1].to === 'number'
+  );
 }
