@@ -45,14 +45,10 @@ export const SKViewComposer = (
   console.log("Sono qui");
   const transformer: Transformer = Transformer.new();
 
-
-  transformer.add({ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, (a: LoginType) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
+  transformer.add(
+    { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, 
+    { outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout], map: (field: DatasetValue) => field.value }
+  );
 
   /*
   transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
@@ -101,7 +97,7 @@ export const SKViewComposer = (
   });
   */
 
-  console.log(transformer);
+  //console.log(transformer);
 
   // eslint-disable-next-line max-len
   const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
@@ -114,17 +110,22 @@ export const SKViewComposer = (
     ),
   }), [dataset, skDimensions, transformer]);
 
-
+  const settingsnew = ({
+    width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
+    height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
+    nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
+    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
+  });
 
   const renderer = useMemo(() => {
     let data = skMapper.map(dataset as Dataset) as GraphData;
-    console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings);
+    console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
     return new SKRenderer(
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
       data,      
     );
   },[InstanceSankeyRenderingSettingsSelectorVm.getSettings, skMapper, dataset]);
-  /*
+
   // eslint-disable-next-line max-len
   const settings = useMemo(() => ({
     width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
@@ -133,82 +134,6 @@ export const SKViewComposer = (
     opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
   }), []);
 
-  const data = useMemo(() => ({
-    nodes: [{
-        nodeId: 0,
-        name: "node0"
-    }, {
-        nodeId: 1,
-        name: "node1"
-    }, {
-        nodeId: 2,
-        name: "node2"
-    }, {
-        nodeId: 3,
-        name: "node3"
-    }, {
-        nodeId: 4,
-        name: "node4"
-    }, {
-        nodeId: 5,
-        name: "node5"
-    }],
-      links: [{
-        source: 0,
-        target: 2,
-        value: 2,
-
-    }, {
-        source: 1,
-        target: 2,
-        value: 2,
-
-    }, {
-        source: 1,
-        target: 3,
-        value: 2,
-
-    }, {
-        source: 0,
-        target: 4,
-        value: 2,
-
-    }, {
-        source: 2,
-        target: 3,
-        value: 2,
-
-    }, {
-        source: 2,
-        target: 4,
-        value: 2,
-
-    }, {
-        source: 3,
-        target: 4,
-        value: 4,
-
-    }, {
-        source: 5,
-        target: 2,
-        value: 10
-    }]
-    }), [])
-  */
-
-  // eslint-disable-next-line max-len
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  //const renderer = useMemo(() => new SKRenderer(settings, data), [settings, data])
-
-  useEffect(() => {
-    if (ref !== null) {
-      console.log('Render effect');
-      renderer.render(ref as MutableRefObject<HTMLDivElement>);
-    }
-  }, []);
-
-
-  
   function reload(): void {
     /*
     const datanew = ({
@@ -275,12 +200,7 @@ export const SKViewComposer = (
     ]
       })*/
 
-  const settingsnew = ({
-    width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
-    height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
-    nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
-    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
-  });
+  
 
     document.getElementById("render").innerHTML = "";
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
@@ -289,8 +209,14 @@ export const SKViewComposer = (
     console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
 
+  useEffect(() => {
+    if (ref !== null) {
+      console.log('Render effect');
+      renderer.render(ref as MutableRefObject<HTMLDivElement>);
+    }
+  }, []);
   
-  console.log('test ', skMapper.map(dataset as Dataset));
+  //console.log('test ', skMapper.map(dataset as Dataset));
 
   return (
     <>  
