@@ -9,6 +9,10 @@ class SPRenderingSettingsSelector implements RenderingSettingsSelector<SPRenderS
   public get selectedSettings(): SPRenderSettings {
     return this.currentSelection;
   }
+
+  public set selectedSettings(s: SPRenderSettings) {
+    this.currentSelection = s;
+  }
 }
 
 export default SPRenderingSettingsSelector;

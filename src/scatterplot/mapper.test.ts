@@ -84,7 +84,7 @@ describe('scatterplot mapper', () => {
     };
 
     const prov = {
-      get: ({ guid }) => {
+      get: ({ guid }: { guid: number }) => {
         if (guid !== 43) {
           return () => { throw new Error('Invalid mapper'); };
         }

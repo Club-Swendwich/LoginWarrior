@@ -1,0 +1,309 @@
+@import url(./reset.scss);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+body {
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+}
+
+$main: #3a8963;
+$main-light: #66BB6A;
+$neutral: #000;
+.header {
+    padding: 10px;
+    background-color: $main;
+    .navbarArea {
+        display: flex;
+        justify-content: space-between;
+        font-size: 2em;
+        list-style: none;
+        li {
+            margin: 2px;
+            padding: 15px;
+            display: inline-table;
+            +li {
+                padding-left: 15px;
+            }
+            a {
+                color: $neutral;
+                text-decoration: none;
+            }
+        }
+        .link-active::before,
+        .link-active::after {
+            content: "\A";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            display: inline-block;
+            margin-bottom: 0.2em;
+        }
+        .link-active::after {
+            margin-left: 0.2em;
+        }
+        .link-active::before {
+            margin-right: 0.2em;
+        }
+    }
+    img {
+        background-color: white;
+        padding: 3px;
+        border-radius: 50%;
+        height: 2em;
+        margin-right: 1em;
+    }
+}
+
+// GESTIONE DATI
+.infoBox {
+    margin-top: 15px;
+    width: 100%;
+    >* {
+        margin: auto;
+        width: 50%;
+        +* {
+            margin-top: 15px;
+        }
+    }
+}
+
+.info-loader {
+    padding-top: 15px;
+    margin: 0 5% 0 5%;
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    .sett-flex-container {
+        display: flex;
+        justify-content: space-around;
+        >* {
+            width: 100%;
+        }
+    }
+}
+
+.dragArea {
+    margin: auto;
+    margin-top: 15px;
+    width: 80%;
+    height: 7em;
+    border-radius: 10px;
+    border: 2px dashed black;
+    text-align: center;
+    >p {
+        padding: 5%;
+        padding-top: 9%;
+    }
+}
+
+.Drag {
+    width: 40%;
+    .msgSuccess,
+    .msgFail,
+    .msgInfo {
+        margin-top: 15px;
+    }
+}
+
+.datasetInfoArea {
+    .msgSuccess,
+    .msgFail,
+    .msgInfo {
+        margin: 15px;
+    }
+    .datasetFieldsList {
+        margin: 15px;
+        >*>p+p {
+            margin-top: 10px;
+        }
+        li {
+            display: flex;
+            justify-content: space-around;
+            margin-left: 10px;
+            margin-top: 5px;
+            >* {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.saveViewButtonArea {
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    button {
+        width: 80%;
+        height: 3em;
+        margin: 30px auto;
+        background-color: $main;
+        overflow: hidden;
+        border-width: 0;
+        outline: none;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+        &:hover {
+            background-color: $main-light;
+            transition: background-color .3s;
+        }
+    }
+}
+
+// END GESTIONE DATI
+// SCATTERPLOT
+.scatter {
+    .renderArea {
+        height: 28em;
+    }
+    .errC {
+        display: flex;
+        justify-content: center;
+    }
+    >*>.msgFail {
+        margin-top: -23em;
+        width: 50%;
+        height: 2.5em;
+    }
+    .settingsApplyArea {
+        .settingsArea {
+            display: flex;
+            justify-content: space-around;
+            >* {
+                width: 100%;
+                margin-left: 10em;
+            }
+        }
+        label {
+            padding-bottom: 15px;
+        }
+        .selector {
+            padding-top: 5px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .applyButton {
+            margin: auto;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            button {
+                width: 80%;
+                height: 3em;
+                margin: 30px auto;
+                background-color: $main;
+                overflow: hidden;
+                border-width: 0;
+                outline: none;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+                &:hover {
+                    background-color: $main-light;
+                    transition: background-color .3s;
+                }
+            }
+        }
+        .dimensionSelector {
+            select {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                background-color: #fff;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+        }
+        .settingsSelector {
+            p {
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            input {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+            input+input {
+                margin-left: 15px;
+            }
+        }
+    }
+}
+
+// HOME
+.home {
+    color: $neutral;
+    margin: 30px 10% 0 10%;
+    height: 100%;
+    h2 {
+        font-size: 2.5em;
+    }
+    p {
+        padding-left: 0.5em;
+        padding-top: 10px;
+        font-size: 1.5em;
+        padding-bottom: 15px;
+    }
+    img {
+        display: inline;
+    }
+    div {
+        //position: absolute;
+        //bottom: 0;
+        width: 80%;
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 5px;
+        p {
+            font-size: 0.9em;
+            margin-right: 1.5em;
+        }
+        img {
+            height: 5em;
+        }
+    }
+}
+
+.msgSuccess,
+.msgFail,
+.msgInfo {
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.msgSuccess {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.msgFail {
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
+.msgInfo {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+
+a {
+    color: $main-light;
+}

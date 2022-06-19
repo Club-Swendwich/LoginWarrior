@@ -8,6 +8,7 @@ import {
 import { MutableRefObject } from 'react';
 import { GraphableType, GraphableTypeToRepr } from '../model/datatypes';
 import { Renderer } from '../genericview/renderer';
+import SPRenderSettings from './renderersettings';
 
 export interface SPREnderablePoint {
   readonly x: GraphableTypeToRepr<GraphableType.Real>;
@@ -15,11 +16,6 @@ export interface SPREnderablePoint {
   readonly size: GraphableTypeToRepr<GraphableType.Int>;
   readonly shape: GraphableTypeToRepr<GraphableType.Shape>;
   readonly color: GraphableTypeToRepr<GraphableType.Color>;
-}
-
-export interface SPRenderSettings {
-  readonly domainX: [number, number];
-  readonly domainY: [number, number];
 }
 
 export function renderShape(shape: GraphableTypeToRepr<GraphableType.Shape>): SymbolType {
@@ -38,7 +34,7 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
   constructor(
     private points: SPREnderablePoint[],
     private settings: SPRenderSettings,
-  ) { }
+  ) {}
 
   updatePoints(p: SPREnderablePoint[]): void {
     this.points = p;
@@ -52,6 +48,7 @@ export class SPRenderer implements Renderer<SPRenderSettings, SPREnderablePoint[
     // NOTE: This is needed since right now d3fc does not support the render of
     // different shapes on the same series
     // see https://github.com/d3fc/d3fc/issues/1722
+
     const grouped = groupByShape(this.points);
 
     const series = Array.from(grouped.entries())

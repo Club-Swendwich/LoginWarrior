@@ -6,4 +6,5 @@ export interface SPDimensions {
   readonly size: [string, TransformationSignature];
   readonly shape: [string, TransformationSignature];
   readonly color: [string, TransformationSignature];
+
 }
