@@ -1,237 +1,290 @@
-@font-face{
-  font-family: 'Roboto', sans-serif;
-  src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-} 
-
-$primary-light: #006683;
-$on-primary-light: #ffffff;
-$primary-container-light: #bde9ff;
-$on-primary-container-light: #001f2a;
-$secondary-light: #4d616c;
-$on-secondary-light: #ffffff;
-$secondary-container-light: #d0e6f2;
-$on-secondary-container-light: #081e27;
-$tertiary-light: #006c52;
-$on-tertiary-light: #ffffff;
-$tertiary-container-light: #83f8ce;
-$on-tertiary-container-light: #002117;
-$error-light: #ba1a1a;
-$on-error-light: #ffffff;
-$error-container-light: #ffdad6;
-$on-error-container-light: #410002;
-$outline-light: #70787d;
-$background-light: #fbfcfe;
-$on-background-light: #191c1e;
-$surface-light: #fbfcfe;
-$on-surface-light: #191c1e;
-$surface-variant-light: #dce4e9;
-$on-surface-variant-light: #40484c;
-$inverse-surface-light: #2e3132;
-$inverse-on-surface-light: #eff1f3;
-
-
-$primary-dark: #65d3ff;
-$on-primary-dark: #003546;
-$primary-container-dark: #004d64;
-$on-primary-container-dark: #bde9ff;
-$secondary-dark: #b4cad6;
-$on-secondary-dark: #1f333c;
-$secondary-container-dark: #354a53;
-$on-secondary-container-dark: #d0e6f2;
-$tertiary-dark: #65dbb3;
-$on-tertiary-dark: #003829;
-$tertiary-container-dark: #00513d;
-$on-tertiary-container-dark: #83f8ce;
-$error-dark: #ffb4ab;
-$on-error-dark: #690005;
-$error-container-dark: #93000a;
-$on-error-container-dark: #ffdad6;
-$outline-dark: #8a9297;
-$background-dark: #191c1e;
-$on-background-dark: #e1e2e4;
-$surface-dark: #191c1e;
-$on-surface-dark: #e1e2e4;
-$surface-variant-dark: #40484c;
-$on-surface-variant-dark: #c0c8cd;
-$inverse-surface-dark: #e1e2e4;
-$inverse-on-surface-dark: #191c1e;
-
-.verticalHalf {
-  display: flex;
-  flex-wrap: wrap;
-  >* {
-    flex: 0 0 50%
-  }
-}
-
-// MESSAGES
-.msgSuccess,
-.msgFail,
-.msgInfo {
-  border-radius: 10px;
-  padding: 12px;
-}
-
-.msgSuccess {
-  color: #4F8A10;
-  background-color: #DFF2BF;
-}
-
-.msgFail {
-  color: #D8000C;
-  background-color: #FFD2D2;
-}
-
-.msgInfo {
-  color: #00529B;
-  background-color: #BDE5F8;
-}
-
-h1, h2 {
-    display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-button {
-  padding: 20px;
-  border: 4px solid;
-  border-radius: 10px;
-  border-color: #29344a;
-  background-color: aliceblue;
-  color: #29344a;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: larger;
-  font-weight: bold;
-}
-
-
-.Drag {
-    display: flex;
-    height: 150px;
-    border: 2px solid; 
-    border-radius: 20px; 
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; 
-    margin-right: 10px;
-    background-color: #29344a;
-}
-
-.dragArea {
-  padding-left: 1em;
-  padding-right: 1em;
-}
-.datasetInfoArea {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;  
-}
-
-.renderArea {
-  background-color: white;
-  height: 500px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
-.settingsApplyArea {
-  display: flex;
-  flex-direction: column;
-}
-
-.applyButton{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.settingsArea {
-  display: flex; 
-  flex-direction: row; 
-  justify-content: space-evenly;
-}
-
-.renderSpace {
-  display: flex;
-  flex-direction: row;
-}
-
-.settings {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-
-.fields {
-  display: inline-block;
-}
-
-.applySettingsButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.saveViewButtonArea {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+@import url(./reset.scss);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: $background-light;
-  background-color: rgb(10, 11, 13);
-  color: aliceblue;
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
-.container {
-  padding: 1em;
+$main: #A5D6A7;
+$main-light: #839681;
+$neutral: #2d2e2c;
+.header {
+    padding: 10px;
+    background-color: $main;
+    .navbarArea {
+        display: flex;
+        justify-content: space-between;
+        font-size: 2em;
+        list-style: none;
+        li {
+            margin: 2px;
+            padding: 15px;
+            display: inline-table;
+            +li {
+                padding-left: 15px;
+            }
+            a {
+                color: $neutral;
+                text-decoration: none;
+            }
+        }
+    }
+    img {
+        background-color: white;
+        padding: 3px;
+        border-radius: 50%;
+        height: 2em;
+        margin-right: 1em;
+    }
+}
+
+// GESTIONE DATI
+.infoBox {
+    margin-top: 15px;
+    width: 100%;
+    >* {
+        margin: auto;
+        width: 50%;
+        +* {
+            margin-top: 15px;
+        }
+    }
 }
 
 .info-loader {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  padding: 1em;
-  border: 1px solid;
-  border-color: white;
-  border-radius: 10px;
+    padding-top: 15px;
+    margin: 0 5% 0 5%;
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    .sett-flex-container {
+        display: flex;
+        justify-content: space-around;
+        >* {
+            width: 100%;
+        }
+    }
 }
 
-.datasetFieldsList {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.dragArea {
+    margin: auto;
+    margin-top: 15px;
+    width: 80%;
+    height: 7em;
+    border-radius: 10px;
+    border: 2px dashed black;
+    text-align: center;
+    >p {
+        padding: 5%;
+        padding-top: 9%;
+    }
 }
 
-.navbarArea {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: row;
+.Drag {
+    width: 40%;
+    .msgSuccess,
+    .msgFail,
+    .msgInfo {
+        margin-top: 15px;
+    }
 }
 
-.navbarItem {
-  list-style: none;
-  padding: 5px;
-  color: white;
-  background-color: #29344a;
-  border-radius: 10px;
-  border: 2px solid;
-  border-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
+.datasetInfoArea {
+    .msgSuccess,
+    .msgFail,
+    .msgInfo {
+        margin: 15px;
+    }
+    .datasetFieldsList {
+        margin: 15px;
+        >*>p+p {
+            margin-top: 10px;
+        }
+        li {
+            display: flex;
+            justify-content: space-around;
+            margin-left: 10px;
+            margin-top: 5px;
+            >* {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.saveViewButtonArea {
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    button {
+        width: 80%;
+        height: 3em;
+        margin: 30px auto;
+        background-color: $main;
+        overflow: hidden;
+        border-width: 0;
+        outline: none;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+        &:hover {
+            background-color: $main-light;
+            transition: background-color .3s;
+        }
+    }
+}
+
+// END GESTIONE DATI
+// SCATTERPLOT
+.scatter {
+    .renderArea {
+        height: 28em;
+    }
+    .errC {
+        display: flex;
+        justify-content: center;
+    }
+    >*>.msgFail {
+        margin-top: -23em;
+        width: 50%;
+        height: 2.5em;
+    }
+    .settingsApplyArea {
+        .settingsArea {
+            display: flex;
+            justify-content: space-around;
+            >* {
+                width: 100%;
+                margin-left: 10em;
+            }
+        }
+        label {
+            padding-bottom: 15px;
+        }
+        .selector {
+            padding-top: 5px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .applyButton {
+            margin: auto;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            button {
+                width: 80%;
+                height: 3em;
+                margin: 30px auto;
+                background-color: $main;
+                overflow: hidden;
+                border-width: 0;
+                outline: none;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+                &:hover {
+                    background-color: $main-light;
+                    transition: background-color .3s;
+                }
+            }
+        }
+        .dimensionSelector {
+            select {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                background-color: #fff;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+        }
+        .settingsSelector {
+            p {
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            input {
+                padding-top: 6px;
+                padding-bottom: 6px;
+                padding-left: 6px;
+                font-size: 12px;
+                line-height: 18px;
+                min-height: 18px;
+                border: black solid 1px;
+                border-radius: 5px;
+                &:focus {
+                    outline: none;
+                    background-position: right -75px;
+                }
+            }
+            input+input {
+                margin-left: 15px;
+            }
+        }
+    }
+}
+
+// HOME
+.home {
+    color: $neutral;
+    margin: 30px 10% 0 10%;
+    height: 100%;
+    h2 {
+        font-size: 2.5em;
+    }
+    p {
+        padding-left: 0.5em;
+        padding-top: 10px;
+        font-size: 1.5em;
+        padding-bottom: 15px;
+    }
+    div {
+        position: absolute;
+        bottom: 0;
+        width: 80%;
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 5px;
+        p {
+            font-size: 0.9em;
+            margin-right: 1.5em;
+        }
+        img {
+            height: 5em;
+        }
+    }
+}
+
+.msgSuccess,
+.msgFail,
+.msgInfo {
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.msgSuccess {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.msgFail {
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
+.msgInfo {
+    color: #00529B;
+    background-color: #BDE5F8;
 }
 
 a {
-  color: white;
-}
-
-.link {
-  color: blue;
-  text-decoration: underline;
-}
-
-.sett-flex-container {
-  display: flex;
-  flex-direction: row;
+    color: $main-light;
 }

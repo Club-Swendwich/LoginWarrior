@@ -91,9 +91,10 @@ export const LoadDatasetView = (prop : DatasetLoaderProps) => {
 
   return (
     <div className="Drag">
+      <p>Caricamento del dataset:</p>
       <div className="dragArea" {...getRootProps()}>
         <input {...getInputProps()} />
-        <h1>Clicca qui o trascina il file csv nel riquadro</h1>
+        <p>Clicca qui o trascina il file csv nel riquadro</p>
       </div>
       <Status status={status} />
     </div>

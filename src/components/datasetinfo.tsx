@@ -56,9 +56,8 @@ const FieldInfo = ({ name, type, key }: { name: string, type: StorableType, key:
 
   return (
     <li key={key}>
-      { pad(name) }
-      -
-      { pad(showType(type)) }
+      <span>{ pad(name) }</span>
+      <span>{ pad(showType(type)) }</span>
     </li>
   );
 };

@@ -18,11 +18,15 @@ import { Transformer } from '../model/transformer';
 const NotPresentBox = (
   { dataset, settings } : { dataset: boolean, settings: boolean },
 ) => (
-  <div>
+  <div className="infoBox">
     { dataset && <p className="msgFail">Non è stato caricato il dataset.</p>}
     { settings && <p className="msgFail">Non è stata caricata nessuna vista.</p>}
-    <p className="msgFail">
-      <Link className="link" to="/data">Carica i dati mancanti.</Link>
+    <p className="msgInfo">
+      <p>
+        <Link className="link" to="/data">Carica</Link>
+        { ' ' }
+        i dati mancanti.
+      </p>
     </p>
   </div>
 );
@@ -31,6 +35,7 @@ enum CurrentStatus {
   Ok,
   NoField,
   NoMap,
+  Waiting,
 }
 
 export interface ScatterplotSafeRenderProps {
@@ -44,7 +49,7 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
     view, dataset, updateView,
   } = props;
 
-  const [status, setStatus] = useState(CurrentStatus.Ok);
+  const [status, setStatus] = useState(CurrentStatus.Waiting);
   const renderingAreaRef = useRef<HTMLDivElement>(null);
   const transformer = Transformer.provideInstance();
 
@@ -75,8 +80,6 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
 
   useEffect(() => {
     const render = () => {
-      setStatus(CurrentStatus.Ok);
-
       const data = mapper.map(dataset);
       if (data === MapperError.UnknownField) {
         setStatus(CurrentStatus.NoField);
@@ -87,8 +90,8 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
         setStatus(CurrentStatus.NoMap);
         return;
       }
-
       const renderer = new SPRenderer(data, view.settings);
+      setStatus(CurrentStatus.Ok);
       renderer.render(renderingAreaRef as MutableRefObject<HTMLDivElement>);
     };
     render();
@@ -102,24 +105,33 @@ const ScatterPlotSafeRender = (props: ScatterplotSafeRenderProps) => {
   };
 
   return (
-    <>
-      { (status === CurrentStatus.Ok) && (
+    <div className="scatter">
       <div>
         <div ref={renderingAreaRef} className="renderArea" id="render" />
-        <div className="settingsApplyArea">
-          <div className="settingsArea">
-            <SPDimensionSelectorView viewmodel={dimensionSelectorVM} />
-            <SPRenderingSettingsView viewModel={renderSettingsVM} />
-          </div>
-          <div className="applyButton">
-            <button type="button" onClick={onUpdate}>Aggiorna</button>
-          </div>
-        </div>
+        { status === CurrentStatus.Ok
+            && (
+            <div className="settingsApplyArea">
+              <div className="settingsArea">
+                <SPDimensionSelectorView viewmodel={dimensionSelectorVM} />
+                <SPRenderingSettingsView viewModel={renderSettingsVM} />
+              </div>
+              <div className="applyButton">
+                <button type="button" onClick={onUpdate}>Aggiorna</button>
+              </div>
+            </div>
+            )}
       </div>
-      ) }
-      { (status === CurrentStatus.NoField) && <p className="msgFail">Uno dei campi richiesti non è presente nel dataset</p> }
-      { (status === CurrentStatus.NoMap) && <p className="msgFail">Una delle funzioni di mapping richieste non è presente</p>}
-    </>
+      { (status === CurrentStatus.NoField) && (
+      <div className="errC">
+        <p className="msgFail">Uno dei campi richiesti non è presente nel dataset</p>
+      </div>
+      )}
+      { (status === CurrentStatus.NoMap) && (
+      <div className="errC">
+        <p className="msgFail">Una delle funzioni di mapping richieste non è presente</p>
+      </div>
+      )}
+    </div>
   );
 };
 
