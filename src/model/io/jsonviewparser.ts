@@ -186,7 +186,7 @@ function isPairMissingField(arr: any) : Boolean {
 
 function isPairOfNumber(arr: any) : Boolean {
   return arr.length === 2
-    && arr.every((value) => typeof value === 'number');
+    && arr.every((value: any) => typeof value === 'number');
 }
 
 function isTransMissingFields(tran: any) : Boolean {

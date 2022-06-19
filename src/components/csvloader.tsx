@@ -21,7 +21,7 @@ const Status = ({ status }: { status: CurrentStatus }) => {
     case CurrentStatus.InvalidFormat:
       return <div className="msgFail">Il file risulta essere del formato sbagliato</div>;
     case CurrentStatus.InvalidRow:
-      return <div className="msgFail">Una riga del dataset risulta essere malformato</div>;
+      return <div className="msgFail">Il dataset risulta essere malformato</div>;
     case CurrentStatus.Ok:
       return <div className="msgSuccess">Dataset caricato con successo!</div>;
     default:
