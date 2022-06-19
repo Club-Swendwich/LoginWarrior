@@ -11,6 +11,7 @@ import './App.scss';
 import Navbar from './components/navbar';
 import { addScatterplotTransformations } from './scatterplot/transformer';
 import { Transformer } from './model/transformer';
+import { HomePage } from './pages/home';
 
 function App() {
   addScatterplotTransformations(Transformer.provideInstance());
@@ -33,11 +34,16 @@ function App() {
   return (
     <div className="container">
       <Router>
-        <h1>LoginWarrior</h1>
-        <Navbar />
+        <div className="header">
+          <Navbar />
+        </div>
         <Routes>
           <Route
             path="/"
+            element={(<HomePage />)}
+          />
+          <Route
+            path="/scatterplot"
             element={(
               <ScatterplotPage
                 views={spView}

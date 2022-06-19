@@ -18,11 +18,15 @@ import { Transformer } from '../model/transformer';
 const NotPresentBox = (
   { dataset, settings } : { dataset: boolean, settings: boolean },
 ) => (
-  <div>
+  <div className="infoBox">
     { dataset && <p className="msgFail">Non è stato caricato il dataset.</p>}
     { settings && <p className="msgFail">Non è stata caricata nessuna vista.</p>}
-    <p className="msgFail">
-      <Link className="link" to="/data">Carica i dati mancanti.</Link>
+    <p className="msgInfo">
+      <p>
+        <Link className="link" to="/data">Carica</Link>
+        { ' ' }
+        i dati mancanti.
+      </p>
     </p>
   </div>
 );

@@ -58,7 +58,7 @@ export function Selector(prop: SelectorProp) {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div className="selector">
       <FieldOption />
       <ConverterOption />
     </div>

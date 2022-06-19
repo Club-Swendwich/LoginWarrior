@@ -4,12 +4,18 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <div className="navbarArea">
-      <li className="navbarItem">
-        <Link to="/">Scatterplot</Link>
-      </li>
-      <li className="navbarItem">
-        <Link to="/data">Settings</Link>
-      </li>
+      <ul>
+        <li className="navbarItem">
+          <Link to="/">LoginWarrior</Link>
+        </li>
+        <li className="navbarItem">
+          <Link to="/scatterplot">Scatterplot</Link>
+        </li>
+        <li className="navbarItem">
+          <Link to="/data">Gestione Dati</Link>
+        </li>
+      </ul>
+      <a href="https://github.com/Club-Swendwich"><img src="logo.svg" alt="logo" /></a>
     </div>
   );
 }

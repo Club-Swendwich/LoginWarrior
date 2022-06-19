@@ -1,60 +1,60 @@
 {
-  "scatterplot": {
-    "dimensions": {
-      "x": [
-        "timestamp",
-        {
-          "identifier": "timestamp to real",
-          "from": 3,
-          "to": 1
+    "scatterplot": {
+        "dimensions": {
+            "x": [
+                "timestamp",
+                {
+                    "identifier": "timestamp to real",
+                    "from": 3,
+                    "to": 1
+                }
+            ],
+            "y": [
+                "encodedIp",
+                {
+                    "identifier": "ip to real",
+                    "from": 4,
+                    "to": 1
+                }
+            ],
+            "size": [
+                "userId",
+                {
+                    "identifier": "1",
+                    "from": 0,
+                    "to": 0
+                }
+            ],
+            "shape": [
+                "eventType",
+                {
+                    "identifier": "default",
+                    "from": 2,
+                    "to": 3
+                }
+            ],
+            "color": [
+                "appId",
+                {
+                    "identifier": "app color",
+                    "from": 1,
+                    "to": 2
+                }
+            ]
+        },
+        "settings": {
+            "domainX": [
+                1600651710000,
+                1625051710000
+            ],
+            "domainY": [
+                0,
+                33000
+            ]
         }
-      ],
-      "y": [
-        "encodedIp",
-        {
-          "identifier": "ip to real",
-          "from": 4,
-          "to": 1
-        }
-      ],
-      "size": [
-        "userId",
-        {
-          "identifier": "1",
-          "from": 0,
-          "to": 0
-        }
-      ],
-      "shape": [
-        "eventType",
-        {
-          "identifier": "default",
-          "from": 2,
-          "to": 3
-        }
-      ],
-      "color": [
-        "appId",
-        {
-          "identifier": "app color",
-          "from": 1,
-          "to": 2
-        }
-      ]
     },
-    "settings": {
-      "domainX": [
-        1600651710000,
-        1625051710000
-      ],
-      "domainY": [
-        0,
-        33000
-      ]
+    "sankey": {
+        "dimensions": 11,
+        "settings": 13
     }
-  },
-  "sankey": {
-    "dimensions": 11,
-    "settings": 13
-  }
 }

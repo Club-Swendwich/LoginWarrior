@@ -89,9 +89,10 @@ export const ViewsLoader = ({ viewsParser, updateViews }: ViewsLoaderProp) => {
 
   return (
     <div className="Drag">
+      <p>Caricamento delle viste: </p>
       <div className="dragArea" {...getRootProps()}>
         <input {...getInputProps()} />
-        <h1>Clicca qui o trascina il file json nel riquadro</h1>
+        <p>Clicca qui o trascina il file json nel riquadro</p>
       </div>
       <Status status={status} />
     </div>

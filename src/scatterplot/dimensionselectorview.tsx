@@ -50,6 +50,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const [shapeMap, setShapeMap] = useState<TransformationSignature>(viewmodel.currentShapeMap);
   const [colorMap, setColorMap] = useState<TransformationSignature>(viewmodel.currentColorMap);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     viewmodel.updateXAxisField(xField!);
@@ -65,8 +66,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   };
   return (
     <form className="dimensionSelector">
-      <div style={{ paddingBottom: 24 }}>
-        <label htmlFor="xaxis" id="xaxis">X Axis:</label>
+      <div>
+        <label htmlFor="xaxis" id="xaxis">Asse X:</label>
         <RealSelector
           name="axisx"
           set={{
@@ -86,8 +87,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <div style={{ paddingBottom: 24 }}>
-        <label htmlFor="yaxis" id="yaxis">Y Axis:</label>
+      <div>
+        <label htmlFor="yaxis" id="yaxis">Asse Y:</label>
         <RealSelector
           name="axisy"
           set={{
@@ -107,8 +108,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="size" id="size">Size:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="size" id="size">Grandezza:</label>
+      <div>
         <IntSelector
           name="size"
           set={{
@@ -128,8 +129,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="shape" id="shape">Shape:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="shape" id="shape">Forma:</label>
+      <div>
         <ShapeSelector
           name="shape"
           set={{
@@ -149,8 +150,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="color" id="color">Color:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="color" id="color">Colore:</label>
+      <div>
         <ColorSelector
           name="color"
           set={{
