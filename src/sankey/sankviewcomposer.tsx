@@ -12,7 +12,7 @@ import {
 } from './renderer'
 import * as d3Sankey from 'd3-sankey';
 
-//VIEW  
+//VIEW
 import {InstanceSankeyRenderingSettingsSelectorVm} from "./viewModel/settingsSelectorView"
 import  SankeyViewSettings  from "./viewModel/settingsSelectorView"
 import SankeyView from "./viewModel/SankeyView";
@@ -41,19 +41,36 @@ export const SKViewComposer = (
   prop : SKViewComposerProps,
 ) => {
   const { skDimensions, dataset } = prop;
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   console.log("Sono qui");
   const transformer: Transformer = Transformer.provideInstance();
 
- 
+
   transformer.add(
-    { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, 
-    { outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout], map: (field: DatasetValue) => field.value }
+    { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer },
+    { outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout],
+      map: (field: DatasetValue) =>  {
+        return field.value;
+      } }
   );
 
   transformer.add(
-    { identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, 
-    { outcomes: [-1,2,3,5,7], map: (field: DatasetValue) => field.value }
+    { identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer },
+    { outcomes: ["HRW",
+  "ERM",
+  "GTL",
+  "HRC",
+  "HR1",
+  "HRM",
+  "HUT",
+  "DWH",
+  "HTR",
+  "GAW",
+  "HSP",
+  "TM3",
+  "HCF",
+  "MD7"], map: (field: DatasetValue) => {
+      return field.value;} }
   );
 
   console.log(skDimensions.layers , transformer);
@@ -81,13 +98,19 @@ export const SKViewComposer = (
   const renderer = useMemo(() => {
     //console.log(skMapper.map(dataset));
     let data = skMapper.map(dataset as Dataset) as GraphData; // Questo va in errore
-    
+    console.log("datamapped", data);
     console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
     return new SKRenderer(
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
-      data,      
+      data,
     );
   },[settingsnew, skMapper, dataset]);
+
+  /**
+   * [1, 2, 3, 4]
+   * - - -- - - -
+   * f(d) -> x ??? nodo
+   */
 
   // eslint-disable-next-line max-len
   const settings = useMemo(() => ({
@@ -98,89 +121,30 @@ export const SKViewComposer = (
   }), []);
 
   function reload(): void {
-    /*
-    const datanew = ({
-      nodes: [{
-          nodeId: 0,
-          name: "node0"
-      }, {
-          nodeId: 1,
-          name: "node1"
-      }, {
-          nodeId: 2,
-          name: "node2"
-      }, {
-          nodeId: 3,
-          name: "node3"
-      }, {
-          nodeId: 4,
-          name: "node4"
-      }, {
-          nodeId: 5,
-          name: "node5"
-      }],
-        links: [{
-          source: 0,
-          target: 2,
-          value: 2,
-
-      }, {
-          source: 1,
-          target: 2,
-          value: 2,
-
-      }, {
-          source: 1,
-          target: 3,
-          value: 2,
-
-      }, {
-          source: 0,
-          target: 4,
-          value: 2,
-
-      }, {
-          source: 2,
-          target: 3,
-          value: 2,
-
-      }, {
-          source: 2,
-          target: 4,
-          value: 2,
-
-      }, {
-          source: 3,
-          target: 4,
-          value: 4,
-
-      }, {
-          source: 5,
-          target: 2,
-          value: 10
-      }
-      
-    ]
-      })*/
 
     document.getElementById("render").innerHTML = "";
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
-    const renderernew =  new SKRenderer(settingsnew, skMapper.map(dataset as Dataset) as GraphData);
+    const mapped = skMapper.map(dataset as Dataset) as GraphData;
+    console.log("mapped", mapped);
+    const renderernew =  new SKRenderer(settingsnew, mapped);
+    console.log("render ref", ref);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>)
     console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
 
-  //useEffect(() => {
-    //if (ref !== null) {
-      console.log('Render effect');
-      renderer.render(ref as MutableRefObject<HTMLDivElement>);
-  //  }
-  //}, []);
-  
+    useEffect(() => {
+      console.log("hook render");
+      if(ref !== null) {
+        console.log('Render effect');
+        console.log("render ref", ref);
+        renderer.render(ref as MutableRefObject<HTMLDivElement>);
+      }
+    }, [ref, console, renderer]);
+
   //console.log('test ', skMapper.map(dataset as Dataset));
 
   return (
-    <>  
+    <>
       <style>
         {`
           .renderArea {

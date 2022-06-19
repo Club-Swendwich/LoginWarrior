@@ -20,23 +20,23 @@ import { CSVDatasetParser } from './model/io/datasetloader';
 
 
 function App() {
-  
+
   const parser = new CSVDatasetParser(';');
 
   const [dataset, setDataset] = useState<null | Dataset>(null);
   const datasetProvider = new HTTPDatasetProvider(parser);
 
   useEffect(() => {
-    datasetProvider.load('http://localhost:3000/coded_log.csv').then((r) => setDataset(r as Dataset));
+    datasetProvider.load('http://localhost:3000/coded_piccolo.csv').then((r) => setDataset(r as Dataset));
   }, []);
 
   const skDimensions : SKDimensions = {
     layers: [
              ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
-             ['default',{ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }],
+             ['appId',{ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }],
             ]
   }
-  
+
   if (dataset !== null) {
     return (
       <div className="app">

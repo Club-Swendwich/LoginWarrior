@@ -21,7 +21,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
         private settings: SankeySettings,
         private SKRenderableData: GraphData
     ) {}
-    
+
     updateSettings(s: SankeySettings): void {
         this.settings = s;
     }
@@ -30,15 +30,20 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     }
 
     render(ref: MutableRefObject<HTMLDivElement>): void {
+        console.log("RENDER CALL");
+        console.log("data", this)
+
         const height = this.settings.height;
         const width = this.settings.width;
         const nodewidth = this.settings.nodewidth;
-        
+
 
         const svg = d3.select(ref.current)
             .append("svg")
             .attr("width", width)
             .attr("height", height);
+        console.log("ref", ref);
+        console.log(svg);
 
         const graph = d3Sankey.sankey<GraphData, CustomNode, CustomLink>()
             .nodeId(
@@ -48,6 +53,8 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
             .nodeWidth(nodewidth)
             .nodePadding(10)
             .extent([[1, 1], [width - 1, height - 6]]);
+        console.log(this.SKRenderableData);
+        console.log(new Set(this.SKRenderableData.links.map((x) => x.target)));
         graph(this.SKRenderableData);
 
         const links = this.createLinks(svg);
@@ -56,7 +63,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
 
     /**
      * Function that takes the plot area as input and then it creates and appends the links to the plot area (with some additional props)
-     * @param svg the plot area 
+     * @param svg the plot area
      * @returns the created links
      */
     private createLinks(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {
@@ -85,7 +92,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
     /**
      * Function that creates and appends nodes to the plot area and makes them draggable
      * @param svg the plot area
-     * @param graph the SankeyLayout 
+     * @param graph the SankeyLayout
      * @param link path between nodes
      */
 
@@ -95,7 +102,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
 
         /**
          * TODO: Stop drag when the node goes outside the borders
-         * TODO: implement node's title 
+         * TODO: implement node's title
          */
         const _self = this;
         const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -111,6 +118,7 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
             .attr("width", function (d: any) { return d.x1 - d.x0; })
             .attr("fill", function (d: any) { return color(d.name.replace(/ .*/, "")); })
             .attr("stroke", "#000");
+        console.log(node);
     }
 
     /**
