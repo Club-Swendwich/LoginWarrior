@@ -52,7 +52,9 @@ export interface TransformationProvider {
 }
 
 export class Transformer
-  implements TransformationQuerryable, TransformationProvider {
+implements TransformationQuerryable, TransformationProvider {
+  private static instance: Transformer | null = null;
+
   private constructor(
     private transformers: Map<GraphableType,
       Map<StorableType,
@@ -62,8 +64,11 @@ export class Transformer
   /**
    * Provide an empty transformer
    */
-  static new(): Transformer {
-    return new Transformer(new Map());
+  static provideInstance(): Transformer {
+    if (Transformer.instance === null) {
+      Transformer.instance = new Transformer(new Map());
+    }
+    return Transformer.instance as Transformer;
   }
 
   /**

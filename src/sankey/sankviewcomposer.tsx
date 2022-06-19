@@ -43,7 +43,7 @@ export const SKViewComposer = (
   const { skDimensions, dataset } = prop;
   const ref = useRef<HTMLDivElement>(null);
   console.log("Sono qui");
-  const transformer: Transformer = Transformer.new();
+  const transformer: Transformer = Transformer.provideInstance();
 
  
   transformer.add(

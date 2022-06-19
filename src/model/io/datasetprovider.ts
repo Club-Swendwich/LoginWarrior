@@ -1,4 +1,4 @@
-import { Dataset } from './dataset';
+import { Dataset } from '../dataset';
 import { DatasetParser, ParseError } from './datasetloader';
 
 export enum ProvideError {
@@ -15,7 +15,13 @@ export class HTTPDatasetProvider implements DatasetProvider {
   ) { }
 
   async load(url: string): Promise<Dataset | ProvideError | ParseError > {
-    const res = await fetch(url);
+    let res;
+    try {
+      res = await fetch(url);
+    } catch (_) {
+      return ProvideError.NetworkError;
+    }
+
     if (!res.ok) {
       return ProvideError.NetworkError;
     }

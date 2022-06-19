@@ -9,7 +9,7 @@ import { TransformationSignature } from '../model/transformer';
 import {
   ColorSelector, IntSelector, RealSelector, ShapeSelector,
 }
-  from './SPdimselectors';
+  from './selectors';
 import { SPDimensionSelectorVM } from './dimensionselectorvm';
 import { StorableType } from '../model/datatypes';
 
@@ -25,17 +25,6 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const sizeMaps = viewmodel.mapSize;
   const shapeMaps = viewmodel.mapShape;
   const colorMaps = viewmodel.mapColor;
-
-  /*   const xFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const yFieldsNames: string[] = Array.from(viewmodel.fieldY
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const sizeFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const shapeFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!);
-  const colorFieldsNames: string[] = Array.from(viewmodel.fieldX
-    .forEach((val) => xFieldsNames.push(val[0]))!); */
 
   const xFieldsNames = getNames(viewmodel.fieldX);
   const yFieldsNames = getNames(viewmodel.fieldY);
@@ -61,6 +50,7 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
   const [shapeMap, setShapeMap] = useState<TransformationSignature>(viewmodel.currentShapeMap);
   const [colorMap, setColorMap] = useState<TransformationSignature>(viewmodel.currentColorMap);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     viewmodel.updateXAxisField(xField!);
@@ -75,9 +65,9 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
     viewmodel.updateColorMap(colorMap!);
   };
   return (
-    <form className="dimensionSelector" onSubmit={onSubmit}>
-      <div style={{ paddingBottom: 24 }}>
-        <label htmlFor="xaxis" id="xaxis">X Axis:</label>
+    <form className="dimensionSelector">
+      <div>
+        <label htmlFor="xaxis" id="xaxis">Asse X:</label>
         <RealSelector
           name="axisx"
           set={{
@@ -97,8 +87,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <div style={{ paddingBottom: 24 }}>
-        <label htmlFor="yaxis" id="yaxis">Y Axis:</label>
+      <div>
+        <label htmlFor="yaxis" id="yaxis">Asse Y:</label>
         <RealSelector
           name="axisy"
           set={{
@@ -118,8 +108,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="size" id="size">Size:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="size" id="size">Grandezza:</label>
+      <div>
         <IntSelector
           name="size"
           set={{
@@ -139,8 +129,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="shape" id="shape">Shape:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="shape" id="shape">Forma:</label>
+      <div>
         <ShapeSelector
           name="shape"
           set={{
@@ -160,8 +150,8 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <label htmlFor="color" id="color">Color:</label>
-      <div style={{ paddingBottom: 24 }}>
+      <label htmlFor="color" id="color">Colore:</label>
+      <div>
         <ColorSelector
           name="color"
           set={{
@@ -181,7 +171,6 @@ export const SPDimensionSelectorView = (prop: SPDimensionSelectorViewProp) => {
           }}
         />
       </div>
-      <input type="submit" value="Applica dimensioni" />
     </form>
   );
 };

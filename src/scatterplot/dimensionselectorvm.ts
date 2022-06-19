@@ -1,24 +1,17 @@
 import { action, computed, observable } from 'mobx';
 import { SPDimensionSelector } from './dimensionselector';
-import { TransformationSignature, TransformationQuerryable } from '../model/transformer';
+import { TransformationSignature } from '../model/transformer';
 import { StorableType } from '../model/datatypes';
 import { SPDimensions } from './dimensions';
-import { DatasetSignature } from '../model/dataset';
 
 export class SPDimensionSelectorVM {
   @observable
   private selector: SPDimensionSelector;
 
   constructor(
-    queryable: TransformationQuerryable,
-    signature: DatasetSignature,
-    currentSelection: SPDimensions,
+    dimensionSelector: SPDimensionSelector,
   ) {
-    this.selector = new SPDimensionSelector(
-      queryable,
-      signature,
-      currentSelection,
-    );
+    this.selector = dimensionSelector;
   }
 
   @computed get currentSelection() : SPDimensions {
@@ -31,7 +24,6 @@ export class SPDimensionSelectorVM {
     selection.x[1] = this.selector.availableMappers().x.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers x', this.mapX);
   }
 
   @action updateYAxisField(newField: string) {
@@ -42,7 +34,6 @@ export class SPDimensionSelectorVM {
       this.selector.selectedDimensions = selection;
     }
     this.selector.availableMappers();
-    console.log('available mappers y', this.mapY);
   }
 
   @action updateSizeField(newField: string) {
@@ -51,7 +42,6 @@ export class SPDimensionSelectorVM {
     selection.size[1] = this.selector.availableMappers().size.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers size', this.mapSize);
   }
 
   @action updateColorField(newField: string) {
@@ -60,7 +50,6 @@ export class SPDimensionSelectorVM {
     selection.color[1] = this.selector.availableMappers().color.values().next().value;
     this.selector.selectedDimensions = selection;
     this.selector.availableMappers();
-    console.log('available mappers color', this.mapColor);
   }
 
   @action updateShapeField(newField: string) {

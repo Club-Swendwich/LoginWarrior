@@ -8,16 +8,15 @@ import {
 
 //Dataset
 import { Dataset } from './model/dataset';
-import { HTTPDatasetProvider } from './model/datasetprovider';
+import { HTTPDatasetProvider } from './model/io/datasetprovider';
 
 //Dimensions
 import { SPDimensions } from './scatterplot/dimensions';
 import { SKDimensions } from './sankey/dimensions/SKDimensions';
 
 //Composers
-import SPViewComposer from './scatterplot/spviewcomposer';
 import SKViewComposer from './sankey/sankviewcomposer';
-import { CSVDatasetParser } from './model/datasetloader';
+import { CSVDatasetParser } from './model/io/datasetloader';
 
 
 function App() {
@@ -44,11 +43,13 @@ function App() {
         <SKViewComposer skDimensions={skDimensions} dataset={dataset as Dataset} />
       </div>
     );
-  }
+  };
+
   return (
     <div>
       Caricamento
     </div>
   );
 }
+
 export default App;
