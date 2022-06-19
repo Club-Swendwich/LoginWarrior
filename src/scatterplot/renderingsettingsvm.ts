@@ -38,17 +38,17 @@ export default class SPRenderingSettingsSelectorVM {
   }
 
   @computed
-  get getSettings(): SPRenderSettings {
+  get settings(): SPRenderSettings {
     return this.model.selectedSettings;
   }
 
   @computed
-  get getWidth(): [number, number] {
+  get width(): [number, number] {
     return this.model.selectedSettings.domainX;
   }
 
   @computed
-  get getHeight(): [number, number] {
+  get height(): [number, number] {
     return this.model.selectedSettings.domainY;
   }
 }

@@ -1,59 +1,82 @@
-import SPRenderSettings from './renderersettings';
 import SPRenderingSettingsSelectorVM from './renderingsettingsvm';
+
+const mockStruct = {
+  domainY: [0, 1],
+  domainX: [2, 3],
+};
 
 describe('SPRenderingSettingsSelectorVM', () => {
   it('should preserve the current selection', () => {
-    const current = { guid: 10 };
     const d = new SPRenderingSettingsSelectorVM(
-      // @ts-expect-error mock
-      current,
+      {
+        // @ts-expect-error mock
+        selectedSettings: mockStruct,
+      },
     );
-    expect(d.getSettings).toEqual(current);
+
+    expect(d.settings).toEqual(mockStruct);
+    expect(d.height).toEqual(mockStruct.domainY);
+    expect(d.width).toEqual(mockStruct.domainX);
   });
 
   it('should return changed height', () => {
-    const current: SPRenderSettings = {
-      domainX: [10, 10],
-      domainY: [10, 10],
-    };
+    const selectedSettings: [number, number][] = [[0, 1], [2, 3]];
     const d = new SPRenderingSettingsSelectorVM(
-      current,
+      {
+        // @ts-expect-error mock
+        selectedSettings: mockStruct,
+      },
     );
+
+    expect(d.settings).toEqual(mockStruct);
+    expect(d.height).toEqual(selectedSettings[0]);
+    expect(d.width).toEqual(selectedSettings[1]);
+
     d.setHeight([12, 12]);
-    expect(d.getHeight).toEqual([12, 12]);
-    expect(d.getWidth).toEqual(current.domainX);
-    expect(d.getSettings).toEqual({ domainX: current.domainX, domainY: [12, 12] });
+
+    expect(d.height).toEqual([12, 12]);
+    expect(d.width).toEqual(selectedSettings[1]);
+    expect(d.settings).toEqual({ domainX: mockStruct.domainX, domainY: [12, 12] });
   });
 
   it('should return changed width', () => {
-    const current: SPRenderSettings = {
-      domainX: [10, 10],
-      domainY: [10, 10],
-    };
+    const selectedSettings = [[0, 1], [2, 3]];
     const d = new SPRenderingSettingsSelectorVM(
-      current,
+      {
+        // @ts-expect-error mock
+        selectedSettings: mockStruct,
+      },
     );
+
+    expect(d.settings).toEqual(mockStruct);
+    expect(d.height).toEqual(selectedSettings[0]);
+    expect(d.width).toEqual(selectedSettings[1]);
+
     d.setWidth([12, 12]);
-    expect(d.getWidth).toEqual([12, 12]);
-    expect(d.getHeight).toEqual(current.domainY);
-    expect(d.getSettings).toEqual({ domainX: [12, 12], domainY: current.domainY });
+
+    expect(d.width).toEqual([12, 12]);
+    expect(d.height).toEqual(selectedSettings[0]);
+    expect(d.settings).toEqual({ domainX: [12, 12], domainY: mockStruct.domainY });
   });
 
   it('should return changed settings', () => {
-    const current: SPRenderSettings = {
-      domainX: [10, 10],
-      domainY: [10, 10],
-    };
+    const selectedSettings = [[0, 1], [2, 3]];
     const d = new SPRenderingSettingsSelectorVM(
-      current,
+      {
+        // @ts-expect-error mock
+        selectedSettings: mockStruct,
+      },
     );
-    const change: SPRenderSettings = {
-      domainX: [20, 20],
-      domainY: [20, 20],
-    };
-    d.updateSettings(change);
-    expect(d.getSettings).toEqual(change);
-    expect(d.getWidth).toEqual(change.domainX);
-    expect(d.getHeight).toEqual(change.domainY);
+
+    expect(d.settings).toEqual(mockStruct);
+    expect(d.height).toEqual(selectedSettings[0]);
+    expect(d.width).toEqual(selectedSettings[1]);
+
+    const newSettings:[number, number][] = [[0, 1], [2, 3]];
+
+    d.updateSettings({ domainX: newSettings[1], domainY: newSettings[0] });
+    expect(d.settings).toEqual({ domainX: newSettings[1], domainY: newSettings[0] });
+    expect(d.width).toEqual(newSettings[1]);
+    expect(d.height).toEqual(newSettings[0]);
   });
 });

@@ -8,9 +8,9 @@ interface Props {
 }
 
 function SPRenderingSettingsView({ viewModel }: Props) {
-  const x = viewModel.getWidth;
+  const x = viewModel.width;
 
-  const y = viewModel.getHeight;
+  const y = viewModel.height;
 
   function handleChangeX0(e: React.ChangeEvent<HTMLInputElement>) {
     x[0] = parseInt(e.target.value, 10);
