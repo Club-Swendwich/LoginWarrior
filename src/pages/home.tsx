@@ -22,7 +22,7 @@ export const HomePage = () => (
     <p>
       Recati nella sezione
       {' '}
-      <Link to="/dati">Gestione Dati</Link>
+      <Link to="/data">Gestione Dati</Link>
       {' '}
       e carica il tuo dataset e le tue viste, poi naviga tramite
       la navbar al grafico che vuoi visualizzare.
@@ -35,6 +35,14 @@ export const HomePage = () => (
       meglio credi per evidenziare le caratteristiche più
       importanti.
     </p>
+    <img src="spesempio.png" alt="" />
+    <h2>Il Sankey</h2>
+    <p>
+      Trova le relazioni tra eventi che si susseguono
+      e i rapporti tra le varie dimensioni del dataset,
+      senza aggiungere complessità alla visualizzazione.
+    </p>
+    <img src="skesempio.png" alt="" />
     <div className="imgDiv">
       <p>Powered by:</p>
       <img src="logo.svg" alt="" />

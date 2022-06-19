@@ -4,9 +4,9 @@ body {
     font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
-$main: #A5D6A7;
-$main-light: #839681;
-$neutral: #2d2e2c;
+$main: #3a8963;
+$main-light: #66BB6A;
+$neutral: #000;
 .header {
     padding: 10px;
     background-color: $main;
@@ -26,6 +26,22 @@ $neutral: #2d2e2c;
                 color: $neutral;
                 text-decoration: none;
             }
+        }
+        .link-active::before,
+        .link-active::after {
+            content: "\A";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            display: inline-block;
+            margin-bottom: 0.2em;
+        }
+        .link-active::after {
+            margin-left: 0.2em;
+        }
+        .link-active::before {
+            margin-right: 0.2em;
         }
     }
     img {
@@ -244,9 +260,12 @@ $neutral: #2d2e2c;
         font-size: 1.5em;
         padding-bottom: 15px;
     }
+    img {
+        display: inline;
+    }
     div {
-        position: absolute;
-        bottom: 0;
+        //position: absolute;
+        //bottom: 0;
         width: 80%;
         padding-top: 10px;
         display: flex;
