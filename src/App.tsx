@@ -33,7 +33,8 @@ function App() {
 
   const skDimensions : SKDimensions = {
     layers: [
-             ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }]
+             ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
+             ['default',{ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }],
             ]
   }
   

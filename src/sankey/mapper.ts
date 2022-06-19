@@ -75,7 +75,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createLinks(d: Dataset): SLink[] {
         const links: SLink[] = [];
         this.dimensions.layers.forEach((layer, i) => {
-            console.log("D: ", d)
+            console.log("layer ", i)
             d.entries().forEach(element => {
                 links.push({
                     source: i + this.calculateSource(layer, element),
@@ -96,8 +96,9 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createNodes(): SNode[] {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
+            console.log("layer " + i);
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
-            result.outcomes.forEach((element, j) => {
+            result.outcomes.forEach((element, j) => { //(element, j)
                 console.log(i + "," + j);
                 nodes.push({
                     nodeId: i + "," + j,

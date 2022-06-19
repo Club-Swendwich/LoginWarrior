@@ -45,62 +45,23 @@ export const SKViewComposer = (
   console.log("Sono qui");
   const transformer: Transformer = Transformer.new();
 
+ 
   transformer.add(
     { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, 
     { outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout], map: (field: DatasetValue) => field.value }
   );
 
-  /*
-  transformer.add({ identifier: 'userId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  transformer.add({ identifier: 'eventType', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  transformer.add({ identifier: 'encodedIp', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: string) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  transformer.add({ identifier: 'appId', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  transformer.add({ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, (a: number) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  
+  transformer.add(
+    { identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }, 
+    { outcomes: [-1,2,3,5,7], map: (field: DatasetValue) => field.value }
+  );
 
-  transformer.add({ identifier: 'userId', from: StorableType.LoginType, to: GraphableType.SankeyLayer }, (a: ) : any => {
-    const test: SankeyLayer<any> = {
-      outcomes: [0, 1, 2, 3],
-      map: (field: DatasetValue) => field.value
-    }
-    return test;
-  });
-  */
-
-  //console.log(transformer);
-
+  console.log(skDimensions.layers , transformer);
   // eslint-disable-next-line max-len
-  const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
+  //const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
+  const skMapper: SKMapper = new SKMapper(transformer, skDimensions);
+
+  console.log(skMapper);
 
   const dimensionSelectorVM = useMemo(() => ({
     model: new SKDimensionSelectorVM(
@@ -118,13 +79,15 @@ export const SKViewComposer = (
   });
 
   const renderer = useMemo(() => {
-    let data = skMapper.map(dataset as Dataset) as GraphData;
+    //console.log(skMapper.map(dataset));
+    let data = skMapper.map(dataset as Dataset) as GraphData; // Questo va in errore
+    
     console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
     return new SKRenderer(
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
       data,      
     );
-  },[InstanceSankeyRenderingSettingsSelectorVm.getSettings, skMapper, dataset]);
+  },[settingsnew, skMapper, dataset]);
 
   // eslint-disable-next-line max-len
   const settings = useMemo(() => ({
@@ -200,8 +163,6 @@ export const SKViewComposer = (
     ]
       })*/
 
-  
-
     document.getElementById("render").innerHTML = "";
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const renderernew =  new SKRenderer(settingsnew, skMapper.map(dataset as Dataset) as GraphData);
@@ -209,12 +170,12 @@ export const SKViewComposer = (
     console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
 
-  useEffect(() => {
-    if (ref !== null) {
+  //useEffect(() => {
+    //if (ref !== null) {
       console.log('Render effect');
       renderer.render(ref as MutableRefObject<HTMLDivElement>);
-    }
-  }, []);
+  //  }
+  //}, []);
   
   //console.log('test ', skMapper.map(dataset as Dataset));
 
