@@ -1,21 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function Navbar() {
   return (
     <div className="navbarArea">
       <ul>
         <li className="navbarItem">
-          <Link to="/">LoginWarrior</Link>
+          <NavLink className={({ isActive }) => (isActive ? 'link-active' : 'link')} to="/">LoginWarrior</NavLink>
         </li>
         <li className="navbarItem">
-          <Link to="/scatterplot">Scatterplot</Link>
+          <NavLink className={({ isActive }) => (isActive ? 'link-active' : 'link')} to="/scatterplot">Scatterplot</NavLink>
         </li>
         <li className="navbarItem">
-          <Link to="/data">Gestione Dati</Link>
+          <NavLink className={({ isActive }) => (isActive ? 'link-active' : 'link')} to="/data">Gestione Dati</NavLink>
         </li>
       </ul>
-      <a href="https://github.com/Club-Swendwich"><img src="logo.svg" alt="logo" /></a>
+      <a href="https://github.com/Club-Swendwich"><img src="logo_big.jpg" alt="logo" /></a>
     </div>
   );
 }
