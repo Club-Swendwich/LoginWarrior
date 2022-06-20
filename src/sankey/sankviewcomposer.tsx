@@ -88,7 +88,7 @@ export const SKViewComposer = (
     ),
   }), [dataset, skDimensions, transformer]);
 
-  const settingsnew = ({
+  const settings = ({
     width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
     height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
     nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
@@ -104,7 +104,7 @@ export const SKViewComposer = (
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
       data,
     );
-  },[settingsnew, skMapper, dataset]);
+  },[settings, skMapper, dataset]);
 
   /**
    * [1, 2, 3, 4]
@@ -112,24 +112,13 @@ export const SKViewComposer = (
    * f(d) -> x ??? nodo
    */
 
-  // eslint-disable-next-line max-len
-  const settings = useMemo(() => ({
-    width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
-    height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
-    nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
-    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
-  }), []);
-
   function reload(): void {
-
     document.getElementById("render").innerHTML = "";
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const mapped = skMapper.map(dataset as Dataset) as GraphData;
     console.log("mapped", mapped);
-    const renderernew =  new SKRenderer(settingsnew, mapped);
-    console.log("render ref", ref);
+    const renderernew =  new SKRenderer(InstanceSankeyRenderingSettingsSelectorVm.getSettings, mapped);
     renderernew.render(ref as MutableRefObject<HTMLDivElement>)
-    console.log("Fine render = " + InstanceSankeyRenderingSettingsSelectorVm.getHeight);
   }
 
     useEffect(() => {
