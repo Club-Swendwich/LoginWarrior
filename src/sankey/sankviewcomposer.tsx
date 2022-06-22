@@ -156,7 +156,7 @@ export const SKViewComposer = (
       <main className="text-gray-400 bg-gray-900 body-font">
       <div ref={ref} className="renderArea" id="render"/>
       <SankeyView viewModel={InstanceSankeyRenderingSettingsSelectorVm}/>
-      <button onClick={reload}>
+      <button className="applyButton" onClick={reload}>
         Click to reload!
       </button>
       </main>

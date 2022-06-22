@@ -16,8 +16,8 @@ export default class SankeyRenderingSettingsSelectorVM {
     private model: SankeyRenderingSettingsSelector;
   
     public constructor(settings: SankeySettings = {
-      width: 400,
-      height: 200,
+      width: 800,
+      height: 400,
       nodewidth: 20,
       opacity: 0.4
     }) {
