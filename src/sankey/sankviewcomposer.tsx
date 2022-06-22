@@ -145,13 +145,7 @@ export const SKViewComposer = (
 
   return (
     <>
-      <style>
-        {`
-          .renderArea {
-              height: 400px;
-          }
-        `}
-      </style>
+
       {/* eslint-disable */}
       <main className="text-gray-400 bg-gray-900 body-font">
       <div ref={ref} className="renderArea" id="render"/>
