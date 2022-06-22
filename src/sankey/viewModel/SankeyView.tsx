@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { observer } from 'mobx-react-lite';
-import React, { FormEventHandler, useState } from 'react';
-import { setConstantValue } from 'typescript';
+import { FormEventHandler, useState } from 'react';
 import SankeyRenderingSettingsSelectorVM from './settingsSelectorView';
+import SKViewComposer from '../sankviewcomposer'
 
 interface Props {
   viewModel: SankeyRenderingSettingsSelectorVM;
@@ -18,7 +18,6 @@ function View({ viewModel }: Props) {
       opacity: document.getElementById('opacity').value
     };
     //const [input] = document.getElementById('width').value
-    console.log("premuto altezza = " + document.getElementById('height').value);
   };
 
   

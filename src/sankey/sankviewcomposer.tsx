@@ -128,7 +128,7 @@ export const SKViewComposer = (
         console.log("render ref", ref);
         renderer.render(ref as MutableRefObject<HTMLDivElement>);
       }
-    }, [ref, console, renderer]);
+    }, [ref, console, renderer, this]);
 
   //console.log('test ', skMapper.map(dataset as Dataset));
 

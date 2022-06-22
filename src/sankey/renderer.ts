@@ -40,8 +40,8 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
 
         const svg = d3.select(ref.current)
             .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+            .attr("width", this.settings.width)
+            .attr("height", this.settings.height);
         console.log("ref", ref);
         console.log(svg);
 
@@ -50,9 +50,9 @@ export class SKRenderer implements Renderer<RenderSettings, GraphData>{
                 (accessor: SNode) => accessor.nodeId
             )
             .nodeAlign(d3Sankey.sankeyLeft)
-            .nodeWidth(nodewidth)
+            .nodeWidth(this.settings.nodewidth)
             .nodePadding(10)
-            .extent([[1, 1], [width - 1, height - 6]]);
+            .extent([[1, 1], [this.settings.width - 1,  this.settings.height - 6]]);
         console.log(this.SKRenderableData);
         console.log(new Set(this.SKRenderableData.links.map((x) => x.target)));
         graph(this.SKRenderableData);
