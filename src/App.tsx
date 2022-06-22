@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import {
   GraphableType, StorableType,
 } from './model/datatypes';
-
+import './App.scss';
 //Dataset
 import { Dataset } from './model/dataset';
 import { HTTPDatasetProvider } from './model/io/datasetprovider';
@@ -39,9 +39,16 @@ function App() {
 
   if (dataset !== null) {
     return (
-      <div className="app">
-        <SKViewComposer skDimensions={skDimensions} dataset={dataset as Dataset} />
+    <>
+    <div className="header">
+      <div className='logo'>
+        <a href="https://github.com/Club-Swendwich"><img src="logo_big.jpg" alt="logo" /></a>
       </div>
+    </div>
+    <div className="app">
+        <SKViewComposer skDimensions={skDimensions} dataset={dataset as Dataset} />
+    </div>
+    </>
     );
   };
 

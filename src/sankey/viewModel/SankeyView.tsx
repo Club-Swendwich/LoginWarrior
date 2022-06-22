@@ -27,6 +27,7 @@ function View({ viewModel }: Props) {
   const [opacity] = useState(viewModel.getOpacity);
 
   return (
+    <div className='settingsArea'>
     <form className="settingsSelector" onSubmit={onSubmit}>
       <label>Width:</label><br/>
       <input type="number" id="width" name="width" defaultValue={width}/><br/>
@@ -34,10 +35,9 @@ function View({ viewModel }: Props) {
       <input type="number" id="height" name="height" defaultValue={height} /><br/>
       <label>NodeWidth:</label><br/>
       <input type="number" id="nodewidth" name="nodewidth" defaultValue={nodewidth} /><br/>
-      <label>Opacity:</label><br/>
-      <input type="range" id="opacity" name="opacity" max="1" min="0" step="0.1" defaultValue={opacity} /><br/>
-      <input type="submit" value="Applica" />
+      <input className="applyButton" type="submit" value="Applica" />
     </form>
+    </div>
   );
 }
 
