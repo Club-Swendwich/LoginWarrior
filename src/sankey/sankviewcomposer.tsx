@@ -113,6 +113,7 @@ export const SKViewComposer = (
    */
 
   function reload(): void {
+    console.log("stuff");
     document.getElementById("render").innerHTML = "";
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const mapped = skMapper.map(dataset as Dataset) as GraphData;

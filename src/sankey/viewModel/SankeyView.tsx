@@ -11,11 +11,12 @@ interface Props {
 function View({ viewModel }: Props) {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    console.log(e.currentTarget);
     viewModel.updateSettings = {
       height: document.getElementById('height').value,
       width: document.getElementById('width').value,
       nodewidth: document.getElementById('nodewidth').value,
-      opacity: document.getElementById('opacity').value
+      opacity: 0.4
     };
     //const [input] = document.getElementById('width').value
   };
@@ -24,7 +25,6 @@ function View({ viewModel }: Props) {
   const [width] = useState(viewModel.getWidth);
   const [height] = useState(viewModel.getHeight);
   const [nodewidth] = useState(viewModel.getNodeWidth);
-  const [opacity] = useState(viewModel.getOpacity);
 
   return (
     <div className='settingsArea'>
