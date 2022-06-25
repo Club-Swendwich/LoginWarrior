@@ -102,7 +102,7 @@ export function addScatterplotTransformations(transformer: Transformer): void {
   transformer.add({ identifier: 'timestamp to int', from: StorableType.Date, to: GraphableType.Int }, (a: Date) : any => a.getTime().toFixed(0));
   transformer.add({ identifier: 'timestamp to real', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getTime());
   transformer.add({ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getDate());
-  transformer.add({ identifier: 'minuti dalla mezzanotte', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getHours() * 60 + a.getMinutes() * 60 + a.getMinutes());
+  transformer.add({ identifier: 'minuti dalla mezzanotte', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getHours() * 60 + a.getMinutes());
   transformer.add({ identifier: 'ora del giorno', from: StorableType.Date, to: GraphableType.Real }, (a: Date) : any => a.getHours());
   transformer.add({ identifier: 'event type', from: StorableType.LoginType, to: GraphableType.Color }, (a: LoginType) : any => getEventColor(a));
   transformer.add({ identifier: 'vs fails', from: StorableType.LoginType, to: GraphableType.Color }, (a: LoginType) : any => getLinLoutvsFailColor(a));
