@@ -55,7 +55,7 @@ export const SKViewComposer = (
   );
 
   transformer.add({ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.SankeyLayer }, 
-  {outcomes: ["1","2","3"],
+  {outcomes: [(a: Date) : any => a.getTime().toFixed(0)],
     map: (field:DatasetValue)=> {
       return field.value;} }
   );

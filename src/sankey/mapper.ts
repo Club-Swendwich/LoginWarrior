@@ -1,4 +1,5 @@
 import { entries } from "mobx";
+import { COMPUTED } from "mobx/dist/internal";
 import { GraphData } from "react-force-graph-2d";
 import { Mapper } from "../genericview/mapper";
 import { Dataset, DatasetEntry } from "../model/dataset";
@@ -74,51 +75,59 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         const links: SLink[] = [];
         const layersCount = this.dimensions.layers.length;
 
-        var source = [[]] as any;// Uno layer altro nodo
-        var target = [[]] as any;
-
+        var source = [] as any;// Uno layer altro nodo
+        var target = [] as any;
         this.dimensions.layers.forEach((layer, i) => { //To be fixed
-            console.log("I Layer sono " + layersCount)
-            if (i < layersCount - 2) {
-                console.log("questo è " + i)
+            console.log("questo è " + i)
+            if (i < layersCount - 1) {
+            
+            source[i] = [];
+            target[i] = [];
+
             d.entries().forEach(element => {
+                
                 var n = Number(this.calculateSource(layer, element));
                 //console.log("Questa è la source", n)
                 var t = Number(this.calculateTarget(i, this.dimensions.layers[i+1], element));
                 //console.log("Questa è il target", t)
 
                 //Se source in quella posizione non c'è lo inizializzi
-                if(source[i][n])
+
+                if (source[i][n]){
                     source[i][n]++;
-                else
+                }else{
+                    //source[i] = [n];
                     source[i][n] = 1;
+                }
 
                 //Se target in quella posizione non c'è lo inizializzi
                 if(target[i][t])
                     target[i][t]++;
-                else
+                else{
+                    //target[i] = [t];
                     target[i][t] = 1;
-
+                }
             });
 
-            for (var r = 0; r<layersCount -2; r++){
-                console.log(layersCount)
-                for (var t = 0; t<14; t++){               
-                    if(source[r][t]){
+            console.log("Il source è " + source);
+            console.log("Il target è " + target);
+
+            for (var r = 0; r<3; r++){
+                for (var t = 0; t<20; t++){            
+                    if(source[i][r] && target[i][t]){
                         console.log("connessione tra nodo" + r + " a nodo " + t)
                     links.push({
                         source: i + "," + r,
                         target: (i + 1) + "," + t,
-                        value: source[r][t] // Quanto grande è la connessione
+                        value: target[i][t] // Quanto grande è la connessione
                     })}else{
                         //console.log("connessione non esiste")
                     };
                 }
             }
 
-            console.log("Il source è " + source);
-            console.log("Il target è " + target);
         }
+
         });
 
         return links;
