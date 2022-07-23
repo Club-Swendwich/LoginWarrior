@@ -54,6 +54,12 @@ export const SKViewComposer = (
       } }
   );
 
+  transformer.add({ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.SankeyLayer }, 
+  {outcomes: ["1","2","3"],
+    map: (field:DatasetValue)=> {
+      return field.value;} }
+  );
+
   transformer.add(
     { identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer },
     { outcomes: ["HRW",
@@ -72,6 +78,8 @@ export const SKViewComposer = (
   "MD7"], map: (field: DatasetValue) => {
       return field.value;} }
   );
+
+
 
   console.log(skDimensions.layers , transformer);
   // eslint-disable-next-line max-len

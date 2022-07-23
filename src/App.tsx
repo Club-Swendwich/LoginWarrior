@@ -27,13 +27,14 @@ function App() {
   const datasetProvider = new HTTPDatasetProvider(parser);
 
   useEffect(() => {
-    datasetProvider.load('http://localhost:3000/coded_piccolo.csv').then((r) => setDataset(r as Dataset));
+    datasetProvider.load('http://localhost:3000/coded_log.csv').then((r) => setDataset(r as Dataset));
   }, []);
 
   const skDimensions : SKDimensions = {
     layers: [
              ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
              ['appId',{ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }],
+             ['date',{ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.SankeyLayer }]
             ]
   }
 

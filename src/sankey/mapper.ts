@@ -2,7 +2,7 @@ import { entries } from "mobx";
 import { GraphData } from "react-force-graph-2d";
 import { Mapper } from "../genericview/mapper";
 import { Dataset, DatasetEntry } from "../model/dataset";
-import { SankeyLayer } from "../model/datatypes";
+import { Int, SankeyLayer } from "../model/datatypes";
 import { TransformationProvider, TransformationSignature } from "../model/transformer";
 import { SKDimensions } from "./dimensions/SKDimensions";
 import { SLink, SNode } from "./renderer";
@@ -48,7 +48,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
      */
     private calculateSource(layer: [string, TransformationSignature], element: DatasetEntry): string {
         const source_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
-        return "," + this.signatureToLayer(layer[1]).outcomes.indexOf(source_result);
+        return /*"," + */this.signatureToLayer(layer[1]).outcomes.indexOf(source_result);
     }
 
     /**
@@ -61,7 +61,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
      */
     private calculateTarget(i: number, layer: [string, TransformationSignature], element: DatasetEntry): string {
         const target_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
-        return (i + 1) + "," + this.signatureToLayer(layer[1]).outcomes.indexOf(target_result);
+        return /*(i + 1) + "," + */ this.signatureToLayer(layer[1]).outcomes.indexOf(target_result);
     }
 
     /**
@@ -73,16 +73,51 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createLinks(d: Dataset): SLink[] {
         const links: SLink[] = [];
         const layersCount = this.dimensions.layers.length;
-        this.dimensions.layers.forEach((layer, i) => {
-            // FIXMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-            if (i < layersCount - 1) {
+
+        var source = [[]] as any;// Uno layer altro nodo
+        var target = [[]] as any;
+
+        this.dimensions.layers.forEach((layer, i) => { //To be fixed
+            console.log("I Layer sono " + layersCount)
+            if (i < layersCount - 2) {
+                console.log("questo è " + i)
             d.entries().forEach(element => {
-                links.push({
-                    source: i + this.calculateSource(layer, element),
-                    target: this.calculateTarget(i, this.dimensions.layers[i+1], element),
-                    value: 1 // devo capire bene che cosa mettere
-                });
+                var n = Number(this.calculateSource(layer, element));
+                //console.log("Questa è la source", n)
+                var t = Number(this.calculateTarget(i, this.dimensions.layers[i+1], element));
+                //console.log("Questa è il target", t)
+
+                //Se source in quella posizione non c'è lo inizializzi
+                if(source[i][n])
+                    source[i][n]++;
+                else
+                    source[i][n] = 1;
+
+                //Se target in quella posizione non c'è lo inizializzi
+                if(target[i][t])
+                    target[i][t]++;
+                else
+                    target[i][t] = 1;
+
             });
+
+            for (var r = 0; r<layersCount -2; r++){
+                console.log(layersCount)
+                for (var t = 0; t<14; t++){               
+                    if(source[r][t]){
+                        console.log("connessione tra nodo" + r + " a nodo " + t)
+                    links.push({
+                        source: i + "," + r,
+                        target: (i + 1) + "," + t,
+                        value: source[r][t] // Quanto grande è la connessione
+                    })}else{
+                        //console.log("connessione non esiste")
+                    };
+                }
+            }
+
+            console.log("Il source è " + source);
+            console.log("Il target è " + target);
         }
         });
 
@@ -99,6 +134,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         this.dimensions.layers.forEach((layer, i) => {
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
             result.outcomes.forEach((element, j) => { //(element, j)
+                //console.log("il nodo" + i + " e " + j + " creato")
                 nodes.push({
                     nodeId: i + "," + j,
                     name: `nodox`
