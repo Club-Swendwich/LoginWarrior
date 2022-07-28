@@ -37,6 +37,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
      * @returns a transformation rappresenting a SankeyLayer
      */
     private signatureToLayer(s: TransformationSignature): any {
+        //console.log(s)
         return this.transformer.get(s);
     }
 
@@ -49,6 +50,10 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
      */
     private calculateSource(layer: [string, TransformationSignature], element: DatasetEntry): string {
         const source_result = this.signatureToLayer(layer[1]).map(element.get(layer[0]));
+        /*
+        if(layer[0] !== "tot")
+            console.log(layer[1], element)
+        */
         return /*"," + */this.signatureToLayer(layer[1]).outcomes.indexOf(source_result);
     }
 
@@ -74,20 +79,21 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createLinks(d: Dataset): SLink[] {
         const links: SLink[] = [];
         const layersCount = this.dimensions.layers.length;
+        console.log("ci sono " + layersCount + " layer")
 
         var source = [] as any;// Uno layer altro nodo
         var target = [] as any;
         this.dimensions.layers.forEach((layer, i) => { //To be fixed
-            console.log("questo è " + i)
-            if (i < layersCount - 1) {
             
+            if (i < layersCount -1) {
+            console.log("questo è " + i)
             source[i] = [];
             target[i] = [];
+            var check = true;
 
             d.entries().forEach(element => {
-                
                 var n = Number(this.calculateSource(layer, element));
-                //console.log("Questa è la source", n)
+
                 var t = Number(this.calculateTarget(i, this.dimensions.layers[i+1], element));
                 //console.log("Questa è il target", t)
 
@@ -108,28 +114,36 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
                     target[i][t] = 1;
                 }
             });
-
-            console.log("Il source è " + source);
-            console.log("Il target è " + target);
-
-            for (var r = 0; r<3; r++){
-                for (var t = 0; t<20; t++){            
-                    if(source[i][r] && target[i][t]){
-                        console.log("connessione tra nodo" + r + " a nodo " + t)
-                    links.push({
-                        source: i + "," + r,
-                        target: (i + 1) + "," + t,
-                        value: target[i][t] // Quanto grande è la connessione
-                    })}else{
-                        //console.log("connessione non esiste")
-                    };
-                }
-            }
+            
+            console.log("Il source è " + source[i]);
+            console.log("Il target è " + target[i]);
 
         }
 
         });
 
+        for (var i=0; i<layersCount -1; i++){
+            for (var r = 0; r<100; r++){
+                for (var t = 0; t<100; t++){    
+                    if(source[i][r] && target[i][t] && i !== 0){
+                        console.log("connessione tra nodo" + r + " a nodo " + t + " di dimensione " + source[i+1][r])
+                    links.push({
+                        source: i + "," + r,
+                        target: (i + 1) + "," + t,
+                        value: source[i+1][r] // Quanto grande è la connessione
+                    })}
+                    else if(source[i][r] && target[i][t]){
+                        console.log("connessione tra nodo" + r + " a nodo " + t + " di dimensione " + source[i+1][r])
+                    links.push({
+                        source: i + "," + r,
+                        target: (i + 1) + "," + t,
+                        value: source[i][r] // Quanto grande è la connessione
+                    })}else{
+                        //console.log("connessione non esiste")
+                    };
+                }
+            }
+        }
         return links;
     }
 
@@ -141,9 +155,10 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
     private createNodes(): SNode[] {
         const nodes: SNode[] = [];
         this.dimensions.layers.forEach((layer, i) => {
+            console.log(layer[1]);
             const result: SankeyLayer<any> = this.transformer.get(layer[1]);
             result.outcomes.forEach((element, j) => { //(element, j)
-                //console.log("il nodo" + i + " e " + j + " creato")
+                console.log("il nodo " + i + " e " + j + " creato")
                 nodes.push({
                     nodeId: i + "," + j,
                     name: `nodox`

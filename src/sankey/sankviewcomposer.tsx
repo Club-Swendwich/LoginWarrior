@@ -42,9 +42,15 @@ export const SKViewComposer = (
 ) => {
   const { skDimensions, dataset } = prop;
   const ref = useRef<HTMLDivElement | null>(null);
-  console.log("Sono qui");
   const transformer: Transformer = Transformer.provideInstance();
 
+  transformer.add(
+    { identifier: 'full', from: StorableType.Int, to: GraphableType.SankeyLayer },
+    { outcomes: Array.from(Array(10).keys()), 
+    map: (field: DatasetValue) => {
+      return field.value;
+    } }
+  );
 
   transformer.add(
     { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer },
@@ -54,8 +60,8 @@ export const SKViewComposer = (
       } }
   );
 
-  transformer.add({ identifier: 'giorno del mese', from: StorableType.Date, to: GraphableType.SankeyLayer }, 
-  {outcomes: [(a: Date) : any => a.getTime().toFixed(0)],
+  transformer.add({ identifier: 'giorno', from: StorableType.Date, to: GraphableType.SankeyLayer }, 
+  {outcomes: ["2021-04-06 15:33:48.000" as unknown as Date],
     map: (field:DatasetValue)=> {
       return field.value;} }
   );
@@ -81,7 +87,7 @@ export const SKViewComposer = (
 
 
 
-  console.log(skDimensions.layers , transformer);
+  //console.log("stuff here", skDimensions.layers , transformer);
   // eslint-disable-next-line max-len
   //const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
   const skMapper: SKMapper = new SKMapper(transformer, skDimensions);
@@ -106,8 +112,8 @@ export const SKViewComposer = (
   const renderer = useMemo(() => {
     //console.log(skMapper.map(dataset));
     let data = skMapper.map(dataset as Dataset) as GraphData; // Questo va in errore
-    console.log("datamapped", data);
-    console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
+    //console.log("datamapped", data);
+    //console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
     return new SKRenderer(
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
       data,
