@@ -81,16 +81,11 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
         const layersCount = this.dimensions.layers.length;
         console.log("ci sono " + layersCount + " layer")
 
-        var source = [] as any;// Uno layer altro nodo
-        var target = [] as any;
+        
         this.dimensions.layers.forEach((layer, i) => { //To be fixed
-            
-            if (i < layersCount -1) {
-            console.log("questo è " + i)
-            source[i] = [];
-            target[i] = [];
-            var check = true;
+            var source = [] as any;// Uno layer altro nodo
 
+            if (i !== 0 && i < layersCount -1) {          
             d.entries().forEach(element => {
                 var n = Number(this.calculateSource(layer, element));
 
@@ -98,41 +93,37 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
                 //console.log("Questa è il target", t)
 
                 //Se source in quella posizione non c'è lo inizializzi
-
-                if (source[i][n]){
-                    source[i][n]++;
-                }else{
-                    //source[i] = [n];
-                    source[i][n] = 1;
-                }
-
-                //Se target in quella posizione non c'è lo inizializzi
-                if(target[i][t])
-                    target[i][t]++;
-                else{
-                    //target[i] = [t];
-                    target[i][t] = 1;
+                //Correzione, ora abbiamo per ogni nodo il suo target
+                if (!source[n])
+                    source[n] = [];
+                else if (source[n][t]){
+                    source[n][t]++;
+                }else if (t !== -1){
+                    source[n][t] = 1;
                 }
             });
-            
-            console.log("Il source è " + source[i]);
-            console.log("Il target è " + target[i]);
 
+            for (var r = 0; r<20; r++){
+                for (var t = 0; t<20; t++){    
+                    if(source[r] && source[r][t]){
+                        console.log(" fila " + i + " connessione tra nodo" + r + " a nodo " + t + " con val " + source[r][t])
+                        links.push({
+                            source: i + "," + r,
+                            target: (i + 1) + "," + t,
+                            value: source[r][t] // Quanto grande è la connessione
+                    })}else{
+                        //console.log("connessione non esiste")
+                    };
+                }
+            }
         }
 
         });
-
+/*
         for (var i=0; i<layersCount -1; i++){
             for (var r = 0; r<100; r++){
                 for (var t = 0; t<100; t++){    
-                    if(source[i][r] && target[i][t] && i !== 0){
-                        console.log("connessione tra nodo" + r + " a nodo " + t + " di dimensione " + source[i+1][r])
-                    links.push({
-                        source: i + "," + r,
-                        target: (i + 1) + "," + t,
-                        value: source[i+1][r] // Quanto grande è la connessione
-                    })}
-                    else if(source[i][r] && target[i][t]){
+                    if(source[i][r] && target[i][t]){
                         console.log("connessione tra nodo" + r + " a nodo " + t + " di dimensione " + source[i+1][r])
                     links.push({
                         source: i + "," + r,
@@ -144,6 +135,7 @@ export class SKMapper implements Mapper<SKDimensions, GraphData> {
                 }
             }
         }
+        */
         return links;
     }
 

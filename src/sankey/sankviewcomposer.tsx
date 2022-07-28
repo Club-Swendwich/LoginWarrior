@@ -46,7 +46,7 @@ export const SKViewComposer = (
 
   transformer.add(
     { identifier: 'full', from: StorableType.Int, to: GraphableType.SankeyLayer },
-    { outcomes: Array.from(Array(10).keys()), 
+    { outcomes: [1], 
     map: (field: DatasetValue) => {
       return field.value;
     } }
