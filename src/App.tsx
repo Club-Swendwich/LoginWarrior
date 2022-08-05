@@ -32,10 +32,11 @@ function App() {
 
   const skDimensions : SKDimensions = {
     layers: [
+            ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
+             ['appId',{ identifier: 'default', from: StorableType.String, to: GraphableType.SankeyLayer }],
              ['userId',{ identifier: 'full', from: StorableType.Int, to: GraphableType.SankeyLayer }],
-             ['eventType',{ identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer }],
-             ['appId',{ identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer }],
-             ['timestamp',{ identifier: 'giorno', from: StorableType.Date, to: GraphableType.SankeyLayer }]
+             ['appId',{ identifier: 'default', from: StorableType.String, to: GraphableType.SankeyLayer }],
+             ['timestamp',{ identifier: 'giorno', from: StorableType.Date, to: GraphableType.SankeyLayer }],
             ]
   }
 

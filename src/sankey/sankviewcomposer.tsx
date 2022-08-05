@@ -2,22 +2,23 @@ import {
   useEffect, useRef, MutableRefObject, useMemo,
 } from 'react';
 import { timeStamp } from 'console';
+import * as d3Sankey from 'd3-sankey';
 import {
   GraphableType, LoginType, StorableType,
+  SankeyLayer,
 } from '../model/datatypes';
 
-//RENDERER
+// RENDERER
 import {
-  SKRenderer, GraphData
-} from './renderer'
-import * as d3Sankey from 'd3-sankey';
+  SKRenderer, GraphData,
+} from './renderer';
 
-//VIEW
-import {InstanceSankeyRenderingSettingsSelectorVm} from "./viewModel/settingsSelectorView"
-import  SankeyViewSettings  from "./viewModel/settingsSelectorView"
-import SankeyView from "./viewModel/SankeyView";
+// VIEW
+import { InstanceSankeyRenderingSettingsSelectorVm } from './viewModel/settingsSelectorView';
+import SankeyViewSettings from './viewModel/settingsSelectorView';
+import SankeyView from './viewModel/SankeyView';
 
-//DIMENSION
+// DIMENSION
 import { SKDimensionSelectorView } from './dimensions/SKdimensionselectorview';
 import { SKDimensionSelectorVM } from './dimensions/SKdimensionselectorvm';
 import {
@@ -29,8 +30,6 @@ import {
 import { SKDimensions } from './dimensions/SKDimensions';
 import { SKMapper } from './mapper';
 import { MapperError } from '../genericview/mapper';
-import { SankeyLayer} from "../model/datatypes";
-
 
 export interface SKViewComposerProps {
   skDimensions: SKDimensions,
@@ -46,50 +45,52 @@ export const SKViewComposer = (
 
   transformer.add(
     { identifier: 'full', from: StorableType.Int, to: GraphableType.SankeyLayer },
-    { outcomes: [1], 
-    map: (field: DatasetValue) => {
-      return field.value;
-    } }
+    {
+      outcomes: [1],
+      map: (field: DatasetValue) => field.value,
+    },
   );
 
   transformer.add(
     { identifier: 'loginType', from: StorableType.LoginType, to: GraphableType.SankeyLayer },
-    { outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout],
-      map: (field: DatasetValue) =>  {
-        return field.value;
-      } }
-  );
-
-  transformer.add({ identifier: 'giorno', from: StorableType.Date, to: GraphableType.SankeyLayer }, 
-  {outcomes: ["2021-04-06 15:33:48.000" as unknown as Date],
-    map: (field:DatasetValue)=> {
-      return field.value;} }
+    {
+      outcomes: [LoginType.LoginSuccess, LoginType.LoginFail, LoginType.Logout],
+      map: (field: DatasetValue) => field.value,
+    },
   );
 
   transformer.add(
-    { identifier: 'default', from: StorableType.Int, to: GraphableType.SankeyLayer },
-    { outcomes: ["HRW",
-  "ERM",
-  "GTL",
-  "HRC",
-  "HR1",
-  "HRM",
-  "HUT",
-  "DWH",
-  "HTR",
-  "GAW",
-  "HSP",
-  "TM3",
-  "HCF",
-  "MD7"], map: (field: DatasetValue) => {
-      return field.value;} }
+    { identifier: 'giorno', from: StorableType.Date, to: GraphableType.SankeyLayer },
+    {
+      outcomes: [0,1,2,3,4,5,6],
+      map: (field:DatasetValue) => new Date(field.value).getDay(),
+    },
   );
 
+  transformer.add(
+    { identifier: 'default', from: StorableType.String, to: GraphableType.SankeyLayer },
+    {
+      outcomes: ['HRW',
+        'ERM',
+        'GTL',
+        'HRC',
+        'HR1',
+        'HRM',
+        'HUT',
+        'DWH',
+        'HTR',
+        'GAW',
+        'HSP',
+        'TM3',
+        'HCF',
+        'MD7'],
+      map: (field: DatasetValue) => field.value,
+    },
+  );
 
-
-  //console.log("stuff here", skDimensions.layers , transformer);
+  // console.log("stuff here", skDimensions.layers , transformer);
   // eslint-disable-next-line max-len
-  //const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
+  // const skMapper: SKMapper = useMemo(() => new SKMapper(transformer, skDimensions), [skDimensions, transformer]);
   const skMapper: SKMapper = new SKMapper(transformer, skDimensions);
 
   console.log(skMapper);
@@ -106,19 +107,19 @@ export const SKViewComposer = (
     width: InstanceSankeyRenderingSettingsSelectorVm.getWidth,
     height: InstanceSankeyRenderingSettingsSelectorVm.getHeight,
     nodewidth: InstanceSankeyRenderingSettingsSelectorVm.getNodeWidth,
-    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity
+    opacity: InstanceSankeyRenderingSettingsSelectorVm.getOpacity,
   });
 
   const renderer = useMemo(() => {
-    //console.log(skMapper.map(dataset));
-    let data = skMapper.map(dataset as Dataset) as GraphData; // Questo va in errore
-    //console.log("datamapped", data);
-    //console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
+    // console.log(skMapper.map(dataset));
+    const data = skMapper.map(dataset as Dataset) as GraphData; // Questo va in errore
+    console.log("datamapped", data);
+    // console.log("I settings adatti sono " + InstanceSankeyRenderingSettingsSelectorVm.getSettings.height);
     return new SKRenderer(
       InstanceSankeyRenderingSettingsSelectorVm.getSettings,
       data,
     );
-  },[settings, skMapper, dataset]);
+  }, [settings, skMapper, dataset]);
 
   /**
    * [1, 2, 3, 4]
@@ -127,25 +128,25 @@ export const SKViewComposer = (
    */
 
   function reload(): void {
-    console.log("stuff");
-    document.getElementById("render").innerHTML = "";
+    console.log('stuff');
+    document.getElementById('render').innerHTML = '';
     skMapper.updateMapLogic(dimensionSelectorVM.model.currentSelection);
     const mapped = skMapper.map(dataset as Dataset) as GraphData;
-    console.log("mapped", mapped);
-    const renderernew =  new SKRenderer(InstanceSankeyRenderingSettingsSelectorVm.getSettings, mapped);
-    renderernew.render(ref as MutableRefObject<HTMLDivElement>)
+    console.log('mapped', mapped);
+    const renderernew = new SKRenderer(InstanceSankeyRenderingSettingsSelectorVm.getSettings, mapped);
+    renderernew.render(ref as MutableRefObject<HTMLDivElement>);
   }
 
-    useEffect(() => {
-      console.log("hook render");
-      if(ref !== null) {
-        console.log('Render effect');
-        console.log("render ref", ref);
-        renderer.render(ref as MutableRefObject<HTMLDivElement>);
-      }
-    }, [ref, console, renderer, this]);
+  useEffect(() => {
+    console.log('hook render');
+    if (ref !== null) {
+      console.log('Render effect');
+      console.log('render ref', ref);
+      renderer.render(ref as MutableRefObject<HTMLDivElement>);
+    }
+  }, [ref, console, renderer, this]);
 
-  //console.log('test ', skMapper.map(dataset as Dataset));
+  // console.log('test ', skMapper.map(dataset as Dataset));
 
   return (
     <>
